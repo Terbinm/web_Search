@@ -17,7 +17,8 @@ class Config:
 
     # 上傳設定
     UPLOAD_FOLDER = os.path.join(os.getcwd(), 'app/static/uploads')
-    MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
+    MAX_CONTENT_LENGTH = 512 * 1024 * 1024  # 512MB
+    ALLOWED_EXTENSIONS = {'txt', 'csv'}  # 添加允許的文件類型
 
     # 其他應用設定
     DEBUG = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'

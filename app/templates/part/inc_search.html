@@ -47,20 +47,82 @@
     </div>
 </div>
 
-<!--&lt;!&ndash; 這裡可以放置查詢結果 &ndash;&gt;-->
-<!--<div class="row mt-4">-->
-<!--    <div class="col-md-12">-->
-<!--        <div class="card">-->
-<!--            <div class="card-header bg-light">-->
-<!--                <h4 class="mb-0">查詢結果</h4>-->
-<!--            </div>-->
-<!--            <div class="card-body">-->
-<!--                &lt;!&ndash; 查詢結果將在這裡顯示 &ndash;&gt;-->
-<!--                <div class="alert alert-info">-->
-<!--                    <i class="bi bi-info-circle"></i> 請輸入INC編號進行查詢。-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<!-- 查詢結果 -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h4 class="mb-0">查詢結果</h4>
+            </div>
+            <div class="card-body">
+                {% if results %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>INC</th>
+                                    <th>FIIG</th>
+                                    <th>MRC結果</th>
+                                    <th>詳細資料</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for inc, (matching_lines, fiig, inc_value, mrc_result) in results.items() %}
+                                <tr>
+                                    <td>{{ inc_value }}</td>
+                                    <td>{{ fiig }}</td>
+                                    <td>{{ mrc_result }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse"
+                                                data-bs-target="#details-{{ loop.index }}">
+                                            展開詳情
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" class="p-0">
+                                        <div id="details-{{ loop.index }}" class="collapse">
+                                            <div class="p-3 bg-light">
+                                                <h6>匹配行詳情：</h6>
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>欄位1</th>
+                                                                <th>欄位2</th>
+                                                                <th>欄位3</th>
+                                                                <th>欄位4</th>
+                                                                <th>欄位5</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for line in matching_lines %}
+                                                            <tr>
+                                                                <td>{{ line[0] }}</td>
+                                                                <td>{{ line[1] }}</td>
+                                                                <td>{{ line[2] }}</td>
+                                                                <td>{{ line[3] if line|length > 3 else '' }}</td>
+                                                                <td>{{ line[4] if line|length > 4 else '' }}</td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> 請輸入INC編號進行查詢。
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

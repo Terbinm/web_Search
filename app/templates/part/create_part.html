@@ -14,7 +14,7 @@
                     {{ form.csrf_token }}
 
                     <!-- 第一行 -->
-                    <div class="row mb-3">
+                    <div class="row mb-2">
                         <div class="col-md-4">
                             <div class="form-group">
                                 {{ form.pn.label(class="form-label") }}
@@ -58,7 +58,7 @@
 
                     <!-- 第二行 -->
                     <div class="row mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.unit_number.label(class="form-label") }}
                                 {{ form.unit_number(class="form-control", placeholder="請輸入單位編號") }}
@@ -71,7 +71,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.specification.label(class="form-label") }}
                                 {{ form.specification(class="form-control", placeholder="請輸入規格") }}
@@ -84,7 +84,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.packaging_quantity.label(class="form-label") }}
                                 {{ form.packaging_quantity(class="form-control", placeholder="請輸入包裝數量") }}

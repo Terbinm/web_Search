@@ -78,23 +78,19 @@ def search_inc_in_tabl120(inc_data):
 @part_bp.route('/search/inc', methods=['GET', 'POST'])
 def inc_search():
     """INC查詢路由"""
-    form = INCSearchForm() #序列化表單器
-    results = []
+    form = INCSearchForm()
+    results = None
 
     if form.validate_on_submit():
         inc_data = [form.inc.data]  # 加入查詢請求
 
         if not inc_data:
-            return render_template('part/batch_search.html', form=form, results=results)
+            return render_template('part/inc_search.html', form=form, results=results)
 
         # 執行查詢
         results = search_inc_in_tabl120(inc_data)
 
-        if results:
-            # 為每個 INC 彈出訊息
-            for first_inc, (matching_lines, fiig, inc, mrc_result) in results.items():
-                flash(f'fiig: {fiig}, inc: {inc}, mrc_result: {mrc_result}', 'success')
-        else:
+        if not results:
             flash(f'未找到INC: {form.inc.data}的相關料號', 'warning')
 
     return render_template('part/inc_search.html', form=form, results=results)
@@ -128,28 +124,62 @@ def keyword_search():
 @part_bp.route('/search/batch', methods=['GET', 'POST'])
 def batch_search():
     """批次料號查詢路由"""
-    # TODO: 檔案讀取與輸出
     form = BatchSearchForm()
-    results = []
+    results = None
 
     if form.validate_on_submit():
-        part_numbers_text = form.part_numbers.data
-        # 解析文本區域中的料號（假設每行一個料號）
-        inc_data = [pn.strip() for pn in part_numbers_text.split(',') if pn.strip()]
+        inc_data = []
 
+        # 檢查是否有文件上傳
+        if form.file_upload.data:
+            file = form.file_upload.data
+            filename = file.filename
+
+            # 檢查文件格式
+            if '.' in filename and filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']:
+                try:
+                    # 讀取文件內容而不保存文件
+                    content = file.read().decode('utf-8')
+
+                    # 根據文件類型處理
+                    if filename.endswith('.csv'):
+                        # 處理CSV文件
+                        import csv
+                        from io import StringIO
+                        csv_reader = csv.reader(StringIO(content))
+                        for row in csv_reader:
+                            if row:  # 確保行不是空的
+                                inc_data.extend([item.strip() for item in row if item.strip()])
+                    else:  # 默認為txt文件
+                        # 處理TXT文件，假設每行一個INC或逗號分隔
+                        lines = content.split('\n')
+                        for line in lines:
+                            items = line.split(',')
+                            inc_data.extend([item.strip() for item in items if item.strip()])
+
+                except Exception as e:
+                    flash(f'讀取文件時出錯: {str(e)}', 'danger')
+                    return render_template('part/batch_search.html', form=form, results=results)
+            else:
+                flash('只允許上傳.txt或.csv文件', 'warning')
+                return render_template('part/batch_search.html', form=form, results=results)
+
+        # 檢查是否有文本輸入
+        elif form.part_numbers.data:
+            part_numbers_text = form.part_numbers.data
+            # 解析文本區域中的料號（假設逗號分隔）
+            inc_data = [pn.strip() for pn in part_numbers_text.split(',') if pn.strip()]
+
+        # 如果兩者都沒有輸入
         if not inc_data:
+            flash('請輸入料號或上傳文件', 'warning')
             return render_template('part/batch_search.html', form=form, results=results)
 
         # 執行查詢
         results = search_inc_in_tabl120(inc_data)
 
-        if results:
-            # 為每個 INC 彈出訊息
-            for first_inc, (matching_lines, fiig, inc, mrc_result) in results.items():
-                flash(f'fiig: {fiig}, inc: {inc}, mrc_result: {mrc_result}', 'success')
-        else:
-            flash(f'未找到INC: {form.inc.data}的相關料號', 'warning')
-
+        if not results:
+            flash('未找到相關料號', 'warning')
 
     return render_template('part/batch_search.html', form=form, results=results)
 

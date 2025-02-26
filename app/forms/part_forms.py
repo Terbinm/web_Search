@@ -22,10 +22,10 @@ class KeywordSearchForm(FlaskForm):
 class BatchSearchForm(FlaskForm):
     """批次料號查詢表單"""
     part_numbers = TextAreaField('料號清單:', validators=[
-        DataRequired(message='請輸入料號清單')
+        Optional()  # 改為非必填
     ])
     file_upload = FileField('上傳檔案', validators=[Optional()])
-    submit = SubmitField('上傳檔案')
+    submit = SubmitField('提交查詢')  # 更新按鈕文字
 
 
 class PartNumberSearchForm(FlaskForm):
