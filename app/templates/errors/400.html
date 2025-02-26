@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}400 - 錯誤請求{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h1 class="display-1 text-muted mb-4">400</h1>
+                <h2 class="mb-4">錯誤請求</h2>
+                <p class="lead mb-4">您的請求包含無效的參數或格式不正確。</p>
+                <div class="text-center">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary">返回首頁</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}首頁 - Flask應用{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h2 class="card-title">歡迎使用 Flask 應用</h2>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <h3>輕鬆管理您的內容</h3>
+                    <p class="lead">這是一個使用Flask建立的基礎應用程式，提供使用者註冊與登入功能。</p>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h4>用戶功能</h4>
+                                <p>註冊帳號後，您可以訪問儀表板進行個人化設定。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h4>管理功能</h4>
+                                <p>管理員可以訪問特殊功能，管理系統與使用者數據。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if not current_user.is_authenticated %}
+                <div class="text-center">
+                    <p class="lead">立即加入我們，體驗全部功能！</p>
+                    <div>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary mx-2">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>登入
+                        </a>
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-success mx-2">
+                            <i class="bi bi-person-plus me-2"></i>註冊
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <div class="text-center">
+                    <p>您已經登入系統。</p>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">前往儀表板</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

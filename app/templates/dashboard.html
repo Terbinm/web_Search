@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}儀表板 - Flask應用{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-person-badge me-2"></i>用戶資訊</h4>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <div class="avatar-placeholder bg-secondary rounded-circle d-inline-flex justify-content-center align-items-center mb-2" style="width: 80px; height: 80px;">
+                        <span class="text-white display-6">{{ current_user.username[0].upper() }}</span>
+                    </div>
+                    <h5>{{ current_user.username }}</h5>
+                    <p class="text-muted">{{ current_user.email }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>帳號狀態</span>
+                        <span class="badge bg-success rounded-pill">活躍</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>註冊時間</span>
+                        <span>{{ current_user.created_at.strftime('%Y-%m-%d') }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>角色</span>
+                        <span>{% if current_user.is_admin %}管理員{% else %}使用者{% endif %}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="list-group mb-4">
+            <a href="#" class="list-group-item list-group-item-action active">
+                儀表板
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                個人設定
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                我的資料
+            </a>
+            <a href="#" class="list-group-item list-group-item-action">
+                通知 <span class="badge bg-primary rounded-pill float-end">3</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-stars me-2"></i>歡迎回來，{{ current_user.username }}!</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> 這是您的個人儀表板，您可以在這裡管理您的所有資料和設定。
+                </div>
+
+                <h5 class="mt-4 mb-3">快速訪問</h5>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <i class="bi bi-gear display-5"></i>
+                                </div>
+                                <h5>設定</h5>
+                                <p class="small text-muted">更新您的個人資料和偏好設定</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">訪問</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <i class="bi bi-file-earmark-text display-5"></i>
+                                </div>
+                                <h5>文件</h5>
+                                <p class="small text-muted">訪問您的個人文件和上傳記錄</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">訪問</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <div class="mb-2">
+                                    <i class="bi bi-bell display-5"></i>
+                                </div>
+                                <h5>通知</h5>
+                                <p class="small text-muted">查看您的最新通知和提醒</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">訪問</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h5 class="mt-4 mb-3">最近活動</h5>
+                <div class="list-group">
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">登入系統</h6>
+                            <small class="text-muted">剛剛</small>
+                        </div>
+                        <p class="mb-1">您從 Chrome 瀏覽器登入了系統。</p>
+                    </div>
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">個人資料更新</h6>
+                            <small class="text-muted">2天前</small>
+                        </div>
+                        <p class="mb-1">您更新了個人資料信息。</p>
+                    </div>
+                    <div class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">帳號註冊</h6>
+                            <small class="text-muted">一週前</small>
+                        </div>
+                        <p class="mb-1">您成功註冊了新帳號。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}429 - 請求過多{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h1 class="display-1 text-muted mb-4">429</h1>
+                <h2 class="mb-4">請求過多</h2>
+                <p class="lead mb-4">您發送了太多請求，請稍後再試。</p>
+                <div class="text-center">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary">返回首頁</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

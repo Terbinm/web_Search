@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}403 - 禁止訪問{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h1 class="display-1 text-muted mb-4">403</h1>
+                <h2 class="mb-4">禁止訪問</h2>
+                <p class="lead mb-4">很抱歉，您沒有權限訪問此頁面。</p>
+                <div class="text-center">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary">返回首頁</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

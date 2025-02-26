@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}405 - 方法不允許{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow text-center">
+            <div class="card-body">
+                <h1 class="display-1 text-muted mb-4">405</h1>
+                <h2 class="mb-4">方法不允許</h2>
+                <p class="lead mb-4">對此資源使用的方法（GET、POST等）不被允許。</p>
+                <div class="text-center">
+                    <a href="{{ url_for('main.index') }}" class="btn btn-primary">返回首頁</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
