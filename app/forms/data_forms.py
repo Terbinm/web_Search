@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, FloatField, IntegerField
+from wtforms import StringField, SelectField, FloatField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, Optional
 
 
@@ -62,7 +62,7 @@ class DataForm(FlaskForm):
     ], default='K')
 
     # 其他信息
-    manufacturer = StringField('廠家代號')
+    Schedule_distinction = StringField('檔別區分')
     pn = StringField('參考號碼/零件號碼')
     ship_category = StringField('艦型')
 
@@ -75,3 +75,11 @@ class DataForm(FlaskForm):
     installation_number = IntegerField('裝置數', validators=[Optional()])
     location = StringField('位置')
     federal_item_identification_guide = StringField('FIIG')
+
+    # 根據Excel表格新增的欄位
+    control_number = StringField('管制編號')
+    control_category = StringField('管制區分')
+    manager_department = StringField('主管處')
+    price_certification = StringField('單價簽證')
+    vendor_code = StringField('廠家代號')
+    specification_description = TextAreaField('規格說明')

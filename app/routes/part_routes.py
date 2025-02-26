@@ -222,10 +222,13 @@ def create_part():
             part_number=form.pn.data,
             name_english=form.english_name.data,
             name_chinese=form.chinese_name.data,
-            price_usd=form.price.data if form.price.data else 0.0,
-            specification=form.specification.data,
+            accounting_number=form.accounting_number.data,
+            item_code=form.item_code.data,
+            issuing_department=form.issuing_department.data,
+            price_usd=form.price_usd.data if form.price_usd.data else 0.0,
+            specification_indicator=form.specification_indicator.data,
             packaging_quantity=form.packaging_quantity.data,
-            storage_life=form.storage_limitation.data,
+            storage_life=form.storage_life.data,
             storage_process=form.storage_process.data,
             storage_type=form.storage_type.data,
             classification=form.classification.data,
@@ -235,17 +238,29 @@ def create_part():
             source=form.source.data,
             system=form.system.data,
             category=form.category.data,
-            manufacturer=form.manufacturer.data,
+            professional_category=form.professional_category.data,
+            special_parts=form.special_parts.data,
+            control_category=form.control_category.data,
+            price_certification=form.price_certification.data,
+            control_number=form.control_number.data,
+            manager_department=form.manager_department.data,
+            Schedule_distinction=form.Schedule_distinction.data,
+            vendor_code=form.vendor_code.data,
             reference_number=form.reference_number.data,
-            ship_category=form.ship_type.data,
-            pn_acquisition_level=form.pn_level.data,
-            pn_acquisition_source=form.pn_source.data,
-            configuration_id=form.cid_no.data,
-            model_id=form.model.data,
+            pn_acquisition_level=form.pn_acquisition_level.data,
+            pn_acquisition_source=form.pn_acquisition_source.data,
+            ship_category=form.ship_category.data,
+            specification_description=form.specification_description.data,
+            configuration_id=form.configuration_id.data,
+            model_id=form.model_id.data,
             item_name=form.item_name.data,
-            installation_number=form.quantity.data if form.quantity.data else None,
+            installation_number=form.installation_number.data if form.installation_number.data else None,
             location=form.location.data,
-            fiig=form.fiig.data,
+            application_unit=form.application_unit.data,
+            application_date=form.application_date.data,
+            application_unit_signature=form.application_unit_signature.data,
+            review_unit_signature=form.review_unit_signature.data,
+            nc_file_unit_signature=form.nc_file_unit_signature.data,
             created_by=current_user.id
         )
 
@@ -294,7 +309,7 @@ def edit_part(part_id):
         form.source.data = part.source
         form.system.data = part.system
         form.category.data = part.category
-        form.manufacturer.data = part.manufacturer
+        form.Schedule_distinction.data = part.Schedule_distinction
         form.reference_number.data = part.reference_number
         form.ship_type.data = part.ship_category
         form.pn_level.data = part.pn_acquisition_level
@@ -305,6 +320,13 @@ def edit_part(part_id):
         form.quantity.data = part.installation_number
         form.location.data = part.location
         form.fiig.data = part.fiig
+        # 填充新欄位
+        form.control_number.data = part.control_number
+        form.control_category.data = part.control_category
+        form.manager_department.data = part.manager_department
+        form.price_certification.data = part.price_certification
+        form.vendor_code.data = part.vendor_code
+        form.specification_description.data = part.specification_description
 
     if form.validate_on_submit():
         # 更新料號數據
@@ -324,7 +346,7 @@ def edit_part(part_id):
         part.source = form.source.data
         part.system = form.system.data
         part.category = form.category.data
-        part.manufacturer = form.manufacturer.data
+        part.Schedule_distinction = form.Schedule_distinction.data
         part.reference_number = form.reference_number.data
         part.ship_category = form.ship_type.data
         part.pn_acquisition_level = form.pn_level.data
@@ -335,6 +357,13 @@ def edit_part(part_id):
         part.installation_number = form.quantity.data if form.quantity.data else None
         part.location = form.location.data
         part.fiig = form.fiig.data
+        # 更新新欄位
+        part.control_number = form.control_number.data
+        part.control_category = form.control_category.data
+        part.manager_department = form.manager_department.data
+        part.price_certification = form.price_certification.data
+        part.vendor_code = form.vendor_code.data
+        part.specification_description = form.specification_description.data
 
         try:
             db.session.commit()
@@ -373,19 +402,16 @@ def part_api(part_id):
     # 將料號詳細信息轉換為字典
     data = {
         'id': part.id,
+
         'part_number': part.part_number,
         'name_chinese': part.name_chinese,
         'name_english': part.name_english,
-        'specification': part.specification,
-        'manufacturer': part.manufacturer,
-        'model_id': part.model_id,
-        'packaging_quantity': part.packaging_quantity,
-        'storage_life': part.storage_life,
         'category': part.category,
-        'system': part.system,
-        'location': part.location,
-        'created_at': part.created_at.strftime('%Y-%m-%d %H:%M') if part.created_at else '',
-        'price_usd': part.price_usd
+
+        'item_code': part.item_code,
+        'accounting_number': part.accounting_number,
+        'vendor_code': part.vendor_code,
+        'reference_number': part.reference_number,
     }
 
     return jsonify(data)

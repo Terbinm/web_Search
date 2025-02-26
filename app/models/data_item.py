@@ -43,9 +43,10 @@ class DataItem(db.Model):
     category = db.Column(db.String(8))
 
     # 其他信息
-    manufacturer = db.Column(db.String(64))
     pn = db.Column(db.String(64))
     ship_category = db.Column(db.String(64))
+
+    Schedule_distinction = db.Column(db.String(64))
 
     # 展開的更多欄位
     pn_acquisition_level = db.Column(db.String(64))
@@ -56,6 +57,14 @@ class DataItem(db.Model):
     installation_number = db.Column(db.Integer)
     location = db.Column(db.String(64))
     federal_item_identification_guide = db.Column(db.String(64))
+
+    # 根據Excel表格新增的欄位
+    control_number = db.Column(db.String(64))  # 管制編號
+    control_category = db.Column(db.String(64))  # 管制區分
+    manager_department = db.Column(db.String(64))  # 主管處
+    price_certification = db.Column(db.String(64))  # 單價簽證
+    vendor_code = db.Column(db.String(64))  # 廠-家代號
+    specification_description = db.Column(db.Text)  # 規格說明
 
     def __repr__(self):
         return f'<DataItem {self.navy_part_number}>'

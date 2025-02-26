@@ -13,12 +13,12 @@
                 <form method="POST" action="{{ url_for('part.create_part') }}" class="container-fluid">
                     {{ form.csrf_token }}
 
-                    <!-- 第一行 -->
-                    <div class="row mb-2">
+                    <!-- 第一行：基本信息 -->
+                    <div class="row g-2 mb-2">
                         <div class="col-md-4">
                             <div class="form-group">
                                 {{ form.pn.label(class="form-label") }}
-                                {{ form.pn(class="form-control", placeholder="請輸入料號") }}
+                                {{ form.pn(class="form-control form-control-sm", placeholder="請輸入料號") }}
                                 {% if form.pn.errors %}
                                     <div class="invalid-feedback d-block">
                                         {% for error in form.pn.errors %}
@@ -31,7 +31,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 {{ form.english_name.label(class="form-label") }}
-                                {{ form.english_name(class="form-control", placeholder="請輸入英文品名") }}
+                                {{ form.english_name(class="form-control form-control-sm", placeholder="請輸入英文品名") }}
                                 {% if form.english_name.errors %}
                                     <div class="invalid-feedback d-block">
                                         {% for error in form.english_name.errors %}
@@ -44,7 +44,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 {{ form.chinese_name.label(class="form-label") }}
-                                {{ form.chinese_name(class="form-control", placeholder="請輸入中文品名") }}
+                                {{ form.chinese_name(class="form-control form-control-sm", placeholder="請輸入中文品名") }}
                                 {% if form.chinese_name.errors %}
                                     <div class="invalid-feedback d-block">
                                         {% for error in form.chinese_name.errors %}
@@ -56,413 +56,347 @@
                         </div>
                     </div>
 
-                    <!-- 第二行 -->
-                    <div class="row mb-3">
+                    <!-- 第二行：編號信息 -->
+                    <div class="row g-2 mb-2">
                         <div class="col-md-3">
                             <div class="form-group">
-                                {{ form.unit_number.label(class="form-label") }}
-                                {{ form.unit_number(class="form-control", placeholder="請輸入單位編號") }}
-                                {% if form.unit_number.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.unit_number.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.accounting_number.label(class="form-label") }}
+                                {{ form.accounting_number(class="form-control form-control-sm", placeholder="請輸入單位會計編號") }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
-                                {{ form.specification.label(class="form-label") }}
-                                {{ form.specification(class="form-control", placeholder="請輸入規格") }}
-                                {% if form.specification.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.specification.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.item_code.label(class="form-label") }}
+                                {{ form.item_code(class="form-control form-control-sm", placeholder="請輸入品名代號") }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.issuing_department.label(class="form-label") }}
+                                {{ form.issuing_department(class="form-control form-control-sm", placeholder="請輸入撥發單位") }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.price_usd.label(class="form-label") }}
+                                {{ form.price_usd(class="form-control form-control-sm", placeholder="請輸入美金單價") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 第三行：價格與規格 -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.specification_indicator.label(class="form-label") }}
+                                {{ form.specification_indicator(class="form-select form-select-sm") }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.packaging_quantity.label(class="form-label") }}
-                                {{ form.packaging_quantity(class="form-control", placeholder="請輸入包裝數量") }}
-                                {% if form.packaging_quantity.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.packaging_quantity.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.packaging_quantity(class="form-select form-select-sm") }}
                             </div>
                         </div>
-                    </div>
-
-                    <!-- 第三行 -->
-                    <div class="row mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                {{ form.price.label(class="form-label") }}
-                                {{ form.price(class="form-control", placeholder="請輸入美金價格") }}
-                                {% if form.price.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.price.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.storage_life.label(class="form-label") }}
+                                {{ form.storage_life(class="form-select form-select-sm") }}
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {{ form.specification_indicator.label(class="form-label") }}
-                                {{ form.specification_indicator(class="form-select") }}
-                                {% if form.specification_indicator.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.specification_indicator.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {{ form.storage_quantity.label(class="form-label") }}
-                                {{ form.storage_quantity(class="form-control", placeholder="請輸入儲位包裝量") }}
-                                {% if form.storage_quantity.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.storage_quantity.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 第四行 -->
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {{ form.storage_limitation.label(class="form-label") }}
-                                {{ form.storage_limitation(class="form-select") }}
-                                {% if form.storage_limitation.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.storage_limitation.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.storage_process.label(class="form-label") }}
-                                {{ form.storage_process(class="form-select") }}
-                                {% if form.storage_process.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.storage_process.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {{ form.consumability.label(class="form-label") }}
-                                {{ form.consumability(class="form-select") }}
-                                {% if form.consumability.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.consumability.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.storage_process(class="form-select form-select-sm") }}
                             </div>
                         </div>
                     </div>
 
-                    <!-- 第五行 -->
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                {{ form.classification.label(class="form-label") }}
-                                {{ form.classification(class="form-select") }}
-                                {% if form.classification.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.classification.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col-md-4">
+                    <!-- 第四行：存儲相關 -->
+                    <div class="row g-2 mb-2">
+
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.storage_type.label(class="form-label") }}
-                                {{ form.storage_type(class="form-select") }}
-                                {% if form.storage_type.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.storage_type.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.storage_type(class="form-select form-select-sm") }}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.classification.label(class="form-label") }}
+                                {{ form.classification(class="form-select form-select-sm") }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.consumability.label(class="form-label") }}
+                                {{ form.consumability(class="form-select form-select-sm") }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.repair_capability.label(class="form-label") }}
-                                {{ form.repair_capability(class="form-select") }}
-                                {% if form.repair_capability.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.repair_capability.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.repair_capability(class="form-select form-select-sm") }}
                             </div>
                         </div>
                     </div>
 
-                    <!-- 第六行 -->
-                    <div class="row mb-3">
+                    <!-- 第五行：分類相關 -->
+                    <div class="row g-2 mb-2">
                         <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.manufacturing_capability.label(class="form-label") }}
-                                {{ form.manufacturing_capability(class="form-select") }}
-                                {% if form.manufacturing_capability.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.manufacturing_capability.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.manufacturing_capability(class="form-select form-select-sm") }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.source.label(class="form-label") }}
-                                {{ form.source(class="form-select") }}
-                                {% if form.source.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.source.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.source(class="form-select form-select-sm") }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.system.label(class="form-label") }}
-                                {{ form.system(class="form-select") }}
-                                {% if form.system.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.system.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.system(class="form-select form-select-sm") }}
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 {{ form.category.label(class="form-label") }}
-                                {{ form.category(class="form-select") }}
-                                {% if form.category.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.category.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.category(class="form-select form-select-sm") }}
                             </div>
                         </div>
                     </div>
 
-                    <!-- 第七行 -->
-                    <div class="row mb-3">
-                        <div class="col-md-4">
+                    <!-- 第六行：專業與特種 -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-3">
                             <div class="form-group">
-                                {{ form.manufacturer.label(class="form-label") }}
-                                {{ form.manufacturer(class="form-control", placeholder="請輸入廠家代號") }}
-                                {% if form.manufacturer.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.manufacturer.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.Schedule_distinction.label(class="form-label") }}
+                                {{ form.Schedule_distinction(class="form-control form-control-sm", placeholder="請輸入檔別區分") }}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.professional_category.label(class="form-label") }}
+                                {{ form.professional_category(class="form-control form-control-sm", placeholder="請輸入專業代號") }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.special_parts.label(class="form-label") }}
+                                {{ form.special_parts(class="form-control form-control-sm", placeholder="請輸入特種配件") }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.control_category.label(class="form-label") }}
+                                {{ form.control_category(class="form-control form-control-sm", placeholder="請輸入管制區分") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 第七行：專業與特種 -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.price_certification.label(class="form-label") }}
+                                {{ form.price_certification(class="form-control form-control-sm", placeholder="請輸入單價簽證") }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.control_number.label(class="form-label") }}
+                                {{ form.control_number(class="form-control form-control-sm", placeholder="請輸入管制編號") }}
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {{ form.manager_department.label(class="form-label") }}
+                                {{ form.manager_department(class="form-control form-control-sm", placeholder="請輸入主管處") }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- 第八行：廠-家與參考號碼 -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                {{ form.vendor_code.label(class="form-label") }}
+                                {{ form.vendor_code(class="form-control form-control-sm", placeholder="請輸入廠家代號") }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 {{ form.reference_number.label(class="form-label") }}
-                                {{ form.reference_number(class="form-control", placeholder="請輸入參考號碼/零件號碼") }}
-                                {% if form.reference_number.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.reference_number.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.reference_number(class="form-control form-control-sm", placeholder="請輸入參考號碼(P/N)") }}
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <div class="form-group">
-                                {{ form.ship_type.label(class="form-label") }}
-                                {{ form.ship_type(class="form-control", placeholder="請輸入艦型") }}
-                                {% if form.ship_type.errors %}
-                                    <div class="invalid-feedback d-block">
-                                        {% for error in form.ship_type.errors %}
-                                            {{ error }}
-                                        {% endfor %}
-                                    </div>
-                                {% endif %}
+                                {{ form.pn_acquisition_level.label(class="form-label") }}
+                                {{ form.pn_acquisition_level(class="form-control form-control-sm", placeholder="請輸入P/N獲得程度") }}
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                {{ form.pn_acquisition_source.label(class="form-label") }}
+                                {{ form.pn_acquisition_source(class="form-control form-control-sm", placeholder="請輸入P/N獲得來源") }}
                             </div>
                         </div>
                     </div>
 
-                    <!-- 展開更多欄位的摺疊區域 -->
-                    <div class="accordion mb-3" id="accordionMoreFields">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="headingMoreFields">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMoreFields" aria-expanded="false" aria-controls="collapseMoreFields">
-                                    <i class="bi bi-chevron-down me-2"></i>顯示更多欄位
-                                </button>
-                            </h2>
-                            <div id="collapseMoreFields" class="accordion-collapse collapse" aria-labelledby="headingMoreFields" data-bs-parent="#accordionMoreFields">
-                                <div class="accordion-body">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{ form.pn_level.label(class="form-label") }}
-                                                {{ form.pn_level(class="form-control", placeholder="請輸入P/N獲得程度") }}
-                                                {% if form.pn_level.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {% for error in form.pn_level.errors %}
-                                                            {{ error }}
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{ form.pn_source.label(class="form-label") }}
-                                                {{ form.pn_source(class="form-control", placeholder="請輸入P/N獲得來源") }}
-                                                {% if form.pn_source.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {% for error in form.pn_source.errors %}
-                                                            {{ error }}
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{ form.cid_no.label(class="form-label") }}
-                                                {{ form.cid_no(class="form-control", placeholder="請輸入CID/NO.") }}
-                                                {% if form.cid_no.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {% for error in form.cid_no.errors %}
-                                                            {{ error }}
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{ form.model.label(class="form-label") }}
-                                                {{ form.model(class="form-control", placeholder="請輸入型式") }}
-                                                {% if form.model.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {% for error in form.model.errors %}
-                                                            {{ error }}
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                {{ form.item_name.label(class="form-label") }}
-                                                {{ form.item_name(class="form-control", placeholder="請輸入品名") }}
-                                                {% if form.item_name.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {% for error in form.item_name.errors %}
-                                                            {{ error }}
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                {{ form.quantity.label(class="form-label") }}
-                                                {{ form.quantity(class="form-control", placeholder="請輸入裝置數") }}
-                                                {% if form.quantity.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {% for error in form.quantity.errors %}
-                                                            {{ error }}
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                {{ form.location.label(class="form-label") }}
-                                                {{ form.location(class="form-control", placeholder="請輸入位置") }}
-                                                {% if form.location.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {% for error in form.location.errors %}
-                                                            {{ error }}
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                {{ form.fiig.label(class="form-label") }}
-                                                {{ form.fiig(class="form-control", placeholder="請輸入FIIG") }}
-                                                {% if form.fiig.errors %}
-                                                    <div class="invalid-feedback d-block">
-                                                        {% for error in form.fiig.errors %}
-                                                            {{ error }}
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-                                        </div>
+
+<!--                    ###########################################-->
+                    <div class="row g-2 mb-5">
+                        <div class="col-md-3">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form.ship_category.label(class="form-label") }}
+                                        {{ form.ship_category(class="form-control form-control-sm", placeholder="請輸入艦型") }}
                                     </div>
                                 </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form.configuration_id.label(class="form-label") }}
+                                        {{ form.configuration_id(class="form-control form-control-sm", placeholder="請輸入CID/NO.") }}
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form.model_id.label(class="form-label") }}
+                                        {{ form.model_id(class="form-control form-control-sm", placeholder="請輸入型式") }}
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form.item_name.label(class="form-label") }}
+                                        {{ form.item_name(class="form-control form-control-sm", placeholder="請輸入品名") }}
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form.installation_number.label(class="form-label") }}
+                                        {{ form.installation_number(class="form-control form-control-sm", placeholder="請輸入裝置數") }}
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form.location.label(class="form-label") }}
+                                        {{ form.location(class="form-control form-control-sm", placeholder="請輸入位置") }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="form-group h-100">
+                                {{ form.specification_description.label(class="form-label") }}
+                                {{ form.specification_description(class="form-control form-control-sm h-100", rows=8, placeholder="請輸入規格說明") }}
+                            </div>
+                        </div>
+                    </div>
+<!--                    ###########################################-->
+
+<!--                    &lt;!&ndash; 第九行：其他型式信息 &ndash;&gt;-->
+<!--                    <div class="row g-2 mb-2">-->
+<!--                        <div class="col-md-2">-->
+<!--                            <div class="form-group">-->
+<!--                                {{ form.ship_category.label(class="form-label") }}-->
+<!--                                {{ form.ship_category(class="form-control form-control-sm", placeholder="請輸入艦型") }}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-2">-->
+<!--                            <div class="form-group">-->
+<!--                                {{ form.configuration_id.label(class="form-label") }}-->
+<!--                                {{ form.configuration_id(class="form-control form-control-sm", placeholder="請輸入CID/NO.") }}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-2">-->
+<!--                            <div class="form-group">-->
+<!--                                {{ form.model_id.label(class="form-label") }}-->
+<!--                                {{ form.model_id(class="form-control form-control-sm", placeholder="請輸入型式") }}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-2">-->
+<!--                            <div class="form-group">-->
+<!--                                {{ form.item_name.label(class="form-label") }}-->
+<!--                                {{ form.item_name(class="form-control form-control-sm", placeholder="請輸入品名") }}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-2">-->
+<!--                            <div class="form-group">-->
+<!--                                {{ form.installation_number.label(class="form-label") }}-->
+<!--                                {{ form.installation_number(class="form-control form-control-sm", placeholder="請輸入裝置數") }}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-2">-->
+<!--                            <div class="form-group">-->
+<!--                                {{ form.location.label(class="form-label") }}-->
+<!--                                {{ form.location(class="form-control form-control-sm", placeholder="請輸入位置") }}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    &lt;!&ndash; 第十二行：規格說明 &ndash;&gt;-->
+<!--                    <div class="row g-2 mb-3">-->
+<!--                        <div class="col-12">-->
+<!--                            <div class="form-group">-->
+<!--                                {{ form.specification_description.label(class="form-label") }}-->
+<!--                                {{ form.specification_description(class="form-control form-control-sm", rows=2, placeholder="請輸入規格說明") }}-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+                    <!-- 第十行：裝置與位置 -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                {{ form.application_unit.label(class="form-label") }}
+                                {{ form.application_unit(class="form-control form-control-sm", placeholder="請輸入申請單位及電話") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.application_date.label(class="form-label") }}
+                                {{ form.application_date(class="form-control form-control-sm", type="date") }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 第十一行：簽章區 -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.application_unit_signature.label(class="form-label") }}
+                                {{ form.application_unit_signature(class="form-control form-control-sm", placeholder="申請單位簽章") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.review_unit_signature.label(class="form-label") }}
+                                {{ form.review_unit_signature(class="form-control form-control-sm", placeholder="審核單位簽章") }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.nc_file_unit_signature.label(class="form-label") }}
+                                {{ form.nc_file_unit_signature(class="form-control form-control-sm", placeholder="NC建檔會辦單簽章") }}
                             </div>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-secondary" onclick="history.back()">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="history.back()">
                             <i class="bi bi-arrow-left me-1"></i>返回
                         </button>
                         <div>
-                            <button type="reset" class="btn btn-outline-warning me-2">
+                            <button type="reset" class="btn btn-outline-warning btn-sm me-2">
                                 <i class="bi bi-arrow-counterclockwise me-1"></i>重置
                             </button>
-                            {{ form.submit(class="btn btn-primary") }}
+                            {{ form.submit(class="btn btn-primary btn-sm") }}
                         </div>
                     </div>
                 </form>

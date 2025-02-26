@@ -48,7 +48,7 @@ def create_data():
             source=form.source.data,
             system=form.system.data,
             category=form.category.data,
-            manufacturer=form.manufacturer.data,
+            Schedule_distinction=form.Schedule_distinction.data,
             pn=form.pn.data,
             ship_category=form.ship_category.data,
             pn_acquisition_level=form.pn_acquisition_level.data,
@@ -59,6 +59,13 @@ def create_data():
             installation_number=form.installation_number.data,
             location=form.location.data,
             federal_item_identification_guide=form.federal_item_identification_guide.data,
+            # 新增欄位
+            control_number=form.control_number.data,
+            control_category=form.control_category.data,
+            manager_department=form.manager_department.data,
+            price_certification=form.price_certification.data,
+            vendor_code=form.vendor_code.data,
+            specification_description=form.specification_description.data,
             created_by=current_user.id
         )
 
@@ -110,7 +117,7 @@ def edit_data(id):
         form.source.data = data_item.source
         form.system.data = data_item.system
         form.category.data = data_item.category
-        form.manufacturer.data = data_item.manufacturer
+        form.Schedule_distinction.data = data_item.Schedule_distinction
         form.pn.data = data_item.pn
         form.ship_category.data = data_item.ship_category
         form.pn_acquisition_level.data = data_item.pn_acquisition_level
@@ -121,6 +128,13 @@ def edit_data(id):
         form.installation_number.data = data_item.installation_number
         form.location.data = data_item.location
         form.federal_item_identification_guide.data = data_item.federal_item_identification_guide
+        # 新欄位填充
+        form.control_number.data = data_item.control_number
+        form.control_category.data = data_item.control_category
+        form.manager_department.data = data_item.manager_department
+        form.price_certification.data = data_item.price_certification
+        form.vendor_code.data = data_item.vendor_code
+        form.specification_description.data = data_item.specification_description
 
     if form.validate_on_submit():
         # 更新資料項目
@@ -143,7 +157,7 @@ def edit_data(id):
         data_item.source = form.source.data
         data_item.system = form.system.data
         data_item.category = form.category.data
-        data_item.manufacturer = form.manufacturer.data
+        data_item.Schedule_distinction = form.Schedule_distinction.data
         data_item.pn = form.pn.data
         data_item.ship_category = form.ship_category.data
         data_item.pn_acquisition_level = form.pn_acquisition_level.data
@@ -154,6 +168,13 @@ def edit_data(id):
         data_item.installation_number = form.installation_number.data
         data_item.location = form.location.data
         data_item.federal_item_identification_guide = form.federal_item_identification_guide.data
+        # 更新新欄位
+        data_item.control_number = form.control_number.data
+        data_item.control_category = form.control_category.data
+        data_item.manager_department = form.manager_department.data
+        data_item.price_certification = form.price_certification.data
+        data_item.vendor_code = form.vendor_code.data
+        data_item.specification_description = form.specification_description.data
 
         try:
             db.session.commit()
@@ -198,7 +219,7 @@ def data_api(id):
         'accounting_number': data_item.accounting_number,
         'price_usd': data_item.price_usd,
         'specification': data_item.specification,
-        'manufacturer': data_item.manufacturer,
+        'Schedule_distinction': data_item.Schedule_distinction,
         'storage_life': data_item.storage_life,
         'storage_type': data_item.storage_type,
         'location': data_item.location,

@@ -214,36 +214,28 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <td>${data.name_english || '未提供'}</td>
                                 </tr>
                                 <tr>
-                                    <th>製造商</th>
-                                    <td>${data.manufacturer || '未提供'}</td>
-                                </tr>
-                                <tr>
-                                    <th>價格(USD)</th>
-                                    <td>${data.price_usd ? '$' + data.price_usd : '未提供'}</td>
+                                    <th>檔別代號</th>
+                                    <td>${data.category || '未提供'}</td>
                                 </tr>
                             </table>
                         </div>
                         <div class="col-md-6">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>規格</th>
-                                    <td>${data.specification || '未提供'}</td>
+                                    <th>品名代號</th>
+                                    <td>${data.item_code || '未提供'}</td>
                                 </tr>
                                 <tr>
-                                    <th>型式</th>
-                                    <td>${data.model_id || '未提供'}</td>
+                                    <th>單位會計編號</th>
+                                    <td>${data.accounting_number || '未提供'}</td>
                                 </tr>
                                 <tr>
-                                    <th>分類</th>
-                                    <td>${data.category || '未提供'}</td>
+                                    <th>廠家代號</th>
+                                    <td>${data.vendor_code || '未提供'}</td>
                                 </tr>
                                 <tr>
-                                    <th>位置</th>
-                                    <td>${data.location || '未提供'}</td>
-                                </tr>
-                                <tr>
-                                    <th>建立時間</th>
-                                    <td>${data.created_at || '未提供'}</td>
+                                    <th>參考號碼(P/N)</th>
+                                    <td>${data.reference_number || '未提供'}</td>
                                 </tr>
                             </table>
                         </div>

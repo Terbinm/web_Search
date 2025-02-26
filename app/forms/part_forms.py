@@ -34,6 +34,10 @@ class PartNumberSearchForm(FlaskForm):
     submit = SubmitField('Filter')
 
 
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, TextAreaField, DateField, SelectField
+from wtforms.validators import DataRequired, Optional, Length
+
 class CreatePartForm(FlaskForm):
     """新增料號表單"""
     # 基本信息
@@ -41,53 +45,90 @@ class CreatePartForm(FlaskForm):
     english_name = StringField('英文品名', validators=[DataRequired(message='請輸入英文品名')])
     chinese_name = StringField('中文品名', validators=[DataRequired(message='請輸入中文品名')])
 
-    # 規格與單位
-    unit_number = StringField('單位編號', validators=[Optional()])
-    specification = StringField('規格', validators=[Optional()])
-    packaging_quantity = StringField('包裝數量', validators=[Optional()])
+    # 編號信息
+    accounting_number = StringField('單位會計編號', validators=[Optional()])
+    item_code = StringField('品名代號', validators=[Optional()])
+    issuing_department = StringField('撥發單位', validators=[Optional()])
 
-    # 價格與來源
-    price = StringField('美金價格', validators=[Optional()])
-    specification_indicator = StringField('規格指示', validators=[Optional()], default='E')
-    storage_quantity = StringField('儲位包裝量', validators=[Optional()])
+    # 價格與規格
+    price_usd = StringField('美金單價', validators=[Optional()])
+    specification_indicator = SelectField('規格指示', choices=[
+        ('E', 'E'), ('A', 'A'), ('B', 'B'),
+        ('C', 'C'), ('D', 'D'), ('F', 'F'), ('N', 'N')
+    ], default='E')
+    packaging_quantity = SelectField('單位包裝量', choices=[
+        ('0', '0'), ('1', '1'), ('2', '2')
+    ], default='0')
 
     # 存儲相關
-    storage_limitation = StringField('存儲限制', validators=[Optional()], default='00')
-    storage_process = StringField('儲存過程', validators=[Optional()], default='00')
-    consumability = StringField('耗材特性', validators=[Optional()], default='R')
+    storage_life = SelectField('存儲壽限', choices=[
+        ('00', '00'), ('A', 'A'), ('B', 'B')
+    ], default='00')
+    storage_process = SelectField('壽限處理', choices=[
+        ('00', '00'), ('ＣＯ', 'ＣＯ'), ('Ｃ－', 'Ｃ－')
+    ], default='00')
+    storage_type = SelectField('儲存型式', choices=[
+        ('R', 'R'), ('A', 'A'), ('B', 'B')
+    ], default='R')
 
-    # 技術參數
-    classification = StringField('消耗性特性', validators=[Optional()], default='U')
-    storage_type = StringField('消耗性特型', validators=[Optional()], default='M')
-    repair_capability = StringField('修理能量', validators=[Optional()])
+    # 分類相關
+    classification = SelectField('機密性代號', choices=[
+        ('U', 'U'), ('A', 'A'), ('B', 'B')
+    ], default='U')
+    consumability = SelectField('消耗性代號', choices=[
+        ('M', 'M'), ('N', 'N'), ('X', 'X'), ('Y', 'Y')
+    ], default='M')
+    repair_capability = SelectField('修理能量', choices=[
+        ('9', '9'), ('0', '0'), ('1', '1')
+    ], default='9')
 
-    # 製造能力
-    manufacturing_capability = StringField('製造能量', validators=[Optional()], default='E')
-    source = StringField('來源代號', validators=[Optional()], default='5')
-    category = StringField('系統代號', validators=[Optional()], default='5')
+    # 能量與來源
+    manufacturing_capability = SelectField('製造能量', choices=[
+        ('E', 'E'), ('A', 'A'), ('B', 'B')
+    ], default='E')
+    source = SelectField('來源代碼', choices=[
+        ('5', '5'), ('C', 'C'), ('1', '1')
+    ], default='5')
+    system = SelectField('系統代號', choices=[
+        ('5', '5'), ('C', 'C'), ('1', '1')
+    ], default='5')
+    category = SelectField('檔別代號', choices=[
+        ('K', 'K'), ('V', 'V'), ('E', 'E')
+    ], default='K')
 
-    # 其他分類
-    system = StringField('廠別代號', validators=[Optional()], default='K')
-    manufacturer = StringField('廠家', validators=[Optional()])
-    reference_number = StringField('參考號碼/零件號碼', validators=[Optional()])
+    Schedule_distinction = StringField('檔別區分', validators=[Optional()])
+    professional_category = StringField('專業代號', validators=[Optional()])
+    special_parts = StringField('特種配件', validators=[Optional()])
 
-    # 採購相關
-    pn_level = StringField('P/N獲得程度', validators=[Optional()])
-    pn_source = StringField('P/N獲得來源', validators=[Optional()])
-    ship_type = StringField('艦型', validators=[Optional()])
+    # 管制信息
+    control_category = StringField('管制區分', validators=[Optional()])
+    price_certification = StringField('單價簽證', validators=[Optional()])
+    control_number = StringField('管制編號', validators=[Optional()])
+    manager_department = StringField('主管處', validators=[Optional()])
 
-    # 識別信息
-    cid_no = StringField('CID/NO.', validators=[Optional()])
-    model = StringField('型式', validators=[Optional()])
+    # 廠-家信息
+    vendor_code = StringField('廠家代號', validators=[Optional()])
+    reference_number = StringField('參考號碼(P/N)', validators=[Optional()])
+
+    # PN相關
+    pn_acquisition_level = StringField('P/N獲得程度', validators=[Optional()])
+    pn_acquisition_source = StringField('P/N獲得來源', validators=[Optional()])
+    ship_category = StringField('艦型', validators=[Optional()])
+
+    # 規格與技術信息
+    specification_description = TextAreaField('規格說明', validators=[Optional()])
+    configuration_id = StringField('CID/NO.', validators=[Optional()])
+    model_id = StringField('型式', validators=[Optional()])
     item_name = StringField('品名', validators=[Optional()])
-
-    # 庫存信息
-    quantity = StringField('數量', validators=[Optional()])
+    installation_number = StringField('裝置數', validators=[Optional()])
     location = StringField('位置', validators=[Optional()])
-    fiig = StringField('FIIG', validators=[Optional()])
 
-    # 其他信息
-    notes = StringField('料號備用資訊', validators=[Optional()])
+    # 申請相關
+    application_unit = StringField('申請單位及電話', validators=[Optional()])
+    application_date = DateField('申請日期', format='%Y-%m-%d', validators=[Optional()])
+    application_unit_signature = StringField('申請單位簽章', validators=[Optional()])
+    review_unit_signature = StringField('審核單位簽章', validators=[Optional()])
+    nc_file_unit_signature = StringField('NC建檔會辦單簽章', validators=[Optional()])
 
     # 提交按鈕
-    submit = SubmitField('Create')
+    submit = SubmitField('建立料號')
