@@ -19,4 +19,4 @@ ENV FLASK_DEBUG=0
 EXPOSE 5000
 
 # 啟動應用程式
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "run:app"]
+CMD ["python", "run.py"]
