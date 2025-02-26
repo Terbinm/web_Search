@@ -53,7 +53,7 @@
                                 <th>料號</th>
                                 <th>中文品名</th>
                                 <th>英文品名</th>
-                                <th>單位編號</th>
+                                <th>型式</th>
                                 <th>規格</th>
                                 <th>包裝數量</th>
                                 <th>存儲限制</th>
@@ -63,17 +63,25 @@
                         <tbody>
                             {% for part in parts %}
                             <tr>
-                                <td>{{ part.PN }}</td>
-                                <td>{{ part.ItemNameChinese }}</td>
-                                <td>{{ part.ItemNameEnglish }}</td>
-                                <td>{{ part.PartModelID }}</td>
-                                <td>{{ part.Specification }}</td>
-                                <td>{{ part.PackagingQuantity }}</td>
-                                <td>{{ part.StorageLife }}</td>
+                                <td>{{ part.part_number }}</td>
+                                <td>{{ part.name_chinese }}</td>
+                                <td>{{ part.name_english }}</td>
+                                <td>{{ part.model_id }}</td>
+                                <td>{{ part.specification }}</td>
+                                <td>{{ part.packaging_quantity }}</td>
+                                <td>{{ part.storage_life }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailModal" data-part-id="{{ part.Id }}">
+                                    <a href="#" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailModal" data-part-id="{{ part.id }}">
                                         <i class="bi bi-eye"></i> 詳情
                                     </a>
+                                    <a href="{{ url_for('part.view_part', part_id=part.id) }}" class="btn btn-sm btn-outline-info">
+                                        <i class="bi bi-file-text"></i> 檢視
+                                    </a>
+                                    {% if current_user.is_authenticated %}
+                                    <a href="{{ url_for('part.edit_part', part_id=part.id) }}" class="btn btn-sm btn-outline-warning">
+                                        <i class="bi bi-pencil"></i> 編輯
+                                    </a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             {% endfor %}
@@ -166,56 +174,91 @@ document.addEventListener('DOMContentLoaded', function() {
         const partId = button.getAttribute('data-part-id');
         const detailContent = document.getElementById('detailContent');
 
-        // 在實際應用中，這裡會發送AJAX請求獲取詳情數據
-        // 此處僅作示例，實際內容需替換
+        // 顯示載入中
         detailContent.innerHTML = `
-            <div class="text-center mb-4">
-                <h4>料號詳細資訊 (ID: ${partId})</h4>
-                <p class="text-muted">這裡將顯示料號的詳細信息</p>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>料號</th>
-                            <td>範例料號</td>
-                        </tr>
-                        <tr>
-                            <th>中文名稱</th>
-                            <td>範例名稱</td>
-                        </tr>
-                        <tr>
-                            <th>英文名稱</th>
-                            <td>Example Name</td>
-                        </tr>
-                        <tr>
-                            <th>製造商</th>
-                            <td>範例製造商</td>
-                        </tr>
-                    </table>
+            <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
-                <div class="col-md-6">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>規格</th>
-                            <td>範例規格</td>
-                        </tr>
-                        <tr>
-                            <th>存儲條件</th>
-                            <td>範例條件</td>
-                        </tr>
-                        <tr>
-                            <th>分類</th>
-                            <td>範例分類</td>
-                        </tr>
-                        <tr>
-                            <th>位置</th>
-                            <td>範例位置</td>
-                        </tr>
-                    </table>
-                </div>
+                <p>載入中...</p>
             </div>
         `;
+
+        // 使用AJAX獲取料號詳情
+        fetch(`/part/api/${partId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('無法獲取料號詳情');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 根據API返回的實際數據更新模態框內容
+                detailContent.innerHTML = `
+                    <div class="text-center mb-4">
+                        <h4>料號詳細資訊 (ID: ${data.id})</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>料號</th>
+                                    <td>${data.part_number || '未提供'}</td>
+                                </tr>
+                                <tr>
+                                    <th>中文名稱</th>
+                                    <td>${data.name_chinese || '未提供'}</td>
+                                </tr>
+                                <tr>
+                                    <th>英文名稱</th>
+                                    <td>${data.name_english || '未提供'}</td>
+                                </tr>
+                                <tr>
+                                    <th>製造商</th>
+                                    <td>${data.manufacturer || '未提供'}</td>
+                                </tr>
+                                <tr>
+                                    <th>價格(USD)</th>
+                                    <td>${data.price_usd ? '$' + data.price_usd : '未提供'}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>規格</th>
+                                    <td>${data.specification || '未提供'}</td>
+                                </tr>
+                                <tr>
+                                    <th>型式</th>
+                                    <td>${data.model_id || '未提供'}</td>
+                                </tr>
+                                <tr>
+                                    <th>分類</th>
+                                    <td>${data.category || '未提供'}</td>
+                                </tr>
+                                <tr>
+                                    <th>位置</th>
+                                    <td>${data.location || '未提供'}</td>
+                                </tr>
+                                <tr>
+                                    <th>建立時間</th>
+                                    <td>${data.created_at || '未提供'}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            })
+            .catch(error => {
+                detailContent.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        無法載入料號詳情: ${error.message}
+                    </div>
+                `;
+                console.error('錯誤:', error);
+            });
     });
 });
 </script>
