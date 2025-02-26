@@ -53,7 +53,7 @@ class PartNumber(db.Model):
     manager_department = db.Column(db.String(64))  # 主管處
 
     # 廠-家信息
-    vendor_code = db.Column(db.String(64))  # 廠-家代號
+    vendor_code = db.Column(db.String(64))  # 廠家代號
     reference_number = db.Column(db.String(64))  # 參考號碼(P/N)
 
     # PN相關

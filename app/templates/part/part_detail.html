@@ -23,103 +23,143 @@
                 <div class="col-md-6">
                     <h4 class="border-bottom pb-2 mb-3">基本資訊</h4>
                     <div class="row">
-                        <div class="col-md-4 fw-bold">料號:</div>
-                        <div class="col-md-8 mb-2">{{ part.part_number or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">料號:</div>
+                        <div class="col-md-7 mb-2">{{ part.part_number or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">英文品名:</div>
-                        <div class="col-md-8 mb-2">{{ part.name_english or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">英文品名:</div>
+                        <div class="col-md-7 mb-2">{{ part.name_english or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">中文品名:</div>
+                        <div class="col-md-7 mb-2">{{ part.name_chinese or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">中文品名:</div>
-                        <div class="col-md-8 mb-2">{{ part.name_chinese or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">單位會計編號:</div>
+                        <div class="col-md-7 mb-2">{{ part.accounting_number or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">會計編號:</div>
-                        <div class="col-md-8 mb-2">{{ part.accounting_number or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">品名代號:</div>
+                        <div class="col-md-7 mb-2">{{ part.item_code or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">項目代號:</div>
-                        <div class="col-md-8 mb-2">{{ part.item_code or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">發放部門:</div>
-                        <div class="col-md-8 mb-2">{{ part.issuing_department or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">撥發單位:</div>
+                        <div class="col-md-7 mb-2">{{ part.issuing_department or '未提供' }}</div>
                     </div>
                 </div>
                 
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <h4 class="border-bottom pb-2 mb-3">價格與規格</h4>
                     <div class="row">
-                        <div class="col-md-4 fw-bold">美金價格:</div>
-                        <div class="col-md-8 mb-2">{{ '$%.2f'|format(part.price_usd) if part.price_usd else '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">美金價格:</div>
+                        <div class="col-md-7 mb-2">{{ '$%.2f'|format(part.price_usd) if part.price_usd else '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">規格指示:</div>
-                        <div class="col-md-8 mb-2"><span class="badge bg-primary">{{ part.specification or '未提供' }}</span></div>
+                        <div class="col-md-5 fw-bold">規格指示:</div>
+                        <div class="col-md-7 mb-2"><span class="badge bg-primary">{{ part.specification or '未提供' }}</span></div>
                         
-                        <div class="col-md-4 fw-bold">單位包裝量:</div>
-                        <div class="col-md-8 mb-2">{{ part.packaging_quantity or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">單位包裝量:</div>
+                        <div class="col-md-7 mb-2">{{ part.packaging_quantity or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">存儲壽限:</div>
-                        <div class="col-md-8 mb-2">{{ part.storage_life or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">存儲壽限:</div>
+                        <div class="col-md-7 mb-2">{{ part.storage_life or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">壽限處理:</div>
-                        <div class="col-md-8 mb-2">{{ part.storage_process or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">壽限處理:</div>
+                        <div class="col-md-7 mb-2">{{ part.storage_process or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">儲存型式:</div>
-                        <div class="col-md-8 mb-2">{{ part.storage_type or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">儲存型式:</div>
+                        <div class="col-md-7 mb-2">{{ part.storage_type or '未提供' }}</div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <h4 class="border-bottom pb-2 mb-3">分類資訊</h4>
+                    <div class="row">
+                        <div class="col-md-5 fw-bold">機密性代號:</div>
+                        <div class="col-md-7 mb-2">{{ part.classification or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">消耗性代號:</div>
+                        <div class="col-md-7 mb-2">{{ part.consumability or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">修理能量:</div>
+                        <div class="col-md-7 mb-2">{{ part.repair_capability or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">製造能量:</div>
+                        <div class="col-md-7 mb-2">{{ part.manufacturing_capability or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">來源代號:</div>
+                        <div class="col-md-7 mb-2">{{ part.source or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">系統代號:</div>
+                        <div class="col-md-7 mb-2">{{ part.system or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">檔別代號:</div>
+                        <div class="col-md-7 mb-2">{{ part.category or '未提供' }}</div>
+
                     </div>
                 </div>
             </div>
-            
-            <div class="row mb-4">
-                <div class="col-md-6">
-                    <h4 class="border-bottom pb-2 mb-3">分類資訊</h4>
-                    <div class="row">
-                        <div class="col-md-4 fw-bold">機密性代號:</div>
-                        <div class="col-md-8 mb-2">{{ part.classification or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">消耗性代號:</div>
-                        <div class="col-md-8 mb-2">{{ part.consumability or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">修理能量:</div>
-                        <div class="col-md-8 mb-2">{{ part.repair_capability or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">製造能量:</div>
-                        <div class="col-md-8 mb-2">{{ part.manufacturing_capability or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">來源代號:</div>
-                        <div class="col-md-8 mb-2">{{ part.source or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">系統代號:</div>
-                        <div class="col-md-8 mb-2">{{ part.system or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">檔別代號:</div>
-                        <div class="col-md-8 mb-2">{{ part.category or '未提供' }}</div>
 
-                        <div class="col-md-4 fw-bold">檔別區分:</div>
-                        <div class="col-md-8 mb-2">{{ part.Schedule_distinction or '未提供' }}</div>
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <h4 class="border-bottom pb-2 mb-3">類別代號</h4>
+                    <div class="row">
+                        <div class="col-md-5 fw-bold">檔別區分:</div>
+                        <div class="col-md-7 mb-2">{{ part.Schedule_distinction or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">專業代號:</div>
+                        <div class="col-md-7 mb-2">{{ part.professional_category or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">特種配件:</div>
+                        <div class="col-md-7 mb-2">{{ part.special_parts or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">管制區分:</div>
+                        <div class="col-md-7 mb-2">{{ part.control_category or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">單價簽證:</div>
+                        <div class="col-md-7 mb-2">{{ part.price_certification or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">管制編號:</div>
+                        <div class="col-md-7 mb-2">{{ part.control_number or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">主管處:</div>
+                        <div class="col-md-7 mb-2">{{ part.manager_department or '未提供' }}</div>
                     </div>
                 </div>
-                
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <h4 class="border-bottom pb-2 mb-3">其他資訊</h4>
                     <div class="row">
+
+                        <div class="col-md-5 fw-bold">廠家代號:</div>
+                        <div class="col-md-7 mb-2">{{ part.vendor_code or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">參考號碼:</div>
+                        <div class="col-md-7 mb-2">{{ part.reference_number or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">P/N獲得程度:</div>
+                        <div class="col-md-7 mb-2">{{ part.pn_acquisition_level or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">P/N獲得來源:</div>
+                        <div class="col-md-7 mb-2">{{ part.pn_acquisition_source or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">參考號碼:</div>
-                        <div class="col-md-8 mb-2">{{ part.reference_number or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">艦型:</div>
+                        <div class="col-md-7 mb-2">{{ part.ship_category or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">艦型:</div>
-                        <div class="col-md-8 mb-2">{{ part.ship_category or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">CID/NO.:</div>
+                        <div class="col-md-7 mb-2">{{ part.configuration_id or '未提供' }}</div>
+
+                        <div class="col-md-5 fw-bold">型式:</div>
+                        <div class="col-md-7 mb-2">{{ part.model_id or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">CID/NO.:</div>
-                        <div class="col-md-8 mb-2">{{ part.configuration_id or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">裝置數:</div>
+                        <div class="col-md-7 mb-2">{{ part.installation_number or '未提供' }}</div>
                         
-                        <div class="col-md-4 fw-bold">型式:</div>
-                        <div class="col-md-8 mb-2">{{ part.model_id or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">裝置數:</div>
-                        <div class="col-md-8 mb-2">{{ part.installation_number or '未提供' }}</div>
-                        
-                        <div class="col-md-4 fw-bold">位置:</div>
-                        <div class="col-md-8 mb-2">{{ part.location or '未提供' }}</div>
+                        <div class="col-md-5 fw-bold">位置:</div>
+                        <div class="col-md-7 mb-2">{{ part.location or '未提供' }}</div>
                     </div>
                 </div>
+
+                <div class="col-md-6">
+                    <h4 class="border-bottom pb-2 mb-3">規格說明</h4>
+                    <div class="row">
+                        <div>{{ part.specification_description or '未提供' }}</div>
+                    </div>
+                </div>
+
             </div>
             
             <div class="row">
