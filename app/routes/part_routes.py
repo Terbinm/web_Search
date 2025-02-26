@@ -293,13 +293,17 @@ def edit_part(part_id):
 
     if request.method == 'GET':
         # 填充表單
+
         form.pn.data = part.part_number
         form.english_name.data = part.name_english
         form.chinese_name.data = part.name_chinese
-        form.price.data = part.price_usd
-        form.specification.data = part.specification
+        form.accounting_number.data = part.accounting_number
+        form.item_code.data = part.item_code
+        form.issuing_department.data = part.issuing_department
+        form.price_usd.data = part.price_usd if part.price_usd else 0.0
+        form.specification_indicator.data = part.specification_indicator
         form.packaging_quantity.data = part.packaging_quantity
-        form.storage_limitation.data = part.storage_life
+        form.storage_life.data = part.storage_life
         form.storage_process.data = part.storage_process
         form.storage_type.data = part.storage_type
         form.classification.data = part.classification
@@ -309,61 +313,74 @@ def edit_part(part_id):
         form.source.data = part.source
         form.system.data = part.system
         form.category.data = part.category
-        form.Schedule_distinction.data = part.Schedule_distinction
-        form.reference_number.data = part.reference_number
-        form.ship_type.data = part.ship_category
-        form.pn_level.data = part.pn_acquisition_level
-        form.pn_source.data = part.pn_acquisition_source
-        form.cid_no.data = part.configuration_id
-        form.model.data = part.model_id
-        form.item_name.data = part.item_name
-        form.quantity.data = part.installation_number
-        form.location.data = part.location
-        form.fiig.data = part.fiig
-        # 填充新欄位
-        form.control_number.data = part.control_number
+        form.professional_category.data = part.professional_category
+        form.special_parts.data = part.special_parts
         form.control_category.data = part.control_category
-        form.manager_department.data = part.manager_department
         form.price_certification.data = part.price_certification
+        form.control_number.data = part.control_number
+        form.manager_department.data = part.manager_department
+        form.Schedule_distinction.data = part.Schedule_distinction
         form.vendor_code.data = part.vendor_code
+        form.reference_number.data = part.reference_number
+        form.pn_acquisition_level.data = part.pn_acquisition_level
+        form.pn_acquisition_source.data = part.pn_acquisition_source
+        form.ship_category.data = part.ship_category
         form.specification_description.data = part.specification_description
+        form.configuration_id.data = part.configuration_id
+        form.model_id.data = part.model_id
+        form.item_name.data = part.item_name
+        form.installation_number.data = part.installation_number
+        form.location.data = part.location
+        form.application_unit.data = part.application_unit
+        form.application_date.data = part.application_date
+        form.application_unit_signature.data = part.application_unit_signature
+        form.review_unit_signature.data = part.review_unit_signature
+        form.nc_file_unit_signature.data = part.nc_file_unit_signature
 
     if form.validate_on_submit():
         # 更新料號數據
-        part.part_number = form.pn.data
-        part.name_english = form.english_name.data
-        part.name_chinese = form.chinese_name.data
-        part.price_usd = form.price.data if form.price.data else 0.0
-        part.specification = form.specification.data
-        part.packaging_quantity = form.packaging_quantity.data
-        part.storage_life = form.storage_limitation.data
-        part.storage_process = form.storage_process.data
-        part.storage_type = form.storage_type.data
-        part.classification = form.classification.data
-        part.consumability = form.consumability.data
-        part.repair_capability = form.repair_capability.data
-        part.manufacturing_capability = form.manufacturing_capability.data
-        part.source = form.source.data
-        part.system = form.system.data
-        part.category = form.category.data
-        part.Schedule_distinction = form.Schedule_distinction.data
-        part.reference_number = form.reference_number.data
-        part.ship_category = form.ship_type.data
-        part.pn_acquisition_level = form.pn_level.data
-        part.pn_acquisition_source = form.pn_source.data
-        part.configuration_id = form.cid_no.data
-        part.model_id = form.model.data
-        part.item_name = form.item_name.data
-        part.installation_number = form.quantity.data if form.quantity.data else None
-        part.location = form.location.data
-        part.fiig = form.fiig.data
-        # 更新新欄位
-        part.control_number = form.control_number.data
-        part.control_category = form.control_category.data
-        part.manager_department = form.manager_department.data
-        part.price_certification = form.price_certification.data
-        part.vendor_code = form.vendor_code.data
-        part.specification_description = form.specification_description.data
+        part.part_number = form.pn.data,
+        part.name_english = form.english_name.data,
+        part.name_chinese = form.chinese_name.data,
+        part.accounting_number = form.accounting_number.data,
+        part.item_code = form.item_code.data,
+        part.issuing_department = form.issuing_department.data,
+        part.price_usd = form.price_usd.data if form.price_usd.data else 0.0,
+        part.specification_indicator = form.specification_indicator.data,
+        part.packaging_quantity = form.packaging_quantity.data,
+        part.storage_life = form.storage_life.data,
+        part.storage_process = form.storage_process.data,
+        part.storage_type = form.storage_type.data,
+        part.classification = form.classification.data,
+        part.consumability = form.consumability.data,
+        part.repair_capability = form.repair_capability.data,
+        part.manufacturing_capability = form.manufacturing_capability.data,
+        part.source = form.source.data,
+        part.system = form.system.data,
+        part.category = form.category.data,
+        part.professional_category = form.professional_category.data,
+        part.special_parts = form.special_parts.data,
+        part.control_category = form.control_category.data,
+        part.price_certification = form.price_certification.data,
+        part.control_number = form.control_number.data,
+        part.manager_department = form.manager_department.data,
+        part.Schedule_distinction = form.Schedule_distinction.data,
+        part.vendor_code = form.vendor_code.data,
+        part.reference_number = form.reference_number.data,
+        part.pn_acquisition_level = form.pn_acquisition_level.data,
+        part.pn_acquisition_source = form.pn_acquisition_source.data,
+        part.ship_category = form.ship_category.data,
+        part.specification_description = form.specification_description.data,
+        part.configuration_id = form.configuration_id.data,
+        part.model_id = form.model_id.data,
+        part.item_name = form.item_name.data,
+        part.installation_number = form.installation_number.data if form.installation_number.data else None,
+        part.location = form.location.data,
+        part.application_unit = form.application_unit.data,
+        part.application_date = form.application_date.data,
+        part.application_unit_signature = form.application_unit_signature.data,
+        part.review_unit_signature = form.review_unit_signature.data,
+        part.nc_file_unit_signature = form.nc_file_unit_signature.data
 
         try:
             db.session.commit()

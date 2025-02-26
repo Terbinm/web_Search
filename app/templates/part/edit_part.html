@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}編輯料號 - Flask應用{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-warning text-white d-flex justify-content-between align-items-center">
+                <h3 class="mb-0"><i class="bi bi-pencil-square me-2"></i>編輯料號</h3>
+                <a href="{{ url_for('part.view_part', part_id=part.id) }}" class="btn btn-light btn-sm">
+                    <i class="bi bi-eye me-1"></i>返回詳情
+                </a>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('part.edit_part', part_id=part.id) }}" class="container-fluid">
+                    {{ form.csrf_token }}
+
+                    <!-- 第一行：基本信息 -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.pn.label(class="form-label") }}
+                                {{ form.pn(class="form-control form-control-sm", placeholder="請輸入料號") }}
+                                {% if form.pn.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.pn.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.english_name.label(class="form-label") }}
+                                {{ form.english_name(class="form-control form-control-sm", placeholder="請輸入英文品名") }}
+                                {% if form.english_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.english_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.chinese_name.label(class="form-label") }}
+                                {{ form.chinese_name(class="form-control form-control-sm", placeholder="請輸入中文品名") }}
+                                {% if form.chinese_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.chinese_name.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 其餘部分與 create_part.html 完全相同 -->
+                    ...
+
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="history.back()">
+                            <i class="bi bi-arrow-left me-1"></i>返回
+                        </button>
+                        <div>
+                            <button type="reset" class="btn btn-outline-warning btn-sm me-2">
+                                <i class="bi bi-arrow-counterclockwise me-1"></i>重置
+                            </button>
+                            {{ form.submit(class="btn btn-warning btn-sm") }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
