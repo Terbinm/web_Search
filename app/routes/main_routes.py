@@ -18,6 +18,7 @@ def index():
 
 @main_bp.route('/dashboard')
 @login_required
+@admin_required
 def dashboard():
     """使用者儀表板路由"""
     return render_template('dashboard.html')

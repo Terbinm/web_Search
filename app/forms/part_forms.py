@@ -48,52 +48,101 @@ class CreatePartForm(FlaskForm):
     # 編號信息
     accounting_number = StringField('單位會計編號', validators=[Optional()])
     item_code = StringField('品名代號', validators=[Optional()])
-    issuing_department = StringField('撥發單位', validators=[Optional()])
+    issuing_department = SelectField('撥發單位', choices=[
+        ('EA', 'EA'), ('SE', 'SE'), ('A', 'A'), ('AT', 'AT'), ('AY', 'AY'),
+        ('BA', 'BA'), ('BE', 'BE'), ('BF', 'BF'), ('BG', 'BG'),
+        ('BK', 'BK'), ('BL', 'BL'), ('BD', 'BD'), ('BO', 'BO'),
+        ('BR', 'BR'), ('BT', 'BT'), ('BX', 'BX'),
+        ('CA', 'CA'), ('CB', 'CB'), ('CC', 'CC'), ('CD', 'CD'),
+        ('CE', 'CE'), ('CF', 'CF'), ('CI', 'CI'), ('CK', 'CK'),
+        ('CL', 'CL'), ('CM', 'CM'), ('CN', 'CN'), ('CO', 'CO'),
+        ('DR', 'DR'), ('DZ', 'DZ'), ('FT', 'FT'), ('FV', 'FV'), ('FY', 'FY'),
+        ('GL', 'GL'), ('GM', 'GM'), ('GP', 'GP'), ('GR', 'GR'),
+        ('CY', 'CY'), ('CZ', 'CZ'), ('HD', 'HD'), ('HK', 'HK'), ('HY', 'HY'),
+        ('IN', 'IN'), ('JR', 'JR'), ('KG', 'KG'), ('KT', 'KT'),
+        ('LB', 'LB'), ('LG', 'LG'), ('LI', 'LI'),
+        ('MC', 'MC'), ('ME', 'ME'), ('MG', 'MG'),
+        ('ML', 'ML'), ('MM', 'MM'), ('MR', 'MR'), ('MX', 'MX'),
+        ('OT', 'OT'), ('OZ', 'OZ'), ('PD', 'PD'), ('PG', 'PG'), ('PM', 'PM'),
+        ('PR', 'PR'), ('PT', 'PT'), ('PZ', 'PZ'),
+        ('QT', 'QT'), ('RA', 'RA'), ('RL', 'RL'), ('RM', 'RM'), ('RO', 'RO'),
+        ('SD', 'SD'), ('SF', 'SF'), ('SH', 'SH'), ('SK', 'SK'), ('SL', 'SL'),
+        ('SO', 'SO'), ('SP', 'SP'), ('SX', 'SX'), ('SY', 'SY'),
+        ('TD', 'TD'), ('TE', 'TE'), ('TF', 'TF'),
+        ('TN', 'TN'), ('TO', 'TO'), ('TS', 'TS'), ('TU', 'TU'), ('VI', 'VI'),
+        ('YD', 'YD')
+    ], default='EA')
 
     # 價格與規格
     price_usd = StringField('美金單價', validators=[Optional()])
     specification_indicator = SelectField('規格指示', choices=[
-        ('E', 'E'), ('A', 'A'), ('B', 'B'),
-        ('C', 'C'), ('D', 'D'), ('F', 'F'), ('N', 'N')
+        ('E', 'E'), ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'),
+        ('F', 'F'), ('N', 'N')
     ], default='E')
     packaging_quantity = SelectField('單位包裝量', choices=[
-        ('0', '0'), ('1', '1'), ('2', '2')
+        ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'),
+        ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8'), ('9', '9'),
+
+        ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
+        ('F', 'F'), ('G', 'G'), ('H', 'H'), ('I', 'I'), ('J', 'J'),
+        ('K', 'K'), ('L', 'L'), ('M', 'M'), ('N', 'N'), ('O', 'O'),
+        ('P', 'P'), ('Q', 'Q'), ('R', 'R'), ('S', 'S'), ('T', 'T'),
+        ('U', 'U'), ('V', 'V'), ('W', 'W'), ('X', 'X'), ('Y', 'Y'), ('Z', 'Z')
     ], default='0')
 
     # 存儲相關
     storage_life = SelectField('存儲壽限', choices=[
-        ('00', '00'), ('A', 'A'), ('B', 'B')
+        ('00', '00'),
+        ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'), ('E', 'E'),
+        ('F', 'F'), ('G', 'G'), ('H', 'H'), ('I', 'I'), ('J', 'J'),
+        ('K', 'K'), ('L', 'L'), ('M', 'M'), ('N', 'N'), ('O', 'O'),
+        ('P', 'P'), ('Q', 'Q'), ('R', 'R'), ('S', 'S'), ('T', 'T'),
+        ('U', 'U'), ('V', 'V'), ('W', 'W'), ('X', 'X'), ('Y', 'Y'), ('Z', 'Z')
     ], default='00')
     storage_process = SelectField('壽限處理', choices=[
-        ('00', '00'), ('ＣＯ', 'ＣＯ'), ('Ｃ－', 'Ｃ－')
+        ('00', '00'), ('CO', 'CO'), ('C-', 'C-'),
+        ('CT', 'CT'), ('L-', 'L-'), ('RD', 'RD'),
+        ('RN', 'RN'), ('RJ', 'RJ'), ('SA', 'SA'),
+        ('SB', 'SB'), ('S5', 'S5'), ('T-', 'T-'),
+        ('UU', 'UU'), ('X-', 'X-')
     ], default='00')
     storage_type = SelectField('儲存型式', choices=[
-        ('R', 'R'), ('A', 'A'), ('B', 'B')
+        ('R', 'R'), ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'),
+        ('E', 'E'), ('F', 'F'), ('G', 'G'), ('H', 'H'), ('I', 'I'),
+        ('J', 'J'), ('K', 'K'), ('L', 'L'), ('M', 'M'), ('N', 'N'),
+        ('O', 'O'), ('P', 'P'), ('Q', 'Q'), ('S', 'S'), ('T', 'T'),
+        ('U', 'U'), ('V', 'V'), ('W', 'W'), ('X', 'X')
     ], default='R')
 
     # 分類相關
     classification = SelectField('機密性代號', choices=[
-        ('U', 'U'), ('A', 'A'), ('B', 'B')
+        ('U', 'U'), ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'),
+        ('E', 'E'), ('F', 'F'), ('G', 'G'), ('H', 'H'), ('K', 'K'),
+        ('L', 'L'), ('O', 'O'), ('S', 'S'), ('T', 'T'),
     ], default='U')
     consumability = SelectField('消耗性代號', choices=[
         ('M', 'M'), ('N', 'N'), ('X', 'X'), ('Y', 'Y')
     ], default='M')
     repair_capability = SelectField('修理能量', choices=[
-        ('9', '9'), ('0', '0'), ('1', '1')
+        ('9', '9'), ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'),
+        ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8')
     ], default='9')
 
     # 能量與來源
     manufacturing_capability = SelectField('製造能量', choices=[
-        ('E', 'E'), ('A', 'A'), ('B', 'B')
+        ('E', 'E'), ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'),
+        ('F', 'F'), ('G', 'G')
     ], default='E')
     source = SelectField('來源代碼', choices=[
-        ('5', '5'), ('C', 'C'), ('1', '1')
+        ('5', '5'), ('C', 'C'), ('1', '1'), ('2', '2'), ('3', '3'),
+        ('4', '4'), ('6', '6'), ('A', 'A'), ('B', 'B'), ('D', 'D')
     ], default='5')
     system = SelectField('系統代號', choices=[
         ('5', '5'), ('C', 'C'), ('1', '1')
     ], default='5')
     category = SelectField('檔別代號', choices=[
-        ('K', 'K'), ('V', 'V'), ('E', 'E')
+        ('K', 'K'), ('V', 'V'), ('E', 'E'), ('P', 'P'), ('S', 'S'),
+        ('Q', 'Q'), ('C', 'C'), ('A', 'A'), ('Z', 'Z')
     ], default='K')
 
     Schedule_distinction = StringField('檔別區分', validators=[Optional()])
@@ -132,3 +181,4 @@ class CreatePartForm(FlaskForm):
 
     # 提交按鈕
     submit = SubmitField('建立料號')
+    Modify = SubmitField('修改料號')

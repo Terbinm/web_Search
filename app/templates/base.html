@@ -18,7 +18,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <i class="bi bi-box-seam me-2"></i>Flask應用
+                <i class="bi bi-box-seam me-2"></i>料號申編系統
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -33,6 +33,7 @@
                         </a>
                     </li>
 
+                    {% if current_user.is_authenticated %}
                     <!-- 料號查詢相關選單 -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownParts" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,13 +47,14 @@
                         </ul>
                     </li>
 
-                    {% if current_user.is_authenticated %}
+                        {% if current_user.is_admin %}
+
                         <li class="nav-item">
                             <a class="nav-link {% if request.path == url_for('main.dashboard') %}active{% endif %}" href="{{ url_for('main.dashboard') }}">
                                 <i class="bi bi-speedometer2 me-1"></i>儀表板
                             </a>
                         </li>
-                        {% if current_user.is_admin %}
+
                         <li class="nav-item">
                             <a class="nav-link {% if request.path == url_for('main.admin') %}active{% endif %}" href="{{ url_for('main.admin') }}">
                                 <i class="bi bi-shield-lock me-1"></i>管理員
