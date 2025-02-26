@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
+import os
+
+from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify, current_app
 from flask_login import login_required, current_user
 from sqlalchemy import or_
 
@@ -11,21 +13,90 @@ from app.decorators import admin_required
 part_bp = Blueprint('part', __name__)
 
 
+def search_inc_in_tabl120(inc_data):
+    """
+    在 Tabl120.TXT 文件中搜尋 INC 相關資料
+
+    Args:
+        inc_data (list): 要搜尋的 INC 清單
+
+    Returns:
+        tuple: (matching_lines, fiig, inc, mrc_result)
+    """
+    # 建立一個字典來存儲每個 INC 的結果
+    results = {}
+
+    try:
+        data_txt_path = os.path.join(current_app.instance_path, 'Tabl120.TXT')
+        with open(data_txt_path, 'r', encoding='utf-8') as tabl_file:
+            inc_lines = {}
+            for line in tabl_file:
+                columns = line.strip().split('|')  # 以 '|' 分隔每行資料
+
+                # # 檢查條件：
+                # # 1. 第二列資料要在 inc_data 集合中
+                # # 2. 第12列（columns[11]）的值應該為 '1'
+                # if len(columns) >= 12 and str(columns[1]) in inc_data:
+                #     if columns[11] == '1':
+                #         matching_lines.insert(0, columns)  # 優先放在前面
+                #     else:
+                #         matching_lines.append(columns)  # 其他的放在後面
+
+                # 確保有足夠的列數
+                if len(columns) >= 12:
+                    inc = str(columns[1])
+                    if inc in inc_data:
+                        if inc not in inc_lines:
+                            inc_lines[inc] = []
+                        inc_lines[inc].append(columns)
+
+        # 為每個 INC 處理結果
+        for inc, lines in inc_lines.items():
+            # 將含 '1' 的行優先排序
+            matching_lines = [line for line in lines if line[11] == '1']
+            matching_lines += [line for line in lines if line[11] != '1']
+
+            # 只取前五個
+            matching_lines = matching_lines[:5]
+
+            if matching_lines:
+                # 提取 fiig 和 inc 資料
+                fiig = matching_lines[0][0]
+
+                # 組合 mrc 結果
+                mrc_result = ", ".join(line[2] for line in matching_lines)
+
+                results[inc] = (matching_lines, fiig, inc, mrc_result)
+
+        return results if results else None
+
+    except FileNotFoundError:
+        flash('ins文件未找到', 'error')
+        return None
+
+
 @part_bp.route('/search/inc', methods=['GET', 'POST'])
 def inc_search():
     """INC查詢路由"""
-    form = INCSearchForm()
+    form = INCSearchForm() #序列化表單器
     results = []
+
     if form.validate_on_submit():
-        inc = form.inc.data
-        # 這裡實現INC查詢邏輯
-        results = PartNumber.query.filter(
-            PartNumber.part_number.like(f'%{inc}%')
-        ).all()
-        if not results:
-            flash(f'未找到INC: {inc}的相關料號', 'warning')
+        inc_data = [form.inc.data]  # 加入查詢請求
+
+        if not inc_data:
+            return render_template('part/batch_search.html', form=form, results=results)
+
+        # 執行查詢
+        results = search_inc_in_tabl120(inc_data)
+
+        if results:
+            # 為每個 INC 彈出訊息
+            for first_inc, (matching_lines, fiig, inc, mrc_result) in results.items():
+                flash(f'fiig: {fiig}, inc: {inc}, mrc_result: {mrc_result}', 'success')
         else:
-            flash(f'找到 {len(results)} 個料號', 'success')
+            flash(f'未找到INC: {form.inc.data}的相關料號', 'warning')
+
     return render_template('part/inc_search.html', form=form, results=results)
 
 
@@ -34,41 +105,52 @@ def keyword_search():
     """關鍵字料號查詢路由"""
     form = KeywordSearchForm()
     results = []
-    if form.validate_on_submit():
-        keyword = form.keyword.data
-        # 使用關鍵字在資料庫中搜尋料號
-        results = PartNumber.query.filter(
-            or_(
-                PartNumber.part_number.like(f'%{keyword}%'),
-                PartNumber.name_chinese.like(f'%{keyword}%'),
-                PartNumber.name_english.like(f'%{keyword}%'),
-                PartNumber.item_name.like(f'%{keyword}%')
-            )
-        ).all()
-        if not results:
-            flash(f'未找到包含關鍵字 "{keyword}" 的料號', 'warning')
-        else:
-            flash(f'找到 {len(results)} 個料號', 'success')
+    flash(f'此功能未完成，前面的區域，以後再來探索吧', 'warning')
+
+    # if form.validate_on_submit():
+    #     keyword = form.keyword.data
+    #     # 使用關鍵字在資料庫中搜尋料號
+    #     # results = PartNumber.query.filter(
+    #     #     or_(
+    #     #         PartNumber.part_number.like(f'%{keyword}%'),
+    #     #         PartNumber.name_chinese.like(f'%{keyword}%'),
+    #     #         PartNumber.name_english.like(f'%{keyword}%'),
+    #     #         PartNumber.item_name.like(f'%{keyword}%')
+    #     #     )
+    #     # ).all()
+    #     if not results:
+    #         flash(f'未找到包含關鍵字 "{keyword}" 的料號', 'warning')
+    #     else:
+    #         flash(f'找到 {len(results)} 個料號', 'success')
     return render_template('part/keyword_search.html', form=form, results=results)
 
 
 @part_bp.route('/search/batch', methods=['GET', 'POST'])
 def batch_search():
     """批次料號查詢路由"""
+    # TODO: 檔案讀取與輸出
     form = BatchSearchForm()
     results = []
+
     if form.validate_on_submit():
         part_numbers_text = form.part_numbers.data
         # 解析文本區域中的料號（假設每行一個料號）
-        part_numbers = [pn.strip() for pn in part_numbers_text.split('\n') if pn.strip()]
+        inc_data = [pn.strip() for pn in part_numbers_text.split(',') if pn.strip()]
 
-        # 查詢資料庫中的這些料號
-        if part_numbers:
-            results = PartNumber.query.filter(PartNumber.part_number.in_(part_numbers)).all()
-            if not results:
-                flash('未找到任何匹配的料號', 'warning')
-            else:
-                flash(f'找到 {len(results)} 個料號', 'success')
+        if not inc_data:
+            return render_template('part/batch_search.html', form=form, results=results)
+
+        # 執行查詢
+        results = search_inc_in_tabl120(inc_data)
+
+        if results:
+            # 為每個 INC 彈出訊息
+            for first_inc, (matching_lines, fiig, inc, mrc_result) in results.items():
+                flash(f'fiig: {fiig}, inc: {inc}, mrc_result: {mrc_result}', 'success')
+        else:
+            flash(f'未找到INC: {form.inc.data}的相關料號', 'warning')
+
+
     return render_template('part/batch_search.html', form=form, results=results)
 
 
@@ -82,6 +164,10 @@ def part_list():
         part_number = form.part_number.data
         if part_number:
             query = query.filter(PartNumber.part_number.like(f'%{part_number}%'))
+
+
+    # 預設按照創建時間倒序排序
+    query = query.order_by(PartNumber.created_at.desc())
 
     # 分頁處理
     page = request.args.get('page', 1, type=int)

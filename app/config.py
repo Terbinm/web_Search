@@ -1,6 +1,8 @@
 import os
 from datetime import timedelta
 
+from flask import current_app
+
 
 class Config:
     # Flask設定
@@ -20,6 +22,7 @@ class Config:
     # 其他應用設定
     DEBUG = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
     TESTING = False
+
 
 
 class TestConfig(Config):
