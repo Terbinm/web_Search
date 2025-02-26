@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 
+
 from app.config import Config
 
 # 初始化擴展套件
@@ -31,8 +32,13 @@ def create_app(config_class=Config):
     # 註冊藍圖
     from app.routes.main_routes import main_bp
     from app.routes.auth_routes import auth_bp
+    from app.routes.part_routes import part_bp
+    from app.routes.data_routes import data_bp
+
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
+    app.register_blueprint(part_bp, url_prefix='/part')
+    app.register_blueprint(data_bp)
 
     # 註冊錯誤處理
     from app.errors.handlers import register_error_handlers
@@ -43,3 +49,5 @@ def create_app(config_class=Config):
 
 # 匯入模型，使其可被識別
 from app.models.user import User
+from app.models.part_number import PartNumber
+from app.models.data_item import DataItem

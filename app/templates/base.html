@@ -24,12 +24,28 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+
+                <!-- 導航欄部分 -->
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == url_for('main.index') %}active{% endif %}" href="{{ url_for('main.index') }}">
                             <i class="bi bi-house-door me-1"></i>首頁
                         </a>
                     </li>
+
+                    <!-- 料號查詢相關選單 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownParts" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-search me-1"></i>料號查詢
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownParts">
+                            <li><a class="dropdown-item" href="{{ url_for('part.inc_search') }}">INC查詢</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('part.keyword_search') }}">關鍵字料號查詢</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('part.batch_search') }}">批次料號查詢</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('part.part_list') }}">料號單清單列表</a></li>
+                        </ul>
+                    </li>
+
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link {% if request.path == url_for('main.dashboard') %}active{% endif %}" href="{{ url_for('main.dashboard') }}">

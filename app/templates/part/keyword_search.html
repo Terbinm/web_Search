@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}關鍵字料號查詢 - Flask應用{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">首頁</a></li>
+                <li class="breadcrumb-item active" aria-current="page">關鍵字料號查詢</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">關鍵字料號查詢</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('part.keyword_search') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.keyword.label(class="form-label") }}
+                        {% if form.keyword.errors %}
+                            {{ form.keyword(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.keyword.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.keyword(class="form-control", placeholder="請輸入關鍵字") }}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 查詢結果 -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h4 class="mb-0">查詢結果</h4>
+            </div>
+            <div class="card-body">
+                {% if results %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>料號</th>
+                                    <th>中文名稱</th>
+                                    <th>英文名稱</th>
+                                    <th>規格</th>
+                                    <th>製造商</th>
+                                    <th>詳情</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for part in results %}
+                                <tr>
+                                    <td>{{ part.PN }}</td>
+                                    <td>{{ part.ItemNameChinese }}</td>
+                                    <td>{{ part.ItemNameEnglish }}</td>
+                                    <td>{{ part.Specification }}</td>
+                                    <td>{{ part.Manufacturer }}</td>
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-outline-primary">查看詳情</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> 請輸入關鍵字進行查詢。
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

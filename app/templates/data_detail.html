@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}資料詳情 - Flask應用{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0"><i class="bi bi-info-circle me-2"></i>資料詳情</h3>
+            <div>
+                <a href="{{ url_for('data.edit_data', id=1) }}" class="btn btn-light me-2">
+                    <i class="bi bi-pencil me-1"></i>編輯
+                </a>
+                <a href="{{ url_for('data.data_list') }}" class="btn btn-outline-light">
+                    <i class="bi bi-arrow-left me-1"></i>返回列表
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4 class="border-bottom pb-2 mb-3">基本資訊</h4>
+                    <div class="row">
+                        <div class="col-md-4 fw-bold">料號:</div>
+                        <div class="col-md-8 mb-2">SAMPLE-001</div>
+                        
+                        <div class="col-md-4 fw-bold">英文品名:</div>
+                        <div class="col-md-8 mb-2">Sample Item</div>
+                        
+                        <div class="col-md-4 fw-bold">中文品名:</div>
+                        <div class="col-md-8 mb-2">樣品項目</div>
+                        
+                        <div class="col-md-4 fw-bold">單位會計編號:</div>
+                        <div class="col-md-8 mb-2">ACC-1234</div>
+                        
+                        <div class="col-md-4 fw-bold">品名代號:</div>
+                        <div class="col-md-8 mb-2">ITEM-5678</div>
+                        
+                        <div class="col-md-4 fw-bold">撥發單位:</div>
+                        <div class="col-md-8 mb-2">UNIT-90</div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h4 class="border-bottom pb-2 mb-3">價格與規格</h4>
+                    <div class="row">
+                        <div class="col-md-4 fw-bold">美金價格:</div>
+                        <div class="col-md-8 mb-2">$120.50</div>
+                        
+                        <div class="col-md-4 fw-bold">規格指示:</div>
+                        <div class="col-md-8 mb-2"><span class="badge bg-primary">E</span></div>
+                        
+                        <div class="col-md-4 fw-bold">單位包裝量:</div>
+                        <div class="col-md-8 mb-2">0</div>
+                        
+                        <div class="col-md-4 fw-bold">存儲壽限:</div>
+                        <div class="col-md-8 mb-2">00</div>
+                        
+                        <div class="col-md-4 fw-bold">壽限處理:</div>
+                        <div class="col-md-8 mb-2">00</div>
+                        
+                        <div class="col-md-4 fw-bold">儲存型式:</div>
+                        <div class="col-md-8 mb-2">R</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4 class="border-bottom pb-2 mb-3">分類資訊</h4>
+                    <div class="row">
+                        <div class="col-md-4 fw-bold">機密性代號:</div>
+                        <div class="col-md-8 mb-2">Ｕ</div>
+                        
+                        <div class="col-md-4 fw-bold">消耗性代號:</div>
+                        <div class="col-md-8 mb-2">M</div>
+                        
+                        <div class="col-md-4 fw-bold">修理能量:</div>
+                        <div class="col-md-8 mb-2">9</div>
+                        
+                        <div class="col-md-4 fw-bold">製造能量:</div>
+                        <div class="col-md-8 mb-2">Ｅ</div>
+                        
+                        <div class="col-md-4 fw-bold">來源代號:</div>
+                        <div class="col-md-8 mb-2">5</div>
+                        
+                        <div class="col-md-4 fw-bold">系統代號:</div>
+                        <div class="col-md-8 mb-2">5</div>
+                        
+                        <div class="col-md-4 fw-bold">檔別代號:</div>
+                        <div class="col-md-8 mb-2">K</div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h4 class="border-bottom pb-2 mb-3">其他資訊</h4>
+                    <div class="row">
+                        <div class="col-md-4 fw-bold">廠家代號:</div>
+                        <div class="col-md-8 mb-2">MANU-123</div>
+                        
+                        <div class="col-md-4 fw-bold">參考號碼/零件號碼:</div>
+                        <div class="col-md-8 mb-2">REF-456</div>
+                        
+                        <div class="col-md-4 fw-bold">艦型:</div>
+                        <div class="col-md-8 mb-2">Type-A</div>
+                        
+                        <div class="col-md-4 fw-bold">CID/NO.:</div>
+                        <div class="col-md-8 mb-2">CID-789</div>
+                        
+                        <div class="col-md-4 fw-bold">型式:</div>
+                        <div class="col-md-8 mb-2">MODEL-X</div>
+                        
+                        <div class="col-md-4 fw-bold">裝置數:</div>
+                        <div class="col-md-8 mb-2">3</div>
+                        
+                        <div class="col-md-4 fw-bold">位置:</div>
+                        <div class="col-md-8 mb-2">Zone-4</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="border-bottom pb-2 mb-3">修改歷史</h4>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>時間</th>
+                                <th>操作人</th>
+                                <th>修改內容</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2025-02-26 10:30</td>
+                                <td>管理員</td>
+                                <td>建立記錄</td>
+                            </tr>
+                            <tr>
+                                <td>2025-02-26 14:15</td>
+                                <td>管理員</td>
+                                <td>更新價格資訊</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

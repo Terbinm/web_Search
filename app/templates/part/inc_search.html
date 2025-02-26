@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}INC查詢 - Flask應用{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">首頁</a></li>
+                <li class="breadcrumb-item active" aria-current="page">INC查詢</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">INC查詢</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('part.inc_search') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.inc.label(class="form-label") }}
+                        {% if form.inc.errors %}
+                            {{ form.inc(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.inc.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.inc(class="form-control", placeholder="請輸入INC") }}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 這裡可以放置查詢結果 -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h4 class="mb-0">查詢結果</h4>
+            </div>
+            <div class="card-body">
+                <!-- 查詢結果將在這裡顯示 -->
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> 請輸入INC編號進行查詢。
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
