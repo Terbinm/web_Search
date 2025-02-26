@@ -15,7 +15,7 @@ csrf = CSRFProtect()
 
 # 設定登入視圖和訊息
 login_manager.login_view = 'auth.login'
-login_manager.login_message = '請先登入後再繼續操作。'
+login_manager.login_message = '請先登入呦 ~~~ (ˊuˋ) ~~~'
 login_manager.login_message_category = 'info'
 
 

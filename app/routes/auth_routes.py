@@ -14,7 +14,7 @@ auth_bp = Blueprint('auth', __name__)
 def login():
     """使用者登入路由"""
     if current_user.is_authenticated:
-        return redirect(url_for('main.dashboard'))
+        return redirect(url_for('main.index'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -33,7 +33,7 @@ def login():
         next_page = request.args.get('next')
         # 簡化檢查邏輯，避免使用 url_parse
         if not next_page or '//' in next_page or ':' in next_page:
-            next_page = url_for('main.dashboard')
+            next_page = url_for('main.index')
         return redirect(next_page)
 
     return render_template('login.html', form=form)
@@ -43,7 +43,7 @@ def login():
 def register():
     """使用者註冊路由"""
     if current_user.is_authenticated:
-        return redirect(url_for('main.dashboard'))
+        return redirect(url_for('main.index'))
 
     form = RegistrationForm()
     if form.validate_on_submit():

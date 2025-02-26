@@ -76,6 +76,7 @@ def search_inc_in_tabl120(inc_data):
 
 
 @part_bp.route('/search/inc', methods=['GET', 'POST'])
+@login_required
 def inc_search():
     """INC查詢路由"""
     form = INCSearchForm()
@@ -97,6 +98,7 @@ def inc_search():
 
 
 @part_bp.route('/search/keyword', methods=['GET', 'POST'])
+@login_required
 def keyword_search():
     """關鍵字料號查詢路由"""
     form = KeywordSearchForm()
@@ -122,6 +124,7 @@ def keyword_search():
 
 
 @part_bp.route('/search/batch', methods=['GET', 'POST'])
+@login_required
 def batch_search():
     """批次料號查詢路由"""
     form = BatchSearchForm()
@@ -185,6 +188,7 @@ def batch_search():
 
 
 @part_bp.route('/list', methods=['GET', 'POST'])
+@login_required
 def part_list():
     """料號單清單列表路由"""
     form = PartNumberSearchForm()
@@ -278,6 +282,7 @@ def create_part():
 
 
 @part_bp.route('/<int:part_id>', methods=['GET'])
+@login_required
 def view_part(part_id):
     """查看料號詳情"""
     part = PartNumber.query.get_or_404(part_id)
@@ -411,6 +416,7 @@ def delete_part(part_id):
 
 
 @part_bp.route('/api/<int:part_id>')
+@login_required
 def part_api(part_id):
     """提供料號詳情的API"""
     part = PartNumber.query.get_or_404(part_id)

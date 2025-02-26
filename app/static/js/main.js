@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(function() {
             const bsAlert = new bootstrap.Alert(alert);
             bsAlert.close();
-        }, 5000); // 5秒後自動關閉
+        }, 15000); // 5秒後自動關閉
     });
 
     // 表單驗證
