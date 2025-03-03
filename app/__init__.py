@@ -34,10 +34,12 @@ def create_app(config_class=Config):
     from app.routes.auth_routes import auth_bp
     from app.routes.part_routes import part_bp
     from app.routes.data_routes import data_bp
+    from app.routes.nsn_routes import nsn_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
     app.register_blueprint(part_bp, url_prefix='/part')
+    app.register_blueprint(nsn_bp, url_prefix='/nsn')
     app.register_blueprint(data_bp)
 
     # 註冊錯誤處理
@@ -51,3 +53,4 @@ def create_app(config_class=Config):
 from app.models.user import User
 from app.models.part_number import PartNumber
 from app.models.data_item import DataItem
+from app.models.nsn import NSN
