@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}NSN詳情 - 智動料號申編暨查詢系統{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">首頁</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('nsn.nsn_search') }}">NSN查詢</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">NSN詳情</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">NSN: {{ nsn_data.NSN }}</h3>
+            <div>
+                <a href="{{ url_for('nsn.nsn_search') }}" class="btn btn-light btn-sm me-2">
+                    <i class="bi bi-search"></i> 新查詢
+                </a>
+                <a href="{{ url_for('nsn.nsn_results') if 'referer' not in request.args else request.args.get('referer') }}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-arrow-left"></i> 返回結果
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            {% if error_message %}
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ error_message }}
+            </div>
+            {% endif %}
+
+            {% if nsn_data %}
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h4 class="border-bottom pb-2 mb-3">基本資訊</h4>
+                    <div class="row">
+                        <div class="col-md-4 fw-bold">NSN:</div>
+                        <div class="col-md-8 mb-2">{{ nsn_data.NSN }}</div>
+
+                        <div class="col-md-4 fw-bold">物品名稱:</div>
+                        <div class="col-md-8 mb-2">{{ nsn_data.Item_Name }}</div>
+
+                        <div class="col-md-4 fw-bold">聯邦供應分類:</div>
+                        <div class="col-md-8 mb-2">{{ nsn_data.Federal_Supply_Classification }}</div>
+
+                        <div class="col-md-4 fw-bold">國家識別號:</div>
+                        <div class="col-md-8 mb-2">{{ nsn_data.National_Item_Identification_Number }}</div>
+
+                        <div class="col-md-4 fw-bold">編碼國家:</div>
+                        <div class="col-md-8 mb-2">{{ nsn_data.Codification_Country }}</div>
+
+                        {% if nsn_data.Item_Name_Code %}
+                        <div class="col-md-4 fw-bold">物品名稱代碼:</div>
+                        <div class="col-md-8 mb-2">{{ nsn_data.Item_Name_Code }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <h4 class="border-bottom pb-2 mb-3">特性與指標</h4>
+                    <div class="row">
+                        {% if nsn_data.Criticality %}
+                        <div class="col-md-4 fw-bold">關鍵性指標:</div>
+                        <div class="col-md-8 mb-2">{{ nsn_data.Criticality }}</div>
+                        {% endif %}
+
+                        {% if nsn_data.Hazardous_Material_Indicator_Code %}
+                        <div class="col-md-4 fw-bold">危險物質指標:</div>
+                        <div class="col-md-8 mb-2">{{ nsn_data.Hazardous_Material_Indicator_Code }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h4 class="border-bottom pb-2 mb-3">相關料號清單</h4>
+                    {% if nsn_data.Part_Number_List %}
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">料號</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for part_number in nsn_data.Part_Number_List %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ part_number }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>未找到相關料號信息。
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h4 class="border-bottom pb-2 mb-3">系統操作</h4>
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('nsn.nsn_search') }}" class="btn btn-primary">
+                            <i class="bi bi-search"></i> 新NSN查詢
+                        </a>
+                        {% if 'key' in nsn_data and nsn_data.key %}
+                        <a href="{{ url_for('part.inc_search', inc=nsn_data.key) }}" class="btn btn-success">
+                            <i class="bi bi-link"></i> 使用料號進行INC查詢
+                        </a>
+                        {% endif %}
+                        <a href="{{ url_for('nsn.export_nsn_detail', nsn=nsn_data.NSN) }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-download"></i> 匯出詳情(CSV)
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-circle me-2"></i>未找到該NSN的詳細資訊。
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
