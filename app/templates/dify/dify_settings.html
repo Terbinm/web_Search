@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block title %}Dify 設定 - 智動料號申編暨查詢系統{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">首頁</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.admin') }}">管理員</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dify 設定</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Dify API 設定</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('dify.settings') }}">
+                    {{ form.hidden_tag() }}
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>這些設定用於配置 Dify API 的連接和檢索參數。請確保這些設定正確無誤。
+                    </div>
+
+                    <h4 class="mb-3">基本設定</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.base_url.label(class="form-label") }}
+                                {% if form.base_url.errors %}
+                                    {{ form.base_url(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.base_url.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.base_url(class="form-control", placeholder="例如：http://192.168.1.106/v1") }}
+                                {% endif %}
+                                <div class="form-text">API 基礎 URL 地址</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.api_key.label(class="form-label") }}
+                                {% if form.api_key.errors %}
+                                    {{ form.api_key(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.api_key.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.api_key(class="form-control", placeholder="例如：dataset-obp0C2PEAHHFLkfgOtBew6At") }}
+                                {% endif %}
+                                <div class="form-text">Dify API 密鑰</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.dataset_id.label(class="form-label") }}
+                                {% if form.dataset_id.errors %}
+                                    {{ form.dataset_id(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.dataset_id.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.dataset_id(class="form-control", placeholder="例如：5bd01088-75d7-4fca-b3c2-9549db5e7255") }}
+                                {% endif %}
+                                <div class="form-text">數據集 ID</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="mt-4 mb-3">檢索模型設定</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.search_method.label(class="form-label") }}
+                                {% if form.search_method.errors %}
+                                    {{ form.search_method(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.search_method.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.search_method(class="form-select") }}
+                                {% endif %}
+                                <div class="form-text">搜索方法</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.search_quality.label(class="form-label") }}
+                                {% if form.search_quality.errors %}
+                                    {{ form.search_quality(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.search_quality.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.search_quality(class="form-select") }}
+                                {% endif %}
+                                <div class="form-text">搜索質量</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.embedding_model.label(class="form-label") }}
+                                {% if form.embedding_model.errors %}
+                                    {{ form.embedding_model(class="form-control is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.embedding_model.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.embedding_model(class="form-control", placeholder="例如：bge-m3:latest") }}
+                                {% endif %}
+                                <div class="form-text">Embedding 模型名稱</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="form-check form-switch">
+                                {{ form.reranking_enable(class="form-check-input") }}
+                                {{ form.reranking_enable.label(class="form-check-label") }}
+                                <div class="form-text">啟用重排序可以提高搜索結果的相關性</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.reranking_mode.label(class="form-label") }}
+                                {% if form.reranking_mode.errors %}
+                                    {{ form.reranking_mode(class="form-select is-invalid") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.reranking_mode.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.reranking_mode(class="form-select") }}
+                                {% endif %}
+                                <div class="form-text">重排序模式</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="mt-4 mb-3">搜索權重設定</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.semantic_weight.label(class="form-label") }}
+                                {% if form.semantic_weight.errors %}
+                                    {{ form.semantic_weight(class="form-control is-invalid", type="range", min="0", max="1", step="0.1") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.semantic_weight.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex align-items-center">
+                                        {{ form.semantic_weight(class="form-range", type="range", min="0", max="1", step="0.1") }}
+                                        <span class="ms-2" id="semantic-weight-value">{{ form.semantic_weight.data }}</span>
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">語義搜索權重 (0-1)</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                {{ form.keyword_weight.label(class="form-label") }}
+                                {% if form.keyword_weight.errors %}
+                                    {{ form.keyword_weight(class="form-control is-invalid", type="range", min="0", max="1", step="0.1") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.keyword_weight.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex align-items-center">
+                                        {{ form.keyword_weight(class="form-range", type="range", min="0", max="1", step="0.1") }}
+                                        <span class="ms-2" id="keyword-weight-value">{{ form.keyword_weight.data }}</span>
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">關鍵詞搜索權重 (0-1)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="mt-4 mb-3">結果設定</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.top_k.label(class="form-label") }}
+                                {% if form.top_k.errors %}
+                                    {{ form.top_k(class="form-control is-invalid", type="number", min="1", max="50") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.top_k.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {{ form.top_k(class="form-control", type="number", min="1", max="50") }}
+                                {% endif %}
+                                <div class="form-text">返回的最大結果數量</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check form-switch mt-4">
+                                {{ form.score_threshold_enabled(class="form-check-input") }}
+                                {{ form.score_threshold_enabled.label(class="form-check-label") }}
+                                <div class="form-text">啟用分數閾值過濾</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                {{ form.score_threshold.label(class="form-label") }}
+                                {% if form.score_threshold.errors %}
+                                    {{ form.score_threshold(class="form-control is-invalid", type="range", min="0", max="1", step="0.05") }}
+                                    <div class="invalid-feedback">
+                                        {% for error in form.score_threshold.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex align-items-center">
+                                        {{ form.score_threshold(class="form-range", type="range", min="0", max="1", step="0.05") }}
+                                        <span class="ms-2" id="score-threshold-value">{{ form.score_threshold.data }}</span>
+                                    </div>
+                                {% endif %}
+                                <div class="form-text">最低分數閾值 (0-1)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-between">
+                        <a href="{{ url_for('main.admin') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>返回
+                        </a>
+                        <div>
+                            <button type="submit" name="action" value="test" class="btn btn-warning me-2">
+                                <i class="bi bi-lightning-charge me-1"></i>測試設定
+                            </button>
+                            <button type="submit" name="action" value="save" class="btn btn-primary">
+                                <i class="bi bi-save me-1"></i>保存設定
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if test_results %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0">設定測試結果</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert {{ 'alert-success' if test_success else 'alert-danger' }}">
+                    <i class="bi {{ 'bi-check-circle' if test_success else 'bi-exclamation-triangle' }} me-2"></i>
+                    {{ test_message }}
+                </div>
+
+                {% if test_results.response %}
+                <h5 class="mt-3">API 回應：</h5>
+                <div class="bg-light p-3 rounded">
+                    <pre><code>{{ test_results.response|tojson(indent=2) }}</code></pre>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 顯示滑塊數值
+    const semanticWeight = document.getElementById('semantic_weight');
+    const semanticWeightValue = document.getElementById('semantic-weight-value');
+
+    const keywordWeight = document.getElementById('keyword_weight');
+    const keywordWeightValue = document.getElementById('keyword-weight-value');
+
+    const scoreThreshold = document.getElementById('score_threshold');
+    const scoreThresholdValue = document.getElementById('score-threshold-value');
+
+    if (semanticWeight && semanticWeightValue) {
+        semanticWeightValue.textContent = semanticWeight.value;
+        semanticWeight.addEventListener('input', function() {
+            semanticWeightValue.textContent = this.value;
+        });
+    }
+
+    if (keywordWeight && keywordWeightValue) {
+        keywordWeightValue.textContent = keywordWeight.value;
+        keywordWeight.addEventListener('input', function() {
+            keywordWeightValue.textContent = this.value;
+        });
+    }
+
+    if (scoreThreshold && scoreThresholdValue) {
+        scoreThresholdValue.textContent = scoreThreshold.value;
+        scoreThreshold.addEventListener('input', function() {
+            scoreThresholdValue.textContent = this.value;
+        });
+    }
+});
+</script>
+{% endblock %}

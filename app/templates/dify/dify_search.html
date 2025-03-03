@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Dify 料號查詢 - 智動料號申編暨查詢系統{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">首頁</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dify 料號查詢</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Dify 料號智能查詢</h3>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info mb-4">
+                    <i class="bi bi-info-circle me-2"></i>請輸入料號或描述，系統將使用AI技術進行智能查詢。支持各種特殊符號組合，例如: "Capacitor, 2uF +\-5% 828v URMS電容器，2uF ±5% 828v URMS"
+                </div>
+
+                <form method="POST" action="{{ url_for('dify.search') }}">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        {{ form.query.label(class="form-label") }}
+                        {% if form.query.errors %}
+                            {{ form.query(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.query.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.query(class="form-control", rows=3, placeholder="請輸入料號或描述，支持特殊符號，例如: Capacitor, 2uF ±5% 828v URMS") }}
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if previous_queries %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-light">
+                <h4 class="mb-0">最近查詢</h4>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for query in previous_queries %}
+                    <a href="{{ url_for('dify.search', query=query.query) }}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{ query.query }}</h5>
+                            <small class="text-muted">{{ query.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                        </div>
+                        <small class="text-muted">找到 {{ query.results_count }} 筆結果 | 點擊重新查詢</small>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -51,7 +51,6 @@
                         </a>
                     </li>
 
-
                     {% if current_user.is_admin %}
 
                     <!-- 料號查詢相關選單 -->
@@ -83,6 +82,17 @@
                             <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('nsn.nsn_search') }}"><i class="bi bi-search me-2 text-info"></i>NSN查詢</a></li>
                             <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('nsn.nsn_search', type='single') }}"><i class="bi bi-arrow-right-circle me-2 text-success"></i>單一NSN查詢</a></li>
                             <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('nsn.nsn_search', type='batch') }}"><i class="bi bi-arrows-move me-2 text-warning"></i>批量NSN查詢</a></li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li class="nav-item">
+                                <a class="nav-link {% if request.path.startswith('/dify') %}active-nav{% endif %}" href="{{ url_for('dify.search') }}">
+                                    <i class="bi bi-search-heart me-1"></i>智能料號查詢
+                                </a>
+                            </li>
+
+                            <li><a class="dropdown-item dropdown-item-custom {% if request.path == url_for('dify.settings') %}active{% endif %}" href="{{ url_for('dify.settings') }}"><i class="bi bi-robot me-2 text-info"></i>Dify 設定</a></li>
+
                         </ul>
                     </li>
                     {% endif %}
