@@ -188,7 +188,7 @@ def batch_search():
 
 
 @part_bp.route('/list', methods=['GET', 'POST'])
-@login_required
+@admin_required
 def part_list():
     """料號單清單列表路由"""
     form = PartNumberSearchForm()
