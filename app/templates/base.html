@@ -87,11 +87,16 @@
 
                             <li class="nav-item">
                                 <a class="nav-link {% if request.path.startswith('/dify') %}active-nav{% endif %}" href="{{ url_for('dify.search') }}">
-                                    <i class="bi bi-search-heart me-1"></i>智能料號查詢
+                                    <i class="bi bi-search-heart me-1"></i>Dify智能查詢
                                 </a>
                             </li>
 
                             <li><a class="dropdown-item dropdown-item-custom {% if request.path == url_for('dify.settings') %}active{% endif %}" href="{{ url_for('dify.settings') }}"><i class="bi bi-robot me-2 text-info"></i>Dify 設定</a></li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li><a class="dropdown-item dropdown-item-custom {% if request.path.startswith('/llm/search') %}active{% endif %}" href="{{ url_for('llm.search') }}"><i class="bi bi-cpu me-2 text-primary"></i>智能料號查詢</a></li>
+                            <li><a class="dropdown-item dropdown-item-custom {% if request.path == url_for('llm.settings') %}active{% endif %}" href="{{ url_for('llm.settings') }}"><i class="bi bi-gear me-2 text-warning"></i>LLM 設定</a></li>
 
                         </ul>
                     </li>

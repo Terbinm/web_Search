@@ -12,7 +12,8 @@ import random
 
 # Ollama 服務設定
 OLLAMA_HOST = "192.168.1.106"
-OLLAMA_URL = f"http://{OLLAMA_HOST}:11434"
+OLLAMA_PORT = 11434
+OLLAMA_URL = f"http://{OLLAMA_HOST}:{OLLAMA_PORT}"
 OLLAMA_MODEL = "phi4:14b"
 
 # 資料庫連線資訊

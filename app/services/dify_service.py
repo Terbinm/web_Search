@@ -159,6 +159,9 @@ class DifyService:
                 # 處理結果
                 results = self._process_results(response_data)
 
+                # 按照分數從大到小排序
+                results.sort(key=lambda x: x.get('score', 0), reverse=True)
+
                 # 在應用上下文中保存記錄
                 if self.app:
                     with self.app.app_context():
