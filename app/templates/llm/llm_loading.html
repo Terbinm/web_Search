@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}處理中 - 智動料號申編暨查詢系統{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">正在處理您的查詢</h3>
+            </div>
+            <div class="card-body text-center py-5">
+                <div class="mb-4">
+                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <h4 class="mb-3">請稍候，正在進行AI智能查詢...</h4>
+                <p class="text-muted mb-4">查詢可能需要較長時間，請勿關閉此頁面。</p>
+
+                <div id="progress-container" class="mb-4">
+                    <div class="progress" style="height: 20px;">
+                        <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+                             role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    </div>
+                </div>
+
+                <div id="status-message" class="alert alert-info">
+                    <i class="bi bi-info-circle me-2"></i>正在查詢FSC相關代碼...
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const progressBar = document.getElementById('progress-bar');
+        const statusMessage = document.getElementById('status-message');
+        const steps = [
+            "正在查詢FSC相關代碼...",
+            "正在生成SQL查詢...",
+            "正在執行第1次嘗試...",
+            "正在執行第2次嘗試...",
+            "正在執行第3次嘗試...",
+            "正在處理結果...",
+            "即將完成..."
+        ];
+
+        let currentStep = 0;
+        let progress = 0;
+
+        // 模擬進度更新
+        const progressInterval = setInterval(function() {
+            progress += 1;
+
+            // 步驟轉換點
+            const stepPoints = [5, 20, 40, 60, 80, 95, 100];
+
+            if (progress >= stepPoints[currentStep] && currentStep < steps.length) {
+                statusMessage.innerHTML = `<i class="bi bi-info-circle me-2"></i>${steps[currentStep]}`;
+                currentStep++;
+            }
+
+            progressBar.style.width = progress + '%';
+            progressBar.setAttribute('aria-valuenow', progress);
+            progressBar.textContent = progress + '%';
+
+            if (progress >= 100) {
+                clearInterval(progressInterval);
+                // 檢查結果頁面是否準備好
+                checkResults();
+            }
+        }, 300); // 每300毫秒更新一次
+
+        // 檢查結果頁面是否準備好
+        function checkResults() {
+            const queryId = '{{ query_id }}';
+            const checkInterval = setInterval(function() {
+                fetch(`/llm/check_status/${queryId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'completed') {
+                            clearInterval(checkInterval);
+                            window.location.href = `/llm/results/${queryId}`;
+                        } else if (data.status === 'failed') {
+                            clearInterval(checkInterval);
+                            statusMessage.innerHTML = `<i class="bi bi-exclamation-triangle me-2"></i>查詢處理失敗，請重試。`;
+                            statusMessage.className = 'alert alert-danger';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('檢查狀態錯誤:', error);
+                    });
+            }, 2000); // 每2秒檢查一次
+        }
+    });
+</script>
+{% endblock %}
