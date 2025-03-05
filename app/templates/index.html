@@ -1,8 +1,33 @@
+
 {% extends "base.html" %}
 
 {% block title %}首頁 - 料號申編系統{% endblock %}
 
 {% block content %}
+{% if current_user.is_authenticated and active_workflow %}
+<!-- 未完成流程提示 -->
+<div class="card mb-4 border-warning">
+    <div class="card-header bg-warning text-dark">
+        <h4 class="mb-0"><i class="bi bi-exclamation-circle me-2"></i>您有未完成的申編流程</h4>
+    </div>
+    <div class="card-body">
+        <p class="mb-3">您在 {{ active_workflow.updated_at.strftime('%Y-%m-%d %H:%M') }} 開始的申編流程尚未完成，目前進行到第 {{ active_workflow.current_step }} 步。</p>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <form action="{{ url_for('workflow.resume') }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="workflow_id" value="{{ active_workflow.id }}">
+                <button type="submit" class="btn btn-warning me-md-2">
+                    <i class="bi bi-arrow-repeat me-1"></i>繼續未完成的流程
+                </button>
+                <button type="submit" name="cancel" value="true" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle me-1"></i>取消舊流程並開始新流程
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <div class="row justify-content-center">
     <div class="col-md-10">
         <!-- 主要歡迎區塊 -->
@@ -14,6 +39,14 @@
                 <div class="text-center mb-4">
                     <h3>高效管理與查詢料號資訊的平台</h3>
                     <p class="lead">本系統提供完整的料號管理解決方案，集成查詢、建立、編輯與追蹤功能，滿足現代物料管理需求。</p>
+
+                    {% if current_user.is_authenticated %}
+                    <div class="mt-4">
+                        <a href="{{ url_for('workflow.index') }}" class="btn btn-primary btn-lg">
+                            <i class="bi bi-diagram-3 me-2"></i>開始料號申編流程
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -46,19 +79,19 @@
             <div class="col-md-4 mb-3">
                 <div class="card h-100 shadow-sm">
                     <div class="card-header bg-success text-white">
-                        <h4 class="mb-0"><i class="bi bi-file-earmark-plus me-2"></i>料號管理</h4>
+                        <h4 class="mb-0"><i class="bi bi-file-earmark-plus me-2"></i>智能申編流程</h4>
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>新增料號建檔</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>編輯現有料號</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>料號完整分類</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>規格詳細描述</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>需求智能匹配</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>FSC代碼推薦</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>料號自動查詢</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>規格資料預填</li>
                         </ul>
                         {% if current_user.is_authenticated %}
                         <div class="d-grid gap-2 mt-3">
-                            <a href="{{ url_for('part.create_part') }}" class="btn btn-outline-success">
-                                <i class="bi bi-plus-circle me-1"></i>新增料號
+                            <a href="{{ url_for('workflow.index') }}" class="btn btn-outline-success">
+                                <i class="bi bi-plus-circle me-1"></i>開始申編流程
                             </a>
                         </div>
                         {% endif %}
@@ -100,22 +133,22 @@
                     {% if current_user.is_authenticated %}
                     <div class="col-md-3 col-sm-6 mb-3">
                         <div class="d-grid">
-                            <a href="{{ url_for('part.inc_search') }}" class="btn btn-outline-primary btn-lg">
-                                <i class="bi bi-search-heart me-2"></i>INC查詢
+                            <a href="{{ url_for('workflow.index') }}" class="btn btn-outline-primary btn-lg">
+                                <i class="bi bi-diagram-3 me-2"></i>申編流程
                             </a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-3">
                         <div class="d-grid">
-                            <a href="{{ url_for('part.keyword_search') }}" class="btn btn-outline-primary btn-lg">
-                                <i class="bi bi-key me-2"></i>關鍵字查詢
+                            <a href="{{ url_for('dify.search') }}" class="btn btn-outline-primary btn-lg">
+                                <i class="bi bi-search-heart me-2"></i>FSC查詢
                             </a>
                         </div>
                     </div>
                     <div class="col-md-3 col-sm-6 mb-3">
                         <div class="d-grid">
-                            <a href="{{ url_for('part.batch_search') }}" class="btn btn-outline-primary btn-lg">
-                                <i class="bi bi-stack me-2"></i>批次查詢
+                            <a href="{{ url_for('llm.search') }}" class="btn btn-outline-primary btn-lg">
+                                <i class="bi bi-cpu me-2"></i>料號查詢
                             </a>
                         </div>
                     </div>
@@ -151,10 +184,10 @@
                     <h5><i class="bi bi-info-circle me-2"></i>料號申編系統 2025 版本現已上線</h5>
                     <p>本次更新包含以下主要改進：</p>
                     <ul>
+                        <li><strong>全新智能申編流程</strong> - 簡化料號申編過程，提供流程引導</li>
                         <li>優化料號查詢效能，提升搜尋速度</li>
                         <li>增強批次處理功能，支援更多檔案格式</li>
                         <li>改善使用者介面，提供更直覺的操作體驗</li>
-                        <li>加強資料安全性，確保料號資訊安全無虞</li>
                     </ul>
                     <p class="mb-0">如有使用問題，請聯繫系統管理員</p>
                 </div>

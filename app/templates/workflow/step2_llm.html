@@ -1,0 +1,86 @@
+{% extends "workflow/workflow_base.html" %}
+
+{% block workflow_content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>根據選擇的FSC代碼 <strong>{{ fsc_code }}</strong>，請輸入關鍵字進行料號搜索
+        </div>
+    </div>
+</div>
+
+<form id="workflowForm" method="POST" action="{{ url_for('workflow.submit_step', step=2, workflow_id=workflow_id) }}" data-requires-selection="true">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="selectedResultId" id="selectedResultId" value="{{ selected_part_number }}">
+    <input type="hidden" name="selectedResultText" id="selectedResultText" value="{{ selected_part_name }}">
+
+    <!-- 顯示FSC資訊卡片 -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="bi bi-tag-fill text-primary fs-3"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="card-title mb-1">FSC {{ fsc_code }}</h5>
+                            <p class="card-text text-muted mb-0">{{ fsc_description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 搜索表單 -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="keyword" class="form-label">請輸入關鍵字：</label>
+                <input type="text" class="form-control" id="keyword" name="keyword" placeholder="例如：sensor, valve, gauge..." value="{{ keyword }}" required>
+                <div class="form-text">使用能準確描述產品的專業術語</div>
+                <input type="hidden" name="fsc" value="{{ fsc_code }}">
+            </div>
+        </div>
+    </div>
+
+    <!-- 搜索按鈕 -->
+    <div class="row mt-4 mb-4">
+        <div class="col-md-12 text-center">
+            <button type="submit" name="search" value="true" class="btn btn-primary" {% if not keyword %}disabled{% endif %}>
+                <i class="bi bi-search me-1"></i>搜索料號
+            </button>
+        </div>
+    </div>
+
+    {% if llm_results %}
+    <!-- 搜索結果 -->
+    <div class="mt-4">
+        <h5 class="mb-3">搜索結果：</h5>
+
+        <div class="list-group">
+            {% for result in llm_results %}
+            <div class="list-group-item list-group-item-action result-item {% if selected_part_number == result.nm_cd_2303 %}active bg-light{% endif %}"
+                 onclick="selectResult(this, '{{ result.nm_cd_2303 }}', '{{ result.shrt_nm_2301 }}')">
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">{{ result.nm_cd_2303 }}</h6>
+                    <small class="text-muted">匹配度: {{ loop.index0 * 5 + 75 }}%</small>
+                </div>
+                <p class="mb-1">{{ result.shrt_nm_2301 }}</p>
+                {% if result.itm_nm_def_5015 %}
+                <small class="text-muted">{{ result.itm_nm_def_5015|truncate(100) }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if llm_code == '77777' %}
+    <div class="alert alert-warning mt-4">
+        <i class="bi bi-exclamation-triangle me-2"></i>未找到匹配的料號，請嘗試使用不同的關鍵字。
+    </div>
+    {% endif %}
+</form>
+{% endblock %}

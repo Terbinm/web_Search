@@ -37,6 +37,7 @@ def create_app(config_class=Config):
     from app.routes.nsn_routes import nsn_bp
     from app.routes.dify_routes import dify_bp
     from app.routes.llm_routes import llm_bp
+    from app.routes.workflow_routes import workflow_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp, url_prefix='/auth')
@@ -45,6 +46,7 @@ def create_app(config_class=Config):
     app.register_blueprint(dify_bp, url_prefix='/dify')
     app.register_blueprint(llm_bp, url_prefix='/llm')
     app.register_blueprint(data_bp)
+    app.register_blueprint(workflow_bp)
 
     # 註冊錯誤處理
     from app.errors.handlers import register_error_handlers
@@ -60,3 +62,4 @@ from app.models.data_item import DataItem
 from app.models.nsn import NSN
 from app.models.dify_config import DifyConfig, DifyQuery
 from app.models.llm_config import LLMConfig, LLMQuery
+from app.models.workflow import WorkflowInstance

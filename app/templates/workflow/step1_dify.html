@@ -1,0 +1,62 @@
+{% extends "workflow/workflow_base.html" %}
+
+{% block workflow_content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-2"></i>請輸入您需要的零件或設備描述，系統將協助您找出對應的FSC代碼
+        </div>
+    </div>
+</div>
+
+<form id="workflowForm" method="POST" action="{{ url_for('workflow.submit_step', step=1, workflow_id=workflow_id) }}" data-requires-selection="true">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="selectedValue" id="selectedValue" value="{{ selected_fsc_code }}">
+    <input type="hidden" name="selectedDisplay" id="selectedDisplay" value="{{ selected_fsc_description }}">
+    
+    <!-- Dify搜索區 -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="query" class="form-label">請描述您需要的零件或設備：</label>
+                <textarea class="form-control" id="query" name="query" rows="3" placeholder="例如：壓力感測器、溫度計、流量控制閥..." required>{{ query }}</textarea>
+            </div>
+        </div>
+    </div>
+    
+    {% if dify_results %}
+    <div class="mt-4">
+        <h5 class="mb-3">搜索結果：</h5>
+        
+        <div class="row g-3">
+            {% for result in dify_results %}
+            <div class="col-md-6 col-lg-4">
+                <div class="option-card p-3 {% if selected_fsc_code == result.fsc_code %}selected{% endif %}" data-value="{{ result.fsc_code }}" data-display="{{ result.description }}">
+                    <h5 class="card-title text-primary mb-2">{{ result.fsc_code }}</h5>
+                    <p class="card-text">{{ result.description }}</p>
+                    <div class="text-end mt-2">
+                        <span class="badge bg-light text-dark">匹配度: {{ "%.1f"|format(result.score * 100) }}%</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- 搜索按鈕 -->
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <button type="submit" name="search" value="true" class="btn btn-primary" {% if not query %}disabled{% endif %}>
+                <i class="bi bi-search me-1"></i>搜索FSC代碼
+            </button>
+        </div>
+    </div>
+</form>
+
+{% if not dify_results and query %}
+<div class="alert alert-warning mt-4">
+    <i class="bi bi-exclamation-triangle me-2"></i>未找到匹配的FSC代碼，請嘗試使用不同的描述。
+</div>
+{% endif %}
+{% endblock %}

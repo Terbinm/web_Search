@@ -15,7 +15,7 @@ class DifyService:
     DEFAULT_CONFIG = {
         "base_url": "http://192.168.1.106/v1",
         "api_key": "dataset-obp0C2PEAHHFLkfgOtBew6At",
-        "dataset_id": "5bd01088-75d7-4fca-b3c2-9549db5e7255",
+        "dataset_id": "dfc37e09-510b-4464-9d92-89376a88a861",
         "search_method": "hybrid_search",
         "search_quality": "high",
         "embedding_model": "bge-m3:latest",

@@ -1,0 +1,175 @@
+/* 此檔案由自動腳本建立 */
+/* 流程步驟進度條樣式 */
+.workflow-progress-container {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.workflow-progress {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* 進度條連接線 */
+.workflow-progress:before {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 10%;
+    right: 10%;
+    height: 4px;
+    background-color: #e9ecef;
+    z-index: -1;
+}
+
+/* 完成流程的連接線變色 */
+.workflow-progress:after {
+    content: '';
+    position: absolute;
+    top: 25px;
+    left: 10%;
+    height: 4px;
+    background-color: #3b82f6;
+    z-index: -1;
+    transition: width 0.5s ease;
+}
+
+/* 根據當前步驟設置進度條寬度 */
+.workflow-progress.step-1:after { width: 0%; }
+.workflow-progress.step-2:after { width: 20%; }
+.workflow-progress.step-3:after { width: 40%; }
+.workflow-progress.step-4:after { width: 60%; }
+.workflow-progress.step-5:after { width: 80%; }
+.workflow-progress.step-complete:after { width: 100%; }
+
+/* 進度步驟圓圈樣式 */
+.workflow-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    width: 20%;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.step-label {
+    color: #6c757d;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-align: center;
+    max-width: 100px;
+    transition: color 0.3s ease;
+}
+
+/* 当前活动步骤样式 */
+.workflow-step.active .step-number {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+    transform: scale(1.1);
+}
+
+.workflow-step.active .step-label {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+/* 已完成步骤样式 */
+.workflow-step.completed .step-number {
+    background-color: #10b981;
+    color: white;
+    border-color: #10b981;
+}
+
+.workflow-step.completed .step-label {
+    color: #10b981;
+}
+
+/* 步驟標題區塊 */
+.workflow-header {
+    background-color: #f1f5f9;
+    border-bottom: 1px solid #e9ecef;
+}
+
+/* 步驟內容區塊 */
+.workflow-content {
+    min-height: 300px;
+}
+
+/* 選項卡片樣式 */
+.option-card {
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    height: 100%;
+}
+
+.option-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.option-card.selected {
+    border-color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* 添加響應式調整 */
+@media (max-width: 768px) {
+    .step-label {
+        font-size: 0.7rem;
+    }
+
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .workflow-progress:before,
+    .workflow-progress:after {
+        top: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .step-label {
+        display: none;
+    }
+
+    .step-number {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+
+    .workflow-progress:before,
+    .workflow-progress:after {
+        top: 17px;
+    }
+}

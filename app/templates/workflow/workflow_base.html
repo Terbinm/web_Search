@@ -1,0 +1,103 @@
+
+{% extends "base.html" %}
+
+{% block title %}智動料號申編流程 - 步驟 {{ current_step }} - 智動料號申編暨查詢系統{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/workflow.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">智動料號申編流程</h3>
+            </div>
+            <div class="card-body p-0">
+                <!-- 進度條 -->
+                <div class="workflow-progress-container">
+                    <div class="workflow-progress">
+                        <div class="workflow-step {% if current_step >= 1 %}active{% endif %} {% if current_step > 1 %}completed{% endif %}">
+                            <div class="step-number">1</div>
+                            <div class="step-label">需求查詢</div>
+                        </div>
+                        <div class="workflow-step {% if current_step >= 2 %}active{% endif %} {% if current_step > 2 %}completed{% endif %}">
+                            <div class="step-number">2</div>
+                            <div class="step-label">料號查詢</div>
+                        </div>
+                        <div class="workflow-step {% if current_step >= 3 %}active{% endif %} {% if current_step > 3 %}completed{% endif %}">
+                            <div class="step-number">3</div>
+                            <div class="step-label">規格查詢</div>
+                        </div>
+                        <div class="workflow-step {% if current_step >= 4 %}active{% endif %} {% if current_step > 4 %}completed{% endif %}">
+                            <div class="step-number">4</div>
+                            <div class="step-label">料號建立</div>
+                        </div>
+                        <div class="workflow-step {% if current_step >= 5 %}active{% endif %} {% if current_step > 5 %}completed{% endif %}">
+                            <div class="step-number">5</div>
+                            <div class="step-label">完成</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 當前步驟說明 -->
+                <div class="workflow-header">
+                    <div class="container py-3">
+                        <h4 class="text-primary">{{ step_title }}</h4>
+                        <p class="text-muted mb-0">{{ step_description }}</p>
+                    </div>
+                </div>
+
+                <!-- 步驟內容區塊 -->
+                <div class="workflow-content container py-4">
+                    {% block workflow_content %}{% endblock %}
+                </div>
+
+                <!-- 步驟導航按鈕 -->
+                <div class="workflow-navigation container pb-4">
+                    <div class="row">
+                        <div class="col-6 text-start">
+                            {% if current_step > 1 %}
+                            <a href="{{ url_for('workflow.step', step=current_step-1, workflow_id=workflow_id) }}" class="btn btn-secondary" id="prevStepBtn">
+                                <i class="bi bi-arrow-left me-1"></i>上一步
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="col-6 text-end">
+                            {% if current_step < 5 %}
+                            <button type="submit" class="btn btn-primary" id="nextStepBtn" form="workflowForm">
+                                下一步<i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                            {% else %}
+                            <a href="{{ url_for('main.index') }}" class="btn btn-success" id="finishBtn">
+                                <i class="bi bi-check-circle me-1"></i>完成
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 進度保存提示 -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="saveProgressToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="bi bi-info-circle text-primary me-2"></i>
+            <strong class="me-auto">進度已保存</strong>
+            <small>剛剛</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            您的流程進度已自動保存，您可以隨時返回繼續。
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/workflow.js') }}"></script>
+{% endblock %}
