@@ -28,6 +28,7 @@ def search_inc_in_tabl120(inc_data):
 
     try:
         data_txt_path = os.path.join(current_app.instance_path, 'Tabl120.TXT')
+        print(data_txt_path)
         with open(data_txt_path, 'r', encoding='utf-8') as tabl_file:
             inc_lines = {}
             for line in tabl_file:
@@ -82,11 +83,15 @@ def inc_search():
     form = INCSearchForm()
     results = None
 
+    inc_param = request.args.get('inc', '').strip()
+    if inc_param:
+        form.inc.data = inc_param
+
     if form.validate_on_submit():
         inc_data = [form.inc.data]  # 加入查詢請求
 
         if not inc_data:
-            return render_template('part/inc_search.html', form=form, results=results)
+            return render_template('part/inc_search.html', form=form, results=results, inc_param=inc_param)
 
         # 執行查詢
         results = search_inc_in_tabl120(inc_data)
@@ -94,7 +99,7 @@ def inc_search():
         if not results:
             flash(f'未找到INC: {form.inc.data}的相關料號', 'warning')
 
-    return render_template('part/inc_search.html', form=form, results=results)
+    return render_template('part/inc_search.html', form=form, results=results, inc_param=inc_param)
 
 
 @part_bp.route('/search/keyword', methods=['GET', 'POST'])

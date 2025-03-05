@@ -50,6 +50,11 @@
                             <i class="bi bi-file-earmark-plus me-1"></i>填寫海軍料號申編單
                         </a>
                     </li>
+                    <li class="nav-item">
+                                <a class="nav-link {% if request.path.startswith('/dify') %}active-nav{% endif %}" href="{{ url_for('dify.search') }}">
+                                    <i class="bi bi-search-heart me-1"></i>關鍵字查詢
+                                </a>
+                            </li>
 
                     {% if current_user.is_admin %}
 

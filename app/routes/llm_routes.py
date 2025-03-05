@@ -19,10 +19,12 @@ def search():
     previous_queries = []
 
     # 如果是從其他查詢頁面直接重新查詢
-    fsc_param = request.args.get('fsc')
-    keyword_param = request.args.get('keyword')
-    if fsc_param and keyword_param:
-        form.fsc.data = fsc_param
+    fsc_param = request.args.get('fsc', '').strip()
+    keyword_param = request.args.get('keyword', '').strip()
+
+    if fsc_param:
+        form.fsc.data = fsc_param  # 預先填入表單
+    if keyword_param:
         form.keyword.data = keyword_param
 
     if form.validate_on_submit():
@@ -62,7 +64,8 @@ def search():
 
     return render_template('llm/llm_search.html',
                            form=form,
-                           previous_queries=previous_queries)
+                           previous_queries=previous_queries,
+                           fsc_param=fsc_param)
 
 
 @llm_bp.route('/loading/<int:query_id>')
