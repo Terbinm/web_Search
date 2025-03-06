@@ -1,5 +1,5 @@
 <!-- 料號表單區塊模板 -->
-<form method="POST" action="{{ url_for('part.create_part') if request.endpoint == 'part.create_part' else url_for('part.edit_part', part_id=part.id) }}" class="container-fluid">
+<form method="POST" action="{% if request.endpoint == 'part.create_part' %}{{ url_for('part.create_part') }}{% elif request.endpoint == 'part.edit_part' and part and part.id %}{{ url_for('part.edit_part', part_id=part.id) }}{% elif request.endpoint == 'workflow.step' or 'workflow' in request.endpoint %}{{ url_for('workflow.submit_step', step=4, workflow_id=workflow_id) }}{% else %}{{ form_action|default('#') }}{% endif %}" class="container-fluid">
             {{ form.csrf_token }}
 
             <!-- 第一行：基本信息 -->

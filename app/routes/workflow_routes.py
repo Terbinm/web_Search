@@ -568,6 +568,24 @@ def _render_step4(workflow):
         flash('請先完成先前步驟', 'warning')
         return redirect(url_for('workflow.step', step=1, workflow_id=workflow.id))
 
+    # 從app/__init__.py中導入CreatePartForm
+    from app.forms.part_forms import CreatePartForm
+    # 創建表單並預填資料
+    form = CreatePartForm()
+
+    # 預填表單數據
+    form.pn.data = part_number
+    form.english_name.data = part_name
+    # 其他可以預填的欄位
+    if inc_data:
+        form.specification_description.data = inc_data
+
+    # 創建一個虛擬part對象以滿足模板需求
+    class DummyPart:
+        id = None
+
+    part = DummyPart()
+
     return render_template('workflow/step4_create.html',
                            current_step=4,
                            workflow_id=workflow.id,
@@ -577,8 +595,9 @@ def _render_step4(workflow):
                            fsc_description=fsc_description,
                            part_number=part_number,
                            part_name=part_name,
-                           inc_data=inc_data)
-
+                           inc_data=inc_data,
+                           form=form,
+                           part=part)  # 傳遞虛擬part對象
 
 def _handle_step4_submit(workflow):
     """處理步驟4表單提交"""
