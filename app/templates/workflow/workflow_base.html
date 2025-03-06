@@ -53,31 +53,31 @@
                     {% block workflow_content %}{% endblock %}
                 </div>
 
-                <!-- 步驟導航按鈕 - 僅在內容區沒有自己的導航按鈕時顯示 -->
-                <div class="workflow-navigation container pb-4">
-                    <div class="row">
-                        <div class="col-6 text-start">
-                            {% if current_step > 1 %}
-                            <a href="{{ url_for('workflow.step', step=current_step-1, workflow_id=workflow_id) }}" class="btn btn-secondary" id="prevStepBtn">
-                                <i class="bi bi-arrow-left me-1"></i>上一步
-                            </a>
-                            {% endif %}
-                        </div>
-                        <div class="col-6 text-end">
-                            {% if current_step < 5 and current_step != 1 %}
-                            <!-- 除了第一步外的其他步驟才顯示這個默認的下一步按鈕 -->
-                            <!-- 第一步有自己的表單按鈕 -->
-                            <button type="submit" class="btn btn-primary" id="defaultNextStepBtn" form="workflowForm">
-                                下一步<i class="bi bi-arrow-right ms-1"></i>
-                            </button>
-                            {% elif current_step == 5 %}
-                            <a href="{{ url_for('main.index') }}" class="btn btn-success" id="finishBtn">
-                                <i class="bi bi-check-circle me-1"></i>完成
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+<!--                &lt;!&ndash; 步驟導航按鈕 - 僅在內容區沒有自己的導航按鈕時顯示 &ndash;&gt;-->
+<!--                <div class="workflow-navigation container pb-4">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-6 text-start">-->
+<!--                            {% if current_step > 1 %}-->
+<!--                            <a href="{{ url_for('workflow.step', step=current_step-1, workflow_id=workflow_id) }}" class="btn btn-secondary" id="prevStepBtn">-->
+<!--                                <i class="bi bi-arrow-left me-1"></i>上一步-->
+<!--                            </a>-->
+<!--                            {% endif %}-->
+<!--                        </div>-->
+<!--                        <div class="col-6 text-end">-->
+<!--                            {% if current_step < 5 and current_step != 1 %}-->
+<!--                            &lt;!&ndash; 除了第一步外的其他步驟才顯示這個默認的下一步按鈕 &ndash;&gt;-->
+<!--                            &lt;!&ndash; 第一步有自己的表單按鈕 &ndash;&gt;-->
+<!--                            <button type="submit" class="btn btn-primary" id="defaultNextStepBtn" form="workflowForm">-->
+<!--                                下一步<i class="bi bi-arrow-right ms-1"></i>-->
+<!--                            </button>-->
+<!--                            {% elif current_step == 5 %}-->
+<!--                            <a href="{{ url_for('main.index') }}" class="btn btn-success" id="finishBtn">-->
+<!--                                <i class="bi bi-check-circle me-1"></i>完成-->
+<!--                            </a>-->
+<!--                            {% endif %}-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </div>
     </div>

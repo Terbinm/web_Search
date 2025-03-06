@@ -61,17 +61,17 @@
 
     <div class="row">
         {% for result in llm_results %}
-        <div class="col-md-6 mb-3">
+        <div class="col-md-4 mb-3">
             <div class="card {% if selected_part_number == result.nm_cd_2303 %}border-primary{% endif %}">
                 <div class="card-body">
                     <h6 class="card-title d-flex justify-content-between">
                         <span>{{ result.nm_cd_2303 }}</span>
-                        <small class="text-muted">匹配度: {{ loop.index0 * 5 + 75 }}%</small>
+<!--                        <small class="text-muted">匹配度: {{ loop.index0 * 5 + 75 }}%</small>-->
                     </h6>
                     <p class="card-text">{{ result.shrt_nm_2301 }}</p>
-                    {% if result.itm_nm_def_5015 %}
-                    <small class="text-muted d-block mb-3">{{ result.itm_nm_def_5015|truncate(100) }}</small>
-                    {% endif %}
+<!--                    {% if result.itm_nm_def_5015 %}-->
+<!--                    <small class="text-muted d-block mb-3">{{ result.itm_nm_def_5015|truncate(100) }}</small>-->
+<!--                    {% endif %}-->
 
                     <form action="{{ url_for('workflow.submit_step', step=2, workflow_id=workflow_id) }}" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

@@ -258,7 +258,7 @@ def _handle_step1_submit(workflow):
 
     # 檢查是否為搜索操作
     if 'search' in request.form:
-        query = form.query.data.strip()
+        query = request.form.get('query', '').strip()
 
         if not query:
             flash('請輸入查詢內容', 'warning')
@@ -277,8 +277,8 @@ def _handle_step1_submit(workflow):
                 data = {
                     'query': query,
                     'dify_results': results,
-                    'fsc_code': form.selectedValue.data,
-                    'fsc_description': form.selectedDisplay.data
+                    'fsc_code': request.form.get('selectedValue', ''),
+                    'fsc_description': request.form.get('selectedDisplay', '')
                 }
                 workflow.set_step_data(1, data)
                 db.session.commit()
@@ -297,24 +297,30 @@ def _handle_step1_submit(workflow):
             return redirect(url_for('workflow.step', step=1, workflow_id=workflow.id))
 
     # 進入下一步操作
-    selected_value = form.selectedValue.data
-    selected_display = form.selectedDisplay.data
+    selected_value = request.form.get('selectedValue', '')
+    selected_display = request.form.get('selectedDisplay', '')
+    query = request.form.get('query', '')
 
     if not selected_value:
         flash('請先選擇一個FSC代碼', 'warning')
         return redirect(url_for('workflow.step', step=1, workflow_id=workflow.id))
 
     # 保存選擇的FSC代碼和描述
-    step_data = workflow.get_step_data(1)
+    current_app.logger.info(f"保存選擇的FSC代碼: {selected_value}, 描述: {selected_display}")
+    step_data = workflow.get_step_data(1) or {}
+    step_data['query'] = query
     step_data['fsc_code'] = selected_value
     step_data['fsc_description'] = selected_display
     workflow.set_step_data(1, step_data)
+    workflow.fsc_code = selected_value
+    workflow.fsc_description = selected_display
 
     # 更新流程步驟
     if workflow.current_step == 1:
         workflow.current_step = 2
 
     db.session.commit()
+    current_app.logger.info(f"步驟1完成，數據已保存，重定向到步驟2")
 
     return redirect(url_for('workflow.step', step=2, workflow_id=workflow.id))
 

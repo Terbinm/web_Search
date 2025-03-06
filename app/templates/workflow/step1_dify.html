@@ -45,9 +45,9 @@
                 <div class="card-body">
                     <h5 class="card-title text-primary mb-2">{{ result.fsc_code }}</h5>
                     <p class="card-text">{{ result.description }}</p>
-                    <div class="text-end mt-2">
-                        <span class="badge bg-light text-dark">匹配度: {{ "%.1f"|format(result.score * 100) }}%</span>
-                    </div>
+<!--                    <div class="text-end mt-2">-->
+<!--                        <span class="badge bg-light text-dark">匹配度: {{ "%.1f"|format(result.score * 100) }}%</span>-->
+<!--                    </div>-->
                     <form action="{{ url_for('workflow.submit_step', step=1, workflow_id=workflow_id) }}" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                         <input type="hidden" name="selectedValue" value="{{ result.fsc_code }}">
