@@ -244,7 +244,7 @@ def _render_step1(workflow):
     return render_template('workflow/step1_dify.html',
                            current_step=1,
                            workflow_id=workflow.id,
-                           step_title="第1步：需求查詢",
+                           step_title="第1步：關鍵字查詢",
                            step_description="請描述您需要的物品，系統將協助您找出對應的FSC代碼",
                            query=query,
                            dify_results=dify_results,
@@ -347,7 +347,7 @@ def _render_step2(workflow):
     return render_template('workflow/step2_llm.html',
                            current_step=2,
                            workflow_id=workflow.id,
-                           step_title="第2步：料號查詢",
+                           step_title="第2步：INC搜尋",
                            step_description="請輸入關鍵字搜索料號",
                            fsc_code=fsc_code,
                            fsc_description=fsc_description,
@@ -574,7 +574,7 @@ def _render_step4(workflow):
     form = CreatePartForm()
 
     # 預填表單數據
-    form.pn.data = part_number
+    form.item_code.data = part_number
     form.english_name.data = part_name
     # 其他可以預填的欄位
     if inc_data:

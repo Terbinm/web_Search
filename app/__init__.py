@@ -1,7 +1,7 @@
-from flask import Flask
+from flask import Flask, g
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_wtf.csrf import CSRFProtect
 
 
@@ -28,6 +28,16 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     csrf.init_app(app)
+
+    # 添加全局上下文處理器
+    @app.before_request
+    def load_active_workflow():
+        """在每個請求前檢查用戶是否有進行中的流程"""
+        if current_user.is_authenticated:
+            from app.models.workflow import WorkflowInstance
+            g.active_workflow = WorkflowInstance.get_active_workflow_for_user(current_user.id)
+        else:
+            g.active_workflow = None
 
     # 註冊藍圖
     from app.routes.main_routes import main_bp

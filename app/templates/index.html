@@ -52,127 +52,127 @@
         </div>
 
         <!-- 系統功能區塊 -->
-        <div class="row mb-4">
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-primary text-white">
-                        <h4 class="mb-0"><i class="bi bi-search me-2"></i>料號查詢工具</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>INC 編號快速查詢</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>關鍵字智能搜尋</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>批次料號處理</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>完整料號單列表</li>
-                        </ul>
-                        {% if current_user.is_authenticated %}
-                        <div class="d-grid gap-2 mt-3">
-                            <a href="{{ url_for('part.inc_search') }}" class="btn btn-outline-primary">
-                                <i class="bi bi-search me-1"></i>開始查詢
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+<!--        <div class="row mb-4">-->
+<!--            <div class="col-md-4 mb-3">-->
+<!--                <div class="card h-100 shadow-sm">-->
+<!--                    <div class="card-header bg-primary text-white">-->
+<!--                        <h4 class="mb-0"><i class="bi bi-search me-2"></i>料號查詢工具</h4>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <ul class="list-unstyled">-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>INC 編號快速查詢</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>關鍵字智能搜尋</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>批次料號處理</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>完整料號單列表</li>-->
+<!--                        </ul>-->
+<!--                        {% if current_user.is_authenticated %}-->
+<!--                        <div class="d-grid gap-2 mt-3">-->
+<!--                            <a href="{{ url_for('part.inc_search') }}" class="btn btn-outline-primary">-->
+<!--                                <i class="bi bi-search me-1"></i>開始查詢-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        {% endif %}-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-success text-white">
-                        <h4 class="mb-0"><i class="bi bi-file-earmark-plus me-2"></i>智能申編流程</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>需求智能匹配</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>FSC代碼推薦</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>料號自動查詢</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>規格資料預填</li>
-                        </ul>
-                        {% if current_user.is_authenticated %}
-                        <div class="d-grid gap-2 mt-3">
-                            <a href="{{ url_for('workflow.index') }}" class="btn btn-outline-success">
-                                <i class="bi bi-plus-circle me-1"></i>開始申編流程
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
+<!--            <div class="col-md-4 mb-3">-->
+<!--                <div class="card h-100 shadow-sm">-->
+<!--                    <div class="card-header bg-success text-white">-->
+<!--                        <h4 class="mb-0"><i class="bi bi-file-earmark-plus me-2"></i>智能申編流程</h4>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <ul class="list-unstyled">-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>需求智能匹配</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>FSC代碼推薦</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>料號自動查詢</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>規格資料預填</li>-->
+<!--                        </ul>-->
+<!--                        {% if current_user.is_authenticated %}-->
+<!--                        <div class="d-grid gap-2 mt-3">-->
+<!--                            <a href="{{ url_for('workflow.index') }}" class="btn btn-outline-success">-->
+<!--                                <i class="bi bi-plus-circle me-1"></i>開始申編流程-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        {% endif %}-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
-            <div class="col-md-4 mb-3">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-header bg-info text-white">
-                        <h4 class="mb-0"><i class="bi bi-shield-lock me-2"></i>系統功能</h4>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>使用者權限管理</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>資料安全保障</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>完整操作紀錄</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>系統狀態監控</li>
-                        </ul>
-                        {% if current_user.is_admin %}
-                        <div class="d-grid gap-2 mt-3">
-                            <a href="{{ url_for('main.admin') }}" class="btn btn-outline-info">
-                                <i class="bi bi-gear me-1"></i>管理系統
-                            </a>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
+<!--            <div class="col-md-4 mb-3">-->
+<!--                <div class="card h-100 shadow-sm">-->
+<!--                    <div class="card-header bg-info text-white">-->
+<!--                        <h4 class="mb-0"><i class="bi bi-shield-lock me-2"></i>系統功能</h4>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <ul class="list-unstyled">-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>使用者權限管理</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>資料安全保障</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>完整操作紀錄</li>-->
+<!--                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>系統狀態監控</li>-->
+<!--                        </ul>-->
+<!--                        {% if current_user.is_admin %}-->
+<!--                        <div class="d-grid gap-2 mt-3">-->
+<!--                            <a href="{{ url_for('main.admin') }}" class="btn btn-outline-info">-->
+<!--                                <i class="bi bi-gear me-1"></i>管理系統-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        {% endif %}-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- 快速入口區塊 -->
-        <div class="card shadow mb-4">
-            <div class="card-header bg-light">
-                <h4 class="mb-0">快速操作</h4>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    {% if current_user.is_authenticated %}
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="d-grid">
-                            <a href="{{ url_for('workflow.index') }}" class="btn btn-outline-primary btn-lg">
-                                <i class="bi bi-diagram-3 me-2"></i>申編流程
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="d-grid">
-                            <a href="{{ url_for('dify.search') }}" class="btn btn-outline-primary btn-lg">
-                                <i class="bi bi-search-heart me-2"></i>FSC查詢
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="d-grid">
-                            <a href="{{ url_for('llm.search') }}" class="btn btn-outline-primary btn-lg">
-                                <i class="bi bi-cpu me-2"></i>料號查詢
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 mb-3">
-                        <div class="d-grid">
-                            <a href="{{ url_for('part.part_list') }}" class="btn btn-outline-primary btn-lg">
-                                <i class="bi bi-list-check me-2"></i>料號列表
-                            </a>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="col-12 text-center py-4">
-                        <p class="lead mb-4">請登入系統以使用完整功能</p>
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary me-2">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>登入系統
-                        </a>
-                        <a href="{{ url_for('auth.register') }}" class="btn btn-success">
-                            <i class="bi bi-person-plus me-2"></i>註冊帳號
-                        </a>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+<!--        <div class="card shadow mb-4">-->
+<!--            <div class="card-header bg-light">-->
+<!--                <h4 class="mb-0">快速操作</h4>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <div class="row">-->
+<!--                    {% if current_user.is_authenticated %}-->
+<!--                    <div class="col-md-3 col-sm-6 mb-3">-->
+<!--                        <div class="d-grid">-->
+<!--                            <a href="{{ url_for('workflow.index') }}" class="btn btn-outline-primary btn-lg">-->
+<!--                                <i class="bi bi-diagram-3 me-2"></i>申編流程-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3 col-sm-6 mb-3">-->
+<!--                        <div class="d-grid">-->
+<!--                            <a href="{{ url_for('dify.search') }}" class="btn btn-outline-primary btn-lg">-->
+<!--                                <i class="bi bi-search-heart me-2"></i>FSC查詢-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3 col-sm-6 mb-3">-->
+<!--                        <div class="d-grid">-->
+<!--                            <a href="{{ url_for('llm.search') }}" class="btn btn-outline-primary btn-lg">-->
+<!--                                <i class="bi bi-cpu me-2"></i>料號查詢-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col-md-3 col-sm-6 mb-3">-->
+<!--                        <div class="d-grid">-->
+<!--                            <a href="{{ url_for('part.part_list') }}" class="btn btn-outline-primary btn-lg">-->
+<!--                                <i class="bi bi-list-check me-2"></i>料號列表-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    {% else %}-->
+<!--                    <div class="col-12 text-center py-4">-->
+<!--                        <p class="lead mb-4">請登入系統以使用完整功能</p>-->
+<!--                        <a href="{{ url_for('auth.login') }}" class="btn btn-primary me-2">-->
+<!--                            <i class="bi bi-box-arrow-in-right me-2"></i>登入系統-->
+<!--                        </a>-->
+<!--                        <a href="{{ url_for('auth.register') }}" class="btn btn-success">-->
+<!--                            <i class="bi bi-person-plus me-2"></i>註冊帳號-->
+<!--                        </a>-->
+<!--                    </div>-->
+<!--                    {% endif %}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
 
         <!-- 系統公告或說明區塊 -->
         <div class="card shadow">
@@ -181,7 +181,7 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-info">
-                    <h5><i class="bi bi-info-circle me-2"></i>料號申編系統 2025 版本現已上線</h5>
+                    <h5><i class="bi bi-info-circle me-2"></i>料號申編系統 2025 - V2 版本現已上線</h5>
                     <p>本次更新包含以下主要改進：</p>
                     <ul>
                         <li><strong>全新智能申編流程</strong> - 簡化料號申編過程，提供流程引導</li>

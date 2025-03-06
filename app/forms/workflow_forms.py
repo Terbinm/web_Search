@@ -39,7 +39,7 @@ class Step3Form(FlaskForm):
     inc = StringField('INC:', validators=[
         DataRequired(message='INC缺失')
     ])
-    search = SubmitField('查詢INC')
+    search = SubmitField('開始查詢')
     selectedValue = HiddenField('已選擇的INC')
     selectedDisplay = HiddenField('已選擇的INC資料')
     inc_not_found = HiddenField('INC未找到')

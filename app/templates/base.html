@@ -15,6 +15,31 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     {% block extra_css %}{% endblock %}
 </head>
+<style>
+    .animate-btn {
+        animation: pulse 1s infinite;
+        transition: all 0.5s ease;
+    }
+
+    .animate-btn:hover {
+        background-color: #ffc107;
+        color: #000 !important;
+        transform: scale(1.05);
+        animation: none;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+        }
+    }
+</style>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark navbar-navy">
         <div class="container">
@@ -28,19 +53,8 @@
 
                 <!-- 導航欄部分 -->
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path == url_for('main.index') %}active-nav{% endif %}" href="{{ url_for('main.index') }}">
-                            <i class="bi bi-house-door-fill me-1"></i>首頁
-                        </a>
-                    </li>
 
                     {% if current_user.is_authenticated %}
-
-                    <li class="nav-item">
-                        <a class="nav-link {% if request.path.startswith('/workflow') %}active-nav{% endif %}" href="{{ url_for('workflow.index') }}">
-                            <i class="bi bi-diagram-3 me-1"></i>料號申編流程
-                        </a>
-                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link {% if 'single' in request.path %}active-nav{% endif %}" href="{{ url_for('nsn.nsn_search', type='single') }}">
@@ -49,19 +63,22 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if 'batch' in request.path %}active-nav{% endif %}" href="{{ url_for('nsn.nsn_search', type='batch') }}">
-                            <i class="bi bi-clipboard2-data me-1"></i>比對大批NSN料號
+                            <i class="bi bi-journal-plus me-1"></i>比對大批NSN料號
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if 'create_part' in request.path %}active-nav{% endif %}" href="{{ url_for('part.create_part') }}">
-                            <i class="bi bi-file-earmark-plus me-1"></i>填寫海軍料號申編單
+                        <a class="nav-link {% if request.path.startswith('/workflow') %}active-nav{% endif %}" href="{{ url_for('workflow.index') }}">
+                            <i class="bi bi-diagram-3 me-1"></i>料號申編流程
                         </a>
                     </li>
-                    <li class="nav-item">
-                                <a class="nav-link {% if request.path.startswith('/dify') %}active-nav{% endif %}" href="{{ url_for('dify.search') }}">
-                                    <i class="bi bi-search-heart me-1"></i>關鍵字查詢
-                                </a>
-                            </li>
+
+                    {% if g.active_workflow %}
+                     <li class="nav-item">
+                        <a class="nav-link border border-warning rounded mx-1 px-2 text-warning animate-btn" href="{{ url_for('workflow.step', step=g.active_workflow.current_step, workflow_id=g.active_workflow.id) }}">
+                            <i class="bi bi-arrow-repeat me-1"></i>繼續申編流程
+                        </a>
+                    </li>
+                    {% endif %}
 
                     {% if current_user.is_admin %}
 
@@ -71,10 +88,15 @@
                             <i class="bi bi-gear-fill me-1"></i>debug工具
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="navbarDropdownParts">
-                            <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('part.inc_search') }}"><i class="bi bi-search me-2 text-primary"></i>INC查詢</a></li>
+                            <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('part.inc_search') }}"><i class="bi bi-card-list me-2 text-primary"></i>INC查詢</a></li>
+                            <li><a class="nav-link {% if request.path.startswith('/dify') %}active-nav{% endif %}" href="{{ url_for('dify.search') }}"><i class="bi bi-search me-2 text-primary"></i>關鍵字查詢</a></li>
+
                             <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('part.keyword_search') }}"><i class="bi bi-key-fill me-2 text-warning"></i>關鍵字料號查詢</a></li>
                             <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('part.batch_search') }}"><i class="bi bi-collection me-2 text-success"></i>批次料號查詢</a></li>
                             <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('part.part_list') }}"><i class="bi bi-list-check me-2 text-info"></i>料號單清單列表</a></li>
+                            <li><a class="dropdown-item dropdown-item-custom" href="{{ url_for('part.create_part') }}"><i class="bi bi-stack me-2 text-info"></i>填寫海軍料號申編單</a></li>
+
+
 
                             <li><hr class="dropdown-divider"></li>
                             <li>
