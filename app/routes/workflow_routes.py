@@ -574,6 +574,7 @@ def _render_step4(workflow):
     form = CreatePartForm()
 
     # 預填表單數據
+    form.pn.data = fsc_code
     form.item_code.data = part_number
     form.english_name.data = part_name
     # 其他可以預填的欄位
