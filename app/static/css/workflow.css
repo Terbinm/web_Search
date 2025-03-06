@@ -4,6 +4,8 @@
     background-color: #f8f9fa;
     padding: 20px 0;
     border-bottom: 1px solid #e9ecef;
+    position: relative;
+    z-index: 1;
 }
 
 .workflow-progress {
@@ -24,7 +26,7 @@
     right: 10%;
     height: 4px;
     background-color: #e9ecef;
-    z-index: -1;
+    z-index: 0;
 }
 
 /* 完成流程的連接線變色 */
@@ -35,7 +37,7 @@
     left: 10%;
     height: 4px;
     background-color: #3b82f6;
-    z-index: -1;
+    z-index: 0;
     transition: width 0.5s ease;
 }
 
@@ -53,7 +55,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    z-index: 1;
+    z-index: 2;
     width: 20%;
 }
 
@@ -71,6 +73,8 @@
     margin-bottom: 8px;
     border: 2px solid #e9ecef;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
 }
 
 .step-label {
@@ -116,6 +120,8 @@
 /* 步驟內容區塊 */
 .workflow-content {
     min-height: 300px;
+    position: relative;
+    z-index: 10; /* 確保內容區域在最上層 */
 }
 
 /* 選項卡片樣式 */
@@ -125,6 +131,8 @@
     transition: all 0.2s ease;
     cursor: pointer;
     height: 100%;
+    position: relative;
+    z-index: 10; /* 確保卡片可點擊 */
 }
 
 .option-card:hover {
@@ -137,6 +145,33 @@
     border-color: #3b82f6;
     background-color: rgba(59, 130, 246, 0.05);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* 底部導航區域 */
+.workflow-navigation {
+    position: relative;
+    z-index: 10; /* 確保按鈕可點擊 */
+    padding: 20px 0;
+}
+
+/* 確保按鈕始終可點擊 */
+.btn, button, [type="button"], [type="submit"] {
+    position: relative;
+    z-index: 20 !important; /* 高優先級確保按鈕在最上層 */
+    pointer-events: auto !important; /* 確保按鈕總是可點擊 */
+}
+
+/* 確保表單元素可交互 */
+form {
+    position: relative;
+    z-index: 15; /* 表單層級高於一般內容 */
+}
+
+/* 禁用狀態下的按鈕樣式 */
+.btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 /* 添加響應式調整 */

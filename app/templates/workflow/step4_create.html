@@ -9,294 +9,292 @@
     </div>
 </div>
 
-<form id="workflowForm" method="POST" action="{{ url_for('workflow.submit_step', step=4, workflow_id=workflow_id) }}">
+<!-- 料號申編表單 -->
+<form action="{{ url_for('workflow.submit_step', step=4, workflow_id=workflow_id) }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-    <!-- 料號申編表單 -->
-    <div class="row mb-4">
-        <!-- 第一行：基本信息 -->
-        <div class="col-md-12">
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">基本資訊</h5>
+    <!-- 基本資訊區塊 -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">基本資訊</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="pn" class="form-label">料號</label>
+                        <input type="text" class="form-control" id="pn" name="pn" value="{{ part_number }}" readonly>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="pn" class="form-label">料號</label>
-                                <input type="text" class="form-control" id="pn" name="pn" value="{{ part_number }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="english_name" class="form-label">英文品名</label>
-                                <input type="text" class="form-control" id="english_name" name="english_name" value="{{ part_name }}" required>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="chinese_name" class="form-label">中文品名</label>
-                                <input type="text" class="form-control" id="chinese_name" name="chinese_name" required>
-                            </div>
-                        </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="english_name" class="form-label">英文品名</label>
+                        <input type="text" class="form-control" id="english_name" name="english_name" value="{{ part_name }}" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="chinese_name" class="form-label">中文品名</label>
+                        <input type="text" class="form-control" id="chinese_name" name="chinese_name" required>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 第二行：編號信息 -->
-        <div class="col-md-12">
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">編號資訊</h5>
+    <!-- 編號資訊區塊 -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">編號資訊</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="accounting_number" class="form-label">單位會計編號</label>
+                        <input type="text" class="form-control" id="accounting_number" name="accounting_number">
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="accounting_number" class="form-label">單位會計編號</label>
-                                <input type="text" class="form-control" id="accounting_number" name="accounting_number">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="item_code" class="form-label">品名代號</label>
-                                <input type="text" class="form-control" id="item_code" name="item_code">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="issuing_department" class="form-label">撥發單位</label>
-                                <select class="form-select" id="issuing_department" name="issuing_department">
-                                    <option value="EA">EA</option>
-                                    <option value="SE">SE</option>
-                                    <option value="A">A</option>
-                                    <option value="AT">AT</option>
-                                    <option value="AY">AY</option>
-                                    <option value="BA">BA</option>
-                                    <option value="BE">BE</option>
-                                    <option value="BF">BF</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="price_usd" class="form-label">美金單價</label>
-                                <input type="number" step="0.01" class="form-control" id="price_usd" name="price_usd">
-                            </div>
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="item_code" class="form-label">品名代號</label>
+                        <input type="text" class="form-control" id="item_code" name="item_code">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="issuing_department" class="form-label">撥發單位</label>
+                        <select class="form-select" id="issuing_department" name="issuing_department">
+                            <option value="EA">EA</option>
+                            <option value="SE">SE</option>
+                            <option value="A">A</option>
+                            <option value="AT">AT</option>
+                            <option value="AY">AY</option>
+                            <option value="BA">BA</option>
+                            <option value="BE">BE</option>
+                            <option value="BF">BF</option>
+                            <!-- 其他選項 -->
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="price_usd" class="form-label">美金單價</label>
+                        <input type="number" step="0.01" class="form-control" id="price_usd" name="price_usd">
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 第三行：規格與分類資訊 -->
-        <div class="col-md-12">
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">規格與分類資訊</h5>
+    <!-- 規格與分類資訊區塊 -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">規格與分類資訊</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <!-- 第一列 -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="specification_indicator" class="form-label">規格指示</label>
+                        <select class="form-select" id="specification_indicator" name="specification_indicator">
+                            <option value="E" selected>E</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="F">F</option>
+                            <option value="N">N</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <!-- 第一列 -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="specification_indicator" class="form-label">規格指示</label>
-                                <select class="form-select" id="specification_indicator" name="specification_indicator">
-                                    <option value="E" selected>E</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
-                                    <option value="F">F</option>
-                                    <option value="N">N</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="packaging_quantity" class="form-label">單位包裝量</label>
-                                <select class="form-select" id="packaging_quantity" name="packaging_quantity">
-                                    <option value="0" selected>0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="storage_life" class="form-label">存儲壽限</label>
-                                <select class="form-select" id="storage_life" name="storage_life">
-                                    <option value="00" selected>00</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="storage_process" class="form-label">壽限處理</label>
-                                <select class="form-select" id="storage_process" name="storage_process">
-                                    <option value="00" selected>00</option>
-                                    <option value="CO">CO</option>
-                                    <option value="C-">C-</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="packaging_quantity" class="form-label">單位包裝量</label>
+                        <select class="form-select" id="packaging_quantity" name="packaging_quantity">
+                            <option value="0" selected>0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <!-- 其他選項 -->
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="storage_life" class="form-label">存儲壽限</label>
+                        <select class="form-select" id="storage_life" name="storage_life">
+                            <option value="00" selected>00</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <!-- 其他選項 -->
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="storage_process" class="form-label">壽限處理</label>
+                        <select class="form-select" id="storage_process" name="storage_process">
+                            <option value="00" selected>00</option>
+                            <option value="CO">CO</option>
+                            <option value="C-">C-</option>
+                            <!-- 其他選項 -->
+                        </select>
+                    </div>
+                </div>
 
-                        <!-- 第二列 -->
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="storage_type" class="form-label">儲存型式</label>
-                                <select class="form-select" id="storage_type" name="storage_type">
-                                    <option value="R" selected>R</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="classification" class="form-label">機密性代號</label>
-                                <select class="form-select" id="classification" name="classification">
-                                    <option value="U" selected>U</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="consumability" class="form-label">消耗性代號</label>
-                                <select class="form-select" id="consumability" name="consumability">
-                                    <option value="M" selected>M</option>
-                                    <option value="N">N</option>
-                                    <option value="X">X</option>
-                                    <option value="Y">Y</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="repair_capability" class="form-label">修理能量</label>
-                                <select class="form-select" id="repair_capability" name="repair_capability">
-                                    <option value="9" selected>9</option>
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
+                <!-- 第二列 -->
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="storage_type" class="form-label">儲存型式</label>
+                        <select class="form-select" id="storage_type" name="storage_type">
+                            <option value="R" selected>R</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <!-- 其他選項 -->
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="classification" class="form-label">機密性代號</label>
+                        <select class="form-select" id="classification" name="classification">
+                            <option value="U" selected>U</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <!-- 其他選項 -->
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="consumability" class="form-label">消耗性代號</label>
+                        <select class="form-select" id="consumability" name="consumability">
+                            <option value="M" selected>M</option>
+                            <option value="N">N</option>
+                            <option value="X">X</option>
+                            <option value="Y">Y</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="repair_capability" class="form-label">修理能量</label>
+                        <select class="form-select" id="repair_capability" name="repair_capability">
+                            <option value="9" selected>9</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <!-- 其他選項 -->
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 第四行：能量與來源 -->
-        <div class="col-md-12">
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">能量與來源</h5>
+    <!-- 能量與來源區塊 -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">能量與來源</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="manufacturing_capability" class="form-label">製造能量</label>
+                        <select class="form-select" id="manufacturing_capability" name="manufacturing_capability">
+                            <option value="E" selected>E</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <!-- 其他選項 -->
+                        </select>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="manufacturing_capability" class="form-label">製造能量</label>
-                                <select class="form-select" id="manufacturing_capability" name="manufacturing_capability">
-                                    <option value="E" selected>E</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="source" class="form-label">來源代碼</label>
-                                <select class="form-select" id="source" name="source">
-                                    <option value="5" selected>5</option>
-                                    <option value="C">C</option>
-                                    <option value="1">1</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="system" class="form-label">系統代號</label>
-                                <select class="form-select" id="system" name="system">
-                                    <option value="5" selected>5</option>
-                                    <option value="C">C</option>
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="category" class="form-label">檔別代號</label>
-                                <select class="form-select" id="category" name="category">
-                                    <option value="K" selected>K</option>
-                                    <option value="V">V</option>
-                                    <option value="E">E</option>
-                                    <!-- 其他選項 -->
-                                </select>
-                            </div>
-                        </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="source" class="form-label">來源代碼</label>
+                        <select class="form-select" id="source" name="source">
+                            <option value="5" selected>5</option>
+                            <option value="C">C</option>
+                            <option value="1">1</option>
+                            <!-- 其他選項 -->
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="system" class="form-label">系統代號</label>
+                        <select class="form-select" id="system" name="system">
+                            <option value="5" selected>5</option>
+                            <option value="C">C</option>
+                            <option value="1">1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="category" class="form-label">檔別代號</label>
+                        <select class="form-select" id="category" name="category">
+                            <option value="K" selected>K</option>
+                            <option value="V">V</option>
+                            <option value="E">E</option>
+                            <!-- 其他選項 -->
+                        </select>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 第五行：規格說明 -->
-        <div class="col-md-12">
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">規格說明</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="specification_description" class="form-label">規格說明</label>
-                                <textarea class="form-control" id="specification_description" name="specification_description" rows="5">{{ inc_data }}</textarea>
-                            </div>
-                        </div>
+    <!-- 規格說明區塊 -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">規格說明</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="specification_description" class="form-label">規格說明</label>
+                        <textarea class="form-control" id="specification_description" name="specification_description" rows="5">{{ inc_data }}</textarea>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- 第六行：FSC相關資訊 -->
-        <div class="col-md-12">
-            <div class="card mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">FSC相關資訊</h5>
+    <!-- FSC相關資訊區塊 -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">FSC相關資訊</h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsc_code" class="form-label">FSC代碼</label>
+                        <input type="text" class="form-control" id="fsc_code" name="fsc_code" value="{{ fsc_code }}" readonly>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="fsc_code" class="form-label">FSC代碼</label>
-                                <input type="text" class="form-control" id="fsc_code" name="fsc_code" value="{{ fsc_code }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="fsc_description" class="form-label">FSC描述</label>
-                                <input type="text" class="form-control" id="fsc_description" name="fsc_description" value="{{ fsc_description }}" readonly>
-                            </div>
-                        </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fsc_description" class="form-label">FSC描述</label>
+                        <input type="text" class="form-control" id="fsc_description" name="fsc_description" value="{{ fsc_description }}" readonly>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 操作區域 -->
+    <div class="row mt-4 mb-4">
+        <div class="col-md-12 d-flex justify-content-between">
+            <a href="{{ url_for('workflow.step', step=3, workflow_id=workflow_id) }}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>返回上一步
+            </a>
+            <button type="submit" class="btn btn-success btn-lg">
+                <i class="bi bi-check-circle me-1"></i>創建料號
+            </button>
         </div>
     </div>
 </form>

@@ -1,11 +1,10 @@
-// 此檔案由自動腳本建立
 // 等待DOM加載完成
 document.addEventListener('DOMContentLoaded', function() {
     // 獲取當前步驟
-    const currentStep = parseInt(document.querySelector('.workflow-progress').getAttribute('data-current-step') || 1);
+    const progressBar = document.querySelector('.workflow-progress');
+    const currentStep = parseInt(progressBar.getAttribute('data-current-step') || 1);
 
     // 設置進度條寬度
-    const progressBar = document.querySelector('.workflow-progress');
     progressBar.classList.add(`step-${currentStep}`);
 
     // 選項卡片點擊事件
@@ -31,6 +30,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 啟用下一步按鈕
                 const nextBtn = document.getElementById('nextStepBtn');
                 if (nextBtn) nextBtn.disabled = false;
+
+                // 也啟用默認的下一步按鈕（如果存在）
+                const defaultNextBtn = document.getElementById('defaultNextStepBtn');
+                if (defaultNextBtn) defaultNextBtn.disabled = false;
             });
         });
     }
@@ -42,18 +45,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // 顯示保存進度提示
             showSaveProgressToast();
 
-            // 在這裡可以添加AJAX調用來保存進度
-            // saveProgressViaAjax();
-
-            // 表單正常提交
+            // 確保表單可以正常提交
             return true;
         });
     }
 
     // 顯示保存進度的Toast提示
     function showSaveProgressToast() {
-        const toast = new bootstrap.Toast(document.getElementById('saveProgressToast'));
-        toast.show();
+        const toastEl = document.getElementById('saveProgressToast');
+        if (toastEl) {
+            const toast = new bootstrap.Toast(toastEl);
+            toast.show();
+        }
     }
 
     // 自動顯示恢復進度對話框（如果有未完成的流程）
@@ -79,6 +82,33 @@ document.addEventListener('DOMContentLoaded', function() {
         // 啟用下一步按鈕
         const nextBtn = document.getElementById('nextStepBtn');
         if (nextBtn) nextBtn.disabled = false;
+
+        // 也啟用默認的下一步按鈕（如果存在）
+        const defaultNextBtn = document.getElementById('defaultNextStepBtn');
+        if (defaultNextBtn) defaultNextBtn.disabled = false;
+    };
+
+    // FSC卡片選擇函數（為了確保全局可用）
+    window.selectFSCCard = function(element, value, display) {
+        // 移除其他卡片的選中狀態
+        document.querySelectorAll('.option-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+
+        // 添加當前卡片的選中狀態
+        element.classList.add('selected');
+
+        // 更新隱藏字段的值
+        document.getElementById('selectedValue').value = value;
+        document.getElementById('selectedDisplay').value = display;
+
+        // 啟用下一步按鈕
+        const nextBtn = document.getElementById('nextStepBtn');
+        if (nextBtn) nextBtn.disabled = false;
+
+        // 也啟用默認的下一步按鈕（如果存在）
+        const defaultNextBtn = document.getElementById('defaultNextStepBtn');
+        if (defaultNextBtn) defaultNextBtn.disabled = false;
     };
 
     // 初始化下一步按鈕狀態
@@ -87,17 +117,43 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初始化下一步按鈕狀態的函數
     function initializeNextButtonState() {
         const nextBtn = document.getElementById('nextStepBtn');
+        const defaultNextBtn = document.getElementById('defaultNextStepBtn');
         const requiresSelection = document.querySelector('[data-requires-selection="true"]');
 
-        if (nextBtn && requiresSelection) {
+        if ((nextBtn || defaultNextBtn) && requiresSelection) {
             // 檢查是否有預選值
-            const hasPreselected = document.querySelector('.option-card.selected') ||
-                                  document.querySelector('.result-item.active') ||
-                                  (document.getElementById('selectedValue') &&
-                                   document.getElementById('selectedValue').value);
+            const hasPreselected =
+                document.querySelector('.option-card.selected') ||
+                document.querySelector('.result-item.active') ||
+                (document.getElementById('selectedValue') && document.getElementById('selectedValue').value) ||
+                (document.getElementById('selectedResultId') && document.getElementById('selectedResultId').value);
 
             // 如果沒有預選值，禁用下一步按鈕
-            nextBtn.disabled = !hasPreselected;
+            if (nextBtn) nextBtn.disabled = !hasPreselected;
+            if (defaultNextBtn) defaultNextBtn.disabled = !hasPreselected;
         }
+    }
+
+    // 修復預先選擇的選項卡
+    const preselectedCards = document.querySelectorAll('.option-card.selected');
+    if (preselectedCards.length > 0) {
+        preselectedCards.forEach(card => {
+            const value = card.getAttribute('data-value');
+            const display = card.getAttribute('data-display');
+            if (value && display) {
+                const hiddenInput = document.getElementById('selectedValue');
+                const displayInput = document.getElementById('selectedDisplay');
+                if (hiddenInput) hiddenInput.value = value;
+                if (displayInput) displayInput.value = display;
+
+                // 啟用下一步按鈕
+                const nextBtn = document.getElementById('nextStepBtn');
+                if (nextBtn) nextBtn.disabled = false;
+
+                // 也啟用默認的下一步按鈕（如果存在）
+                const defaultNextBtn = document.getElementById('defaultNextStepBtn');
+                if (defaultNextBtn) defaultNextBtn.disabled = false;
+            }
+        });
     }
 });

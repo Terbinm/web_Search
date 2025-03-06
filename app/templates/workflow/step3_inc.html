@@ -9,35 +9,35 @@
     </div>
 </div>
 
-<form id="workflowForm" method="POST" action="{{ url_for('workflow.submit_step', step=3, workflow_id=workflow_id) }}" data-requires-selection="true">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <input type="hidden" name="selectedValue" id="selectedValue" value="{{ selected_inc_id }}">
-    <input type="hidden" name="selectedDisplay" id="selectedDisplay" value="{{ selected_inc_data }}">
-
-    <!-- 顯示選擇的料號資訊 -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card mb-3">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">料號詳情</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>料號：</strong> {{ part_number }}</p>
-                            <p><strong>品名：</strong> {{ part_name }}</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p><strong>FSC：</strong> {{ fsc_code }}</p>
-                            <p><strong>FSC描述：</strong> {{ fsc_description }}</p>
-                        </div>
+<!-- 顯示選擇的料號資訊 -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card mb-3">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">料號詳情</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>料號：</strong> {{ part_number }}</p>
+                        <p><strong>品名：</strong> {{ part_name }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>FSC：</strong> {{ fsc_code }}</p>
+                        <p><strong>FSC描述：</strong> {{ fsc_description }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- INC 查詢表單 -->
+<!-- INC 查詢表單 -->
+<form action="{{ url_for('workflow.submit_step', step=3, workflow_id=workflow_id) }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <input type="hidden" name="selectedValue" id="selectedValue" value="{{ selected_inc_id }}">
+    <input type="hidden" name="selectedDisplay" id="selectedDisplay" value="{{ selected_inc_data }}">
+
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="form-group">
@@ -52,82 +52,98 @@
             </div>
         </div>
     </div>
-
-    {% if inc_results %}
-    <!-- INC 查詢結果 -->
-    <div class="mt-4">
-        <h5 class="mb-3">INC查詢結果：</h5>
-
-        {% for inc, (matching_lines, fiig, inc_value, mrc_result) in inc_results.items() %}
-        <div class="card mb-4">
-            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                <h6 class="mb-0">INC: {{ inc_value }}</h6>
-                <button type="button" class="btn btn-sm btn-outline-primary"
-                        onclick="document.getElementById('selectedValue').value='{{ inc_value }}';
-                                document.getElementById('selectedDisplay').value='{{ mrc_result }}';
-                                document.querySelectorAll('.inc-card').forEach(c => c.classList.remove('border-primary'));
-                                this.closest('.card').classList.add('border-primary');"
-                        {% if selected_inc_id == inc_value %}data-selected="true"{% endif %}>
-                    選擇
-                </button>
-            </div>
-            <div class="card-body inc-card {% if selected_inc_id == inc_value %}border-primary{% endif %}">
-                <p><strong>FIIG：</strong> {{ fiig }}</p>
-                <p><strong>MRC結果：</strong> {{ mrc_result }}</p>
-
-                <div class="mt-3">
-                    <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ loop.index }}">
-                        顯示詳細資料
-                    </button>
-                </div>
-
-                <div class="collapse mt-3" id="details-{{ loop.index }}">
-                    <div class="table-responsive">
-                        <table class="table table-sm table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>欄位1</th>
-                                    <th>欄位2</th>
-                                    <th>欄位3</th>
-                                    <th>欄位4</th>
-                                    <th>欄位5</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for line in matching_lines %}
-                                <tr>
-                                    <td>{{ line[0] }}</td>
-                                    <td>{{ line[1] }}</td>
-                                    <td>{{ line[2] }}</td>
-                                    <td>{{ line[3] if line|length > 3 else '' }}</td>
-                                    <td>{{ line[4] if line|length > 4 else '' }}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    {% if not inc_results and search_attempted %}
-    <div class="alert alert-warning mt-4">
-        <i class="bi bi-exclamation-triangle me-2"></i>未找到與此料號相關的INC資訊。您可以繼續下一步，手動輸入料號資訊。
-        <input type="hidden" name="inc_not_found" value="true">
-    </div>
-    {% endif %}
 </form>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 檢查是否有預選的INC
-        const preselected = document.querySelector('[data-selected="true"]');
-        if (preselected) {
-            preselected.closest('.card').querySelector('.inc-card').classList.add('border-primary');
-        }
-    });
-</script>
+<!-- INC 查詢結果 -->
+{% if inc_results %}
+<div class="mt-4 mb-4">
+    <h5 class="mb-3">INC查詢結果：</h5>
+
+    {% for inc, (matching_lines, fiig, inc_value, mrc_result) in inc_results.items() %}
+    <div class="card mb-4 {% if selected_inc_id == inc_value %}border-primary{% endif %}">
+        <div class="card-header bg-light">
+            <h6 class="mb-0">INC: {{ inc_value }}</h6>
+        </div>
+        <div class="card-body">
+            <p><strong>FIIG：</strong> {{ fiig }}</p>
+            <p><strong>MRC結果：</strong> {{ mrc_result }}</p>
+
+            <div class="mt-3">
+                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#details-{{ loop.index }}">
+                    顯示詳細資料
+                </button>
+            </div>
+
+            <div class="collapse mt-3" id="details-{{ loop.index }}">
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>欄位1</th>
+                                <th>欄位2</th>
+                                <th>欄位3</th>
+                                <th>欄位4</th>
+                                <th>欄位5</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for line in matching_lines %}
+                            <tr>
+                                <td>{{ line[0] }}</td>
+                                <td>{{ line[1] }}</td>
+                                <td>{{ line[2] }}</td>
+                                <td>{{ line[3] if line|length > 3 else '' }}</td>
+                                <td>{{ line[4] if line|length > 4 else '' }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <form action="{{ url_for('workflow.submit_step', step=3, workflow_id=workflow_id) }}" method="POST" class="mt-3">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="inc" value="{{ part_number }}">
+                <input type="hidden" name="selectedValue" value="{{ inc_value }}">
+                <input type="hidden" name="selectedDisplay" value="{{ mrc_result }}">
+                <div class="d-grid">
+                    <button type="submit" name="next_step" value="true" class="btn btn-success">
+                        選擇此INC資訊
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- 未找到INC 的情況 -->
+{% if not inc_results and search_attempted %}
+<div class="alert alert-warning mt-4 mb-4">
+    <i class="bi bi-exclamation-triangle me-2"></i>未找到與此料號相關的INC資訊。您可以繼續下一步，手動輸入料號資訊。
+
+    <form action="{{ url_for('workflow.submit_step', step=3, workflow_id=workflow_id) }}" method="POST" class="mt-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="hidden" name="inc" value="{{ part_number }}">
+        <input type="hidden" name="selectedValue" value="">
+        <input type="hidden" name="selectedDisplay" value="">
+        <input type="hidden" name="inc_not_found" value="true">
+        <div class="d-grid">
+            <button type="submit" name="next_step" value="true" class="btn btn-warning">
+                <i class="bi bi-arrow-right me-1"></i>繼續下一步，手動輸入
+            </button>
+        </div>
+    </form>
+</div>
+{% endif %}
+
+<!-- 返回上一步區域 -->
+<div class="row mt-4">
+    <div class="col-md-12">
+        <a href="{{ url_for('workflow.step', step=2, workflow_id=workflow_id) }}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-1"></i>返回上一步
+        </a>
+    </div>
+</div>
 {% endblock %}

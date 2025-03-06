@@ -9,12 +9,12 @@
     </div>
 </div>
 
-<form id="workflowForm" method="POST" action="{{ url_for('workflow.submit_step', step=1, workflow_id=workflow_id) }}" data-requires-selection="true">
+<!-- 搜索表單 -->
+<form action="{{ url_for('workflow.submit_step', step=1, workflow_id=workflow_id) }}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <input type="hidden" name="selectedValue" id="selectedValue" value="{{ selected_fsc_code }}">
     <input type="hidden" name="selectedDisplay" id="selectedDisplay" value="{{ selected_fsc_description }}">
-    
-    <!-- Dify搜索區 -->
+
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="form-group">
@@ -23,36 +23,49 @@
             </div>
         </div>
     </div>
-    
-    {% if dify_results %}
-    <div class="mt-4">
-        <h5 class="mb-3">搜索結果：</h5>
-        
-        <div class="row g-3">
-            {% for result in dify_results %}
-            <div class="col-md-6 col-lg-4">
-                <div class="option-card p-3 {% if selected_fsc_code == result.fsc_code %}selected{% endif %}" data-value="{{ result.fsc_code }}" data-display="{{ result.description }}">
-                    <h5 class="card-title text-primary mb-2">{{ result.fsc_code }}</h5>
-                    <p class="card-text">{{ result.description }}</p>
-                    <div class="text-end mt-2">
-                        <span class="badge bg-light text-dark">匹配度: {{ "%.1f"|format(result.score * 100) }}%</span>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endif %}
-    
-    <!-- 搜索按鈕 -->
-    <div class="row mt-4">
+
+    <div class="row mb-4">
         <div class="col-md-12 text-center">
-            <button type="submit" name="search" value="true" class="btn btn-primary" {% if not query %}disabled{% endif %}>
+            <button type="submit" name="search" value="true" class="btn btn-primary btn-lg">
                 <i class="bi bi-search me-1"></i>搜索FSC代碼
             </button>
         </div>
     </div>
 </form>
+
+<!-- 搜索結果和選擇部分 -->
+{% if dify_results %}
+<div class="mt-4 mb-4">
+    <h5 class="mb-3">搜索結果：</h5>
+
+    <div class="row g-3">
+        {% for result in dify_results %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card mb-3 {% if selected_fsc_code == result.fsc_code %}border-primary{% endif %}">
+                <div class="card-body">
+                    <h5 class="card-title text-primary mb-2">{{ result.fsc_code }}</h5>
+                    <p class="card-text">{{ result.description }}</p>
+                    <div class="text-end mt-2">
+                        <span class="badge bg-light text-dark">匹配度: {{ "%.1f"|format(result.score * 100) }}%</span>
+                    </div>
+                    <form action="{{ url_for('workflow.submit_step', step=1, workflow_id=workflow_id) }}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="selectedValue" value="{{ result.fsc_code }}">
+                        <input type="hidden" name="selectedDisplay" value="{{ result.description }}">
+                        <input type="hidden" name="query" value="{{ query }}">
+                        <div class="d-grid mt-2">
+                            <button type="submit" name="next_step" value="true" class="btn btn-success">
+                                選擇此FSC代碼
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 
 {% if not dify_results and query %}
 <div class="alert alert-warning mt-4">
