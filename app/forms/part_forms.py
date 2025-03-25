@@ -171,7 +171,7 @@ class CreatePartForm(FlaskForm):
     configuration_id = StringField('CID/NO.', validators=[Optional()])
     model_id = StringField('型式', validators=[Optional()])
     item_name = StringField('品名', validators=[Optional()])
-    installation_number = StringField('裝置數', validators=[Optional()])
+    installation_number = StringField('裝置數', default="1", validators=[Optional()])
     location = StringField('位置', default="前/後機艙", validators=[Optional()])
 
     # 申請相關

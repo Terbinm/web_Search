@@ -73,3 +73,17 @@ from app.models.nsn import NSN
 from app.models.dify_config import DifyConfig, DifyQuery
 from app.models.llm_config import LLMConfig, LLMQuery
 from app.models.workflow import WorkflowInstance
+
+# 確保utils目錄存在
+import os
+utils_dir = os.path.join(os.path.dirname(__file__), 'utils')
+if not os.path.exists(utils_dir):
+    os.makedirs(utils_dir)
+    # 創建__init__.py文件
+    with open(os.path.join(utils_dir, '__init__.py'), 'w') as f:
+        f.write('# 初始化utils包\n')
+
+# 確保static/templates目錄存在
+templates_dir = os.path.join(os.path.dirname(__file__), 'static', 'templates')
+if not os.path.exists(templates_dir):
+    os.makedirs(templates_dir)

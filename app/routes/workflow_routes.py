@@ -529,10 +529,10 @@ def _handle_step3_submit(workflow):
                             eng = mrc_mappings[mrc_code]['english']
                             ch = mrc_mappings[mrc_code]['chinese']
                             # 格式: MRC代碼(英文名稱/中文名稱)
-                            enriched_mrc_parts += f" \n {mrc_code}     {eng} \n {ch} \n "
+                            enriched_mrc_parts += f"  {mrc_code}     {eng} \n {ch} \n "
 
                         elif mrc_code == "CLQL":
-                            enriched_mrc_parts += f" \n {mrc_code}     {step1_data['query']} \n "
+                            enriched_mrc_parts += f" {mrc_code}     {step1_data['query']} \n "
 
                         else:
                             # 找不到對應時，只添加MRC代碼

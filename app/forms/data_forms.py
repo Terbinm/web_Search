@@ -67,7 +67,7 @@ class DataForm(FlaskForm):
     ship_category = StringField('艦型')
 
     # 展開的更多欄位
-    pn_acquisition_level = StringField('P/N獲得程度')
+    pn_acquisition_level = StringField('P/N獲得程度', default="2", validators=[Optional()])
     pn_acquisition_source = StringField('P/N獲得來源')
     configuration_identification_number = StringField('CID/NO.')
     part_model_id = StringField('型式')

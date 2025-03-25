@@ -483,3 +483,49 @@ def part_api(part_id):
     }
 
     return jsonify(data)
+
+
+@part_bp.route('/download-docx', methods=['POST'])
+@login_required
+def download_docx():
+    """生成並下載料號申編單DOCX文件"""
+    from flask import send_file, request, jsonify
+    import tempfile
+    import os
+    import time
+    from app.utils.docx_generator import generate_part_docx
+
+    if request.method == 'POST':
+        try:
+            # 收集表單數據
+            form_data = request.form.to_dict()
+
+            # 創建臨時文件
+            temp_dir = tempfile.gettempdir()
+            output_path = os.path.join(temp_dir, f'料號申編單_{current_user.username}_{int(time.time())}.docx')
+
+            # 確保模板目錄和文件存在
+            from app.utils.setup_template import setup_template_directory
+            setup_template_directory()
+
+            # 生成DOCX文件
+            success = generate_part_docx(form_data, output_path)
+
+            if success:
+                # 發送文件
+                return send_file(
+                    output_path,
+                    as_attachment=True,
+                    download_name='料號申編單.docx',
+                    mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                )
+            else:
+                # 返回錯誤
+                return jsonify({'error': '生成DOCX文件失敗'}), 500
+
+        except Exception as e:
+            current_app.logger.error(f"生成DOCX文件時出錯: {str(e)}")
+            return jsonify({'error': f'處理DOCX時出錯: {str(e)}'}), 500
+
+    # 如果不是POST請求
+    return jsonify({'error': '請求方法不允許'}), 405
