@@ -508,6 +508,9 @@ def _handle_step3_submit(workflow):
             # 執行INC查詢
             inc_results = search_inc_in_tabl120([part_number])
 
+            #TODO: 將inc_results的每一個MRC從'instance/MRC_lang_book.txt'中，查詢中英文名稱，並將結果回傳至前端。
+            #有可能會有找不到的情況，維持空值並print在console中提示管理員即可。
+
             # 保存查詢和結果
             data = {
                 'inc': part_number,

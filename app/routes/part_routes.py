@@ -57,15 +57,21 @@ def search_inc_in_tabl120(inc_data):
             matching_lines = [line for line in lines if line[11] == '1']
             matching_lines += [line for line in lines if line[11] != '1']
 
-            # 只取前五個
-            matching_lines = matching_lines[:5]
+            # 只取前四個
+            matching_lines = matching_lines[:4]
 
             if matching_lines:
                 # 提取 fiig 和 inc 資料
                 fiig = matching_lines[0][0]
 
-                # 組合 mrc 結果
-                mrc_result = ", ".join(line[2] for line in matching_lines)
+                ### 歷史遺留物修改，每一筆資料的例外狀況
+                # 根據 TODO 要求添加一個特定格式的行，並放在最前面
+                # 格式: {fiig}|{inc}|CLQL|C|N|R| |1|0025|0|25|1|
+                custom_line = [fiig, inc, "CLQL", "C", "N", "R", " ", "1", "0025", "0", "25", "1", ""]
+                matching_lines.insert(0, custom_line)  # 插入到最前面，擁有最高優先度
+
+                # 組合 mrc 結果，包含新增的 CLQL
+                mrc_result = "CLQL, " + ", ".join(line[2] for line in matching_lines[1:])
 
                 results[inc] = (matching_lines, fiig, inc, mrc_result)
 
