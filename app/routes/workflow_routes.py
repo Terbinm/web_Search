@@ -490,7 +490,8 @@ def _render_step3(workflow):
 def _handle_step3_submit(workflow):
     """處理步驟3表單提交"""
     form = Step3Form()
-
+    step1_data = workflow.get_step_data(1)
+    step2_data = workflow.get_step_data(2)
     # 獲取料號（從步驟2或表單）
     part_number = form.inc.data.strip() or workflow.part_number
 
@@ -503,13 +504,40 @@ def _handle_step3_submit(workflow):
     if 'search' in request.form:
         try:
             # 導入INC搜索函數（從part_routes.py）
-            from app.routes.part_routes import search_inc_in_tabl120
+            from app.routes.part_routes import search_inc_in_tabl120, load_mrc_language_mappings
 
             # 執行INC查詢
             inc_results = search_inc_in_tabl120([part_number])
+            enriched_mrc_parts = ""
 
-            #TODO: 將inc_results的每一個MRC從'instance/MRC_lang_book.txt'中，查詢中英文名稱，並將結果回傳至前端。
-            #有可能會有找不到的情況，維持空值並print在console中提示管理員即可。
+            # 如果有結果，處理MRC代碼語言映射
+            if inc_results:
+                mrc_mappings = load_mrc_language_mappings()
+
+                for inc, (matching_lines, fiig, inc_value, mrc_result) in inc_results.items():
+                    # 從matching_lines中提取每行的第三列(MRC代碼)
+                    mrc_codes = [line[2] for line in matching_lines]
+
+                    enriched_mrc_parts += f"FIIG:{fiig}\n"
+                    enriched_mrc_parts += f"INC:{inc}\n"
+                    enriched_mrc_parts += f"NAME:ITEM NAME{step2_data['part_name']}\n"
+
+
+                    for mrc_code in mrc_codes:
+                        if mrc_code in mrc_mappings:
+                            # 如果在對照表中找到對應項
+                            eng = mrc_mappings[mrc_code]['english']
+                            ch = mrc_mappings[mrc_code]['chinese']
+                            # 格式: MRC代碼(英文名稱/中文名稱)
+                            enriched_mrc_parts += f" \n {mrc_code}     {eng} \n {ch} \n "
+
+                        elif mrc_code == "CLQL":
+                            enriched_mrc_parts += f" \n {mrc_code}     {step1_data['query']} \n "
+
+                        else:
+                            # 找不到對應時，只添加MRC代碼
+                            print(f"警告: 找不到MRC代碼 '{mrc_code}' 的對應語言")
+                            enriched_mrc_parts += mrc_code
 
             # 保存查詢和結果
             data = {
@@ -517,7 +545,8 @@ def _handle_step3_submit(workflow):
                 'inc_results': inc_results or {},
                 'search_attempted': True,
                 'inc_id': form.selectedValue.data,
-                'inc_data': form.selectedDisplay.data
+                'inc_data': form.selectedDisplay.data,
+                'enriched_mrc_parts': enriched_mrc_parts or ""
             }
             workflow.set_step_data(3, data)
             db.session.commit()
@@ -533,7 +562,7 @@ def _handle_step3_submit(workflow):
     inc_not_found = 'inc_not_found' in request.form
 
     # 如果未找到INC資訊或未選擇，但已確認繼續
-    if (not selected_inc_id and not inc_not_found):
+    if not selected_inc_id and not inc_not_found:
         flash('請選擇一個INC或確認未找到INC', 'warning')
         return redirect(url_for('workflow.step', step=3, workflow_id=workflow.id))
 
@@ -560,7 +589,7 @@ def _render_step4(workflow):
     step2_data = workflow.get_step_data(2)
     step3_data = workflow.get_step_data(3)
 
-    fsc_code = step1_data.get('fsc_code', '')
+    fsc_code = f"{step1_data.get('fsc_code', '')}YETL"
     fsc_description = step1_data.get('fsc_description', '')
     part_number = step2_data.get('part_number', '')
     part_name = step2_data.get('part_name', '')
@@ -582,7 +611,7 @@ def _render_step4(workflow):
     form.english_name.data = part_name
     # 其他可以預填的欄位
     if inc_data:
-        form.specification_description.data = inc_data
+        form.specification_description.data = step3_data.get('enriched_mrc_parts', '')
 
     # 創建一個虛擬part對象以滿足模板需求
     class DummyPart:
@@ -606,7 +635,7 @@ def _render_step4(workflow):
 def _handle_step4_submit(workflow):
     """處理步驟4表單提交"""
     form = Step4Form()
-
+    # enriched_mrc_parts
     if form.validate_on_submit():
         try:
             # 創建新的料號

@@ -13,6 +13,41 @@ from app.decorators import admin_required
 part_bp = Blueprint('part', __name__)
 
 
+def load_mrc_language_mappings():
+    """
+    載入MRC語言對照表
+    從'instance/MRC_lang_book.txt'讀取MRC代碼與中英文對照
+
+    Returns:
+        dict: 以MRC代碼為鍵，包含英文和中文名稱的字典
+    """
+    mrc_mappings = {}
+    try:
+        from flask import current_app
+        mrc_file_path = os.path.join(current_app.instance_path, 'mrc_language_mappings.txt')
+
+        if os.path.exists(mrc_file_path):
+            with open(mrc_file_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and '|' in line:
+                        parts = line.split('|')
+                        if len(parts) >= 3:
+                            mrc_code = parts[0].strip()
+                            eng_name = parts[1].strip()
+                            ch_name = parts[2].strip()
+                            mrc_mappings[mrc_code] = {
+                                'english': eng_name,
+                                'chinese': ch_name
+                            }
+        else:
+            print(f"警告: MRC語言對照表文件不存在: {mrc_file_path}")
+    except Exception as e:
+        print(f"載入MRC語言對照表時出錯: {str(e)}")
+
+    return mrc_mappings
+
+
 def search_inc_in_tabl120(inc_data):
     """
     在 Tabl120.TXT 文件中搜尋 INC 相關資料
@@ -71,7 +106,7 @@ def search_inc_in_tabl120(inc_data):
                 matching_lines.insert(0, custom_line)  # 插入到最前面，擁有最高優先度
 
                 # 組合 mrc 結果，包含新增的 CLQL
-                mrc_result = "CLQL, " + ", ".join(line[2] for line in matching_lines[1:])
+                mrc_result = "CLQL, " + ",".join(line[2] for line in matching_lines[1:])
 
                 results[inc] = (matching_lines, fiig, inc, mrc_result)
 
