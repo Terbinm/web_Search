@@ -45,7 +45,7 @@ class DataForm(FlaskForm):
     ], default='M')
     repair_capability = SelectField('修理能量', choices=[
         ('9', '9'), ('0', '0'), ('1', '1')
-    ], default='9')
+    ], default='0')
 
     # 能量與來源
     manufacturing_capability = SelectField('製造能量', choices=[
@@ -53,13 +53,13 @@ class DataForm(FlaskForm):
     ], default='Ｅ')
     source = SelectField('來源代號', choices=[
         ('5', '5'), ('C', 'C'), ('1', '1')
-    ], default='5')
+    ], default='C')
     system = SelectField('系統代號', choices=[
-        ('5', '5'), ('C', 'C'), ('1', '1')
-    ], default='5')
+        ('5', '5'), ('C', 'C'), ('1', '1'), ('C35', 'C35')
+    ], default='C35')
     category = SelectField('檔別代號', choices=[
-        ('K', 'K'), ('V', 'V'), ('E', 'E')
-    ], default='K')
+        ('K', 'K'), ('V', 'V'), ('E', 'E'), ('C', 'C')
+    ], default='C')
 
     # 其他信息
     Schedule_distinction = StringField('檔別區分')

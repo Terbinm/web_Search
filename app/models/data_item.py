@@ -44,6 +44,7 @@ class DataItem(db.Model):
 
     # 其他信息
     pn = db.Column(db.String(64))
+
     ship_category = db.Column(db.String(64))
 
     Schedule_distinction = db.Column(db.String(64))

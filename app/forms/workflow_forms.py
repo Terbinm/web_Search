@@ -69,7 +69,7 @@ class Step4Form(FlaskForm):
     ], default='E')
     packaging_quantity = SelectField('單位包裝量', choices=[
         ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')
-    ], default='0')
+    ], default='1')
     storage_life = SelectField('存儲壽限', choices=[
         ('00', '00'), ('A', 'A'), ('B', 'B'), ('C', 'C')
     ], default='00')
@@ -89,7 +89,7 @@ class Step4Form(FlaskForm):
     ], default='M')
     repair_capability = SelectField('修理能量', choices=[
         ('9', '9'), ('0', '0'), ('1', '1'), ('2', '2')
-    ], default='9')
+    ], default='0')
 
     # 能量與來源
     manufacturing_capability = SelectField('製造能量', choices=[
@@ -99,10 +99,10 @@ class Step4Form(FlaskForm):
         ('5', '5'), ('C', 'C'), ('1', '1'), ('2', '2')
     ], default='5')
     system = SelectField('系統代號', choices=[
-        ('5', '5'), ('C', 'C'), ('1', '1')
+        ('5', '5'), ('C', 'C'), ('1', '1'), ('C35', 'C35')
     ], default='5')
     category = SelectField('檔別代號', choices=[
-        ('K', 'K'), ('V', 'V'), ('E', 'E'), ('P', 'P')
+        ('K', 'K'), ('V', 'V'), ('E', 'E'), ('P', 'P'), ('C', 'C')
     ], default='K')
 
     # 相關資料

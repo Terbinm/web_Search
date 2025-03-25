@@ -41,7 +41,9 @@ from wtforms.validators import DataRequired, Optional, Length
 class CreatePartForm(FlaskForm):
     """新增料號表單"""
     # 基本信息
+
     pn = StringField('料號', validators=[DataRequired(message='請輸入料號')])
+
     english_name = StringField('英文品名', validators=[DataRequired(message='請輸入英文品名')])
     chinese_name = StringField('中文品名', validators=[DataRequired(message='請輸入中文品名')])
 
@@ -88,7 +90,7 @@ class CreatePartForm(FlaskForm):
         ('K', 'K'), ('L', 'L'), ('M', 'M'), ('N', 'N'), ('O', 'O'),
         ('P', 'P'), ('Q', 'Q'), ('R', 'R'), ('S', 'S'), ('T', 'T'),
         ('U', 'U'), ('V', 'V'), ('W', 'W'), ('X', 'X'), ('Y', 'Y'), ('Z', 'Z')
-    ], default='0')
+    ], default='1')
 
     # 存儲相關
     storage_life = SelectField('存儲壽限', choices=[
@@ -126,7 +128,7 @@ class CreatePartForm(FlaskForm):
     repair_capability = SelectField('修理能量', choices=[
         ('9', '9'), ('0', '0'), ('1', '1'), ('2', '2'), ('3', '3'),
         ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'), ('8', '8')
-    ], default='9')
+    ], default='0')
 
     # 能量與來源
     manufacturing_capability = SelectField('製造能量', choices=[
@@ -136,14 +138,14 @@ class CreatePartForm(FlaskForm):
     source = SelectField('來源代碼', choices=[
         ('5', '5'), ('C', 'C'), ('1', '1'), ('2', '2'), ('3', '3'),
         ('4', '4'), ('6', '6'), ('A', 'A'), ('B', 'B'), ('D', 'D')
-    ], default='5')
+    ], default='C')
     system = SelectField('系統代號', choices=[
-        ('5', '5'), ('C', 'C'), ('1', '1')
-    ], default='5')
+        ('5', '5'), ('C', 'C'), ('1', '1'), ('C35', 'C35')
+    ], default='C35')
     category = SelectField('檔別代號', choices=[
         ('K', 'K'), ('V', 'V'), ('E', 'E'), ('P', 'P'), ('S', 'S'),
-        ('Q', 'Q'), ('C', 'C'), ('A', 'A'), ('Z', 'Z')
-    ], default='K')
+        ('Q', 'Q'), ('C', 'C'), ('A', 'A'), ('Z', 'Z'), ('C', 'C')
+    ], default='C')
 
     Schedule_distinction = StringField('檔別區分', validators=[Optional()])
     professional_category = StringField('專業代號', validators=[Optional()])
@@ -160,8 +162,8 @@ class CreatePartForm(FlaskForm):
     reference_number = StringField('參考號碼(P/N)', validators=[Optional()])
 
     # PN相關
-    pn_acquisition_level = StringField('P/N獲得程度', validators=[Optional()])
-    pn_acquisition_source = StringField('P/N獲得來源', validators=[Optional()])
+    pn_acquisition_level = StringField('P/N獲得程度', default="2", validators=[Optional()])
+    pn_acquisition_source = StringField('P/N獲得來源', default="3", validators=[Optional()])
     ship_category = StringField('艦型', validators=[Optional()])
 
     # 規格與技術信息
@@ -170,7 +172,7 @@ class CreatePartForm(FlaskForm):
     model_id = StringField('型式', validators=[Optional()])
     item_name = StringField('品名', validators=[Optional()])
     installation_number = StringField('裝置數', validators=[Optional()])
-    location = StringField('位置', validators=[Optional()])
+    location = StringField('位置', default="前/後機艙", validators=[Optional()])
 
     # 申請相關
     application_unit = StringField('申請單位及電話', validators=[Optional()])
