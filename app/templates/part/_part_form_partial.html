@@ -388,9 +388,9 @@
             <button type="reset" class="btn btn-outline-warning btn-sm me-2">
                 <i class="bi bi-arrow-counterclockwise me-1"></i>重置
             </button>
-            <input type="hidden" name="form_type" value="{{ 'create' if request.endpoint == 'part.create_part' else 'edit' }}">
+            <input type="hidden" name="form_type" value="{{ 'edit' if request.endpoint == 'part.edit_part' else 'create' }}">
 
-            {{ form.submit(class="btn btn-primary btn-sm") if request.endpoint == 'part.create_part' else form.Modify(class="btn btn-primary btn-sm") }}
+            {{ form.Modify(class="btn btn-primary btn-sm") if request.endpoint == 'part.edit_part' else form.submit(class="btn btn-primary btn-sm") }}
         </div>
     </div>
 

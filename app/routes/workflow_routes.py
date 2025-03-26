@@ -632,10 +632,19 @@ def _render_step4(workflow):
                            form=form,
                            part=part)  # 傳遞虛擬part對象
 
+
 def _handle_step4_submit(workflow):
     """處理步驟4表單提交"""
-    form = Step4Form()
-    # enriched_mrc_parts
+    from app.forms.part_forms import CreatePartForm
+    from app.models.part_number import PartNumber
+    from flask_login import current_user
+    from flask import flash, redirect, url_for
+    from app import db
+    import json
+    from datetime import date
+
+    form = CreatePartForm()
+
     if form.validate_on_submit():
         try:
             # 創建新的料號
@@ -659,6 +668,31 @@ def _handle_step4_submit(workflow):
                 source=form.source.data,
                 system=form.system.data,
                 category=form.category.data,
+
+                # CreatePartForm中的額外字段
+                professional_category=form.professional_category.data,
+                special_parts=form.special_parts.data,
+                control_category=form.control_category.data,
+                price_certification=form.price_certification.data,
+                control_number=form.control_number.data,
+                manager_department=form.manager_department.data,
+                vendor_code=form.vendor_code.data,
+                reference_number=form.reference_number.data,
+                pn_acquisition_level=form.pn_acquisition_level.data,
+                pn_acquisition_source=form.pn_acquisition_source.data,
+                ship_category=form.ship_category.data,
+                configuration_id=form.configuration_id.data,
+                model_id=form.model_id.data,
+                item_name=form.item_name.data,
+                installation_number=form.installation_number.data if form.installation_number.data else None,
+                location=form.location.data,
+                Schedule_distinction=form.Schedule_distinction.data,
+                application_unit=form.application_unit.data,
+                application_date=form.application_date.data,
+                application_unit_signature=form.application_unit_signature.data,
+                review_unit_signature=form.review_unit_signature.data,
+                nc_file_unit_signature=form.nc_file_unit_signature.data,
+
                 specification_description=form.specification_description.data,
                 created_by=current_user.id
             )
@@ -666,9 +700,22 @@ def _handle_step4_submit(workflow):
             db.session.add(part)
             db.session.commit()
 
-            # 保存表單數據
-            form_data = {field.name: field.data for field in form if
-                         field.name != 'csrf_token' and field.name != 'submit'}
+            # 創建可序列化的表單數據字典
+            form_data = {}
+            for field in form:
+                if field.name not in ['csrf_token', 'submit', 'Modify']:
+                    # 特殊處理日期類型
+                    if isinstance(field.data, date):
+                        form_data[field.name] = field.data.isoformat() if field.data else None
+                    else:
+                        form_data[field.name] = field.data
+
+            # 獲取先前步驟的FSC資料並加入表單數據
+            # step1_data = workflow.get_step_data(1)
+            # if step1_data:
+            #     form_data['fsc_code'] = step1_data.get('fsc_code', '')
+            #     form_data['fsc_description'] = step1_data.get('fsc_description', '')
+
             workflow.set_step_data(4, form_data)
 
             # 完成工作流程
