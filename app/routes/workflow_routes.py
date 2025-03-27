@@ -518,9 +518,9 @@ def _handle_step3_submit(workflow):
                     # 從matching_lines中提取每行的第三列(MRC代碼)
                     mrc_codes = [line[2] for line in matching_lines]
 
-                    enriched_mrc_parts += f"FIIG:{fiig}\n"
+                    enriched_mrc_parts += f"FIIG:{fiig}     "
                     enriched_mrc_parts += f"INC:{inc}\n"
-                    enriched_mrc_parts += f"NAME:ITEM NAME{step2_data['part_name']}\n"
+                    enriched_mrc_parts += f"NAME:ITEM NAME   {step2_data['part_name']}\n"
 
 
                     for mrc_code in mrc_codes:
@@ -529,10 +529,10 @@ def _handle_step3_submit(workflow):
                             eng = mrc_mappings[mrc_code]['english']
                             ch = mrc_mappings[mrc_code]['chinese']
                             # 格式: MRC代碼(英文名稱/中文名稱)
-                            enriched_mrc_parts += f"  {mrc_code}     {eng} \n {ch} \n "
+                            enriched_mrc_parts += f"{mrc_code}     {eng}\n          {ch}\n"
 
                         elif mrc_code == "CLQL":
-                            enriched_mrc_parts += f" {mrc_code}     {step1_data['query']} \n "
+                            enriched_mrc_parts += f"{mrc_code}     {step1_data['query']}\n"
 
                         else:
                             # 找不到對應時，只添加MRC代碼
